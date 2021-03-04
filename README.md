@@ -1,7 +1,7 @@
 # Projekt zaliczeniowy z przedmiotu: _**Aplikacje internetowe**_
 
 # Temat projektu: 
-## Skład grupy: 
+## Skład grupy: Łukasz Matusik, Bartosz Kościelniak
 ## Specyfikacja projektu
 ### Cel projektu :
 #### Cele szczegółowe:
