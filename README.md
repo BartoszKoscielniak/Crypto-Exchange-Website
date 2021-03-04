@@ -1,6 +1,6 @@
 # Projekt zaliczeniowy z przedmiotu: _**Aplikacje internetowe**_
 
-# Temat projektu: 
+# Temat projektu: Trading akcjami/kryptowalutami
 ## Skład grupy: Łukasz Matusik, Bartosz Kościelniak
 ## Specyfikacja projektu
 ### Cel projektu :
