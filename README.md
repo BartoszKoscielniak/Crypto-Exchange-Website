@@ -41,5 +41,5 @@
 
 [Przydatny link przy tworzeniu plików *.md ](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 
-[logo]: ![baza_do_projektu](https://user-images.githubusercontent.com/47026027/110671886-54737c00-81cf-11eb-875a-8749cd770164.PNG)
+[baza_do_projektu](https://user-images.githubusercontent.com/47026027/110671886-54737c00-81cf-11eb-875a-8749cd770164.PNG)
 https://gallery.dpcdn.pl/imgc/UGC/34567/g_-_960x640_-_s_x20131110194052_0.jpg "Strona główna"
