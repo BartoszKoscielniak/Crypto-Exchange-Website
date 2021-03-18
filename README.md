@@ -30,40 +30,9 @@
          
 ### Baza danych
 ####	Diagram ERD
-![alt text](https://user-images.githubusercontent.com/47026027/110671886-54737c00-81cf-11eb-875a-8749cd770164.PNG)
+![alt text](baza.png)
 
 ####	Skrypt do utworzenia struktury bazy danych
-
-CREATE TABLE "Użytkownicy" (
-"id_użytkownika  PK" <type>,
-"id_portfela  FK" <type>,
-"imię" <type>,
-"nazwisko" <type>,
-"nr_telefonu" <type>,
-"adres_email" <type>,
-"login" <type>,
-"hasło" <type>
-);
-
-CREATE TABLE "Portfel" (
-"id_portfela  PK" <type>,
-"id_listy  FK" <type>
-);
-
-CREATE TABLE "Kryptowaluty" (
-"id_krypto  PK" <type>,
-"nazwa" <type>,
-"kurs" <type>
-);
-
-CREATE TABLE "Lista_walut" (
-"id_listy  PK" <type>,
-"id_portfela FK" <type>,
-"id_krypto  FK" <type>,
-"ilość_euro" <type>,
-"ilość_krypto " <type>,
-"nazwa" <type>
-); 
 
 
 ## Wykorzystane technologie
