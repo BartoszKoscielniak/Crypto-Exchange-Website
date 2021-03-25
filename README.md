@@ -33,7 +33,43 @@
 ![alt text](baza.png)
 
 ####	Skrypt do utworzenia struktury bazy danych
+`CREATE TABLE Lista_walut (
+id_listy 	INT,
+id_portfela INT,
+id_krypto INT,
+ilość_krypto  INT NOT NULL,
+PRIMARY KEY (id_listy),
+FOREIGN KEY (id_portfela) REFERENCES Portfele(id_portfela),
+FOREIGN KEY (id_krypto)	REFERENCES Kryptowaluty(id_krypto)
+);`
 
+`CREATE TABLE Portfele (
+id_portfela INT,
+id_listy INT,
+ilość_euro INT NOT NULL,
+PRIMARY KEY (id_portfela),
+FOREIGN KEY (id_listy) REFERENCES Lista_walut(id_listy)
+);`
+
+`CREATE TABLE Użytkownicy (
+id_użytkownika INT,
+id_portfela INT,
+imię VARCHAR(255) NOT NULL,
+nazwisko VARCHAR(255) NOT NULL,
+nr_telefonu INT NOT NULL,
+adres_email VARCHAR(255) NOT NULL,
+login VARCHAR(255) NOT NULL,
+hasło VARCHAR(255) NOT NULL,
+PRIMARY KEY (id_użytkownika),
+FOREIGN KEY (id_portfela) REFERENCES Portfele(id_portfela)
+);`
+
+`CREATE TABLE Kryptowaluty (
+id_krypto INT,
+nazwa VARCHAR(255) NOT NULL,
+kurs FLOAT, 
+PRIMARY KEY (id_krypto)
+);`
 
 ## Wykorzystane technologie
 
