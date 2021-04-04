@@ -43,7 +43,7 @@ FOREIGN KEY (id_listy) REFERENCES Lista_walut(id_listy),
 FOREIGN KEY (id_transakcji) REFERENCES Transakcje(id_id_transakcji)
 );
 
-'CREATE TABLE Użytkownicy (
+CREATE TABLE Użytkownicy (
 id_użytkownika INT NOT NULL,
 id_portfela INT NOT NULL,
 imię VARCHAR(255) NOT NULL,
@@ -54,7 +54,7 @@ login VARCHAR(255) NOT NULL,
 haslo VARCHAR(255) NOT NULL,
 PRIMARY KEY (id_użytkownika),
 FOREIGN KEY (id_portfela) REFERENCES Portfele(id_portfela)
-);'
+);
 
 CREATE TABLE Lista_walut (
 id_listy INT NOT NULL,
