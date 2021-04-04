@@ -33,43 +33,56 @@
 ![alt text](baza.png)
 
 ####	Skrypt do utworzenia struktury bazy danych
-`CREATE TABLE Lista_walut (
-id_listy 	INT,
-id_portfela INT,
-id_krypto INT,
-ilość_krypto  INT NOT NULL,
-PRIMARY KEY (id_listy),
-FOREIGN KEY (id_portfela) REFERENCES Portfele(id_portfela),
-FOREIGN KEY (id_krypto)	REFERENCES Kryptowaluty(id_krypto)
-);`
-
-`CREATE TABLE Portfele (
-id_portfela INT,
+CREATE TABLE Portfele (
+id_portfela INT NOT NULL,
 id_listy INT,
+id_transakcji INT,
 ilość_euro INT NOT NULL,
 PRIMARY KEY (id_portfela),
-FOREIGN KEY (id_listy) REFERENCES Lista_walut(id_listy)
-);`
+FOREIGN KEY (id_listy) REFERENCES Lista_walut(id_listy),
+FOREIGN KEY (id_transakcji) REFERENCES Transakcje(id_id_transakcji)
+);
 
-`CREATE TABLE Użytkownicy (
-id_użytkownika INT,
-id_portfela INT,
+CREATE TABLE Użytkownicy (
+id_użytkownika INT NOT NULL,
+id_portfela INT NOT NULL,
 imię VARCHAR(255) NOT NULL,
 nazwisko VARCHAR(255) NOT NULL,
 nr_telefonu INT NOT NULL,
 adres_email VARCHAR(255) NOT NULL,
 login VARCHAR(255) NOT NULL,
-hasło VARCHAR(255) NOT NULL,
+haslo VARCHAR(255) NOT NULL,
 PRIMARY KEY (id_użytkownika),
 FOREIGN KEY (id_portfela) REFERENCES Portfele(id_portfela)
-);`
+);
 
-`CREATE TABLE Kryptowaluty (
+CREATE TABLE Lista_walut (
+id_listy INT NOT NULL,
 id_krypto INT,
+ilość_krypto INT NOT NULL,
+PRIMARY KEY (id_listy),
+FOREIGN KEY (id_krypto) REFERENCES Kryptowaluty(id_krypto)
+);
+
+CREATE TABLE Kryptowaluty (
+id_krypto INT NOT NULL,
 nazwa VARCHAR(255) NOT NULL,
-kurs FLOAT, 
+kurs FLOAT(24),
 PRIMARY KEY (id_krypto)
-);`
+);
+
+CREATE TABLE Transakcje (
+id_transakcji INT NOT NULL,
+id_krypto INT NOT NULL,
+data_transakcji DATE NOT NULL,
+czas_zawarcia TIME NOT NULL,
+ilosc INT NOT NULL,
+status VARCHAR(255) NOT NULL,
+PRIMARY KEY (id_transakcji),
+FOREIGN KEY (id_krypto) REFERENCES Kryptowaluty(id_krypto)
+);
+
+
 
 ## Wykorzystane technologie
 
