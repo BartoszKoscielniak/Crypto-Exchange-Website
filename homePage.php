@@ -103,7 +103,21 @@
 
                 if($validationCompleted == true){
                  if($connection -> query("INSERT INTO użytkownicy VALUES (NULL,2,'$name','$surname','$phone_number','$emailRegister','$password1_hash')")){
-                        $_SESSION['registrationSuccessful'] = true;
+                     $_SESSION['registrationSuccessful'] = true;
+                     unset($_SESSION['RF_regulations']);
+                     unset($_SESSION['RF_password2']);
+                     unset($_SESSION['RF_password1']);
+                     unset($_SESSION['RF_phone_number']);
+                     unset($_SESSION['RF_emailRegistration']);
+                     unset($_SESSION['RF_surname']);
+                     unset($_SESSION['RF_name']);
+                     unset($_SESSION['err_regulations']);
+                     unset($_SESSION['err_psswd']);
+                     unset($_SESSION['err_email']);
+                     unset($_SESSION['err_name']);
+                     unset($_SESSION['err_phone']);
+                     unset($_SESSION['err_surname']);
+
                  }else{
                      throw new Exception($connection ->error);
                  }
@@ -116,7 +130,6 @@
     }
     //TODO: Kod sql do poprawy, tworzenie portfela przy utworzeniu użytkownika, inkrementacja indexu użytkownika
     //TODO: Poprawic wyswietlanie zapamietanych danych w formularzu rejestracji
-    //TODO: Usunac z pamieci zapamietane dane i bledy w SESSION
 ?>
 
 <!DOCTYPE HTML>
