@@ -127,12 +127,8 @@
 
     <img style="float: left; margin-left: 2%;" src="img/user.png">
     <hr style="border: 1px solid #000; margin-right: 3%"><br><br><br>
-    <a style="float: left; margin-left: 3%; font-size: 18px;">Username:</a><a style="float: left; margin-left: 7%; font-size: 18px;">
-        <?php echo $_SESSION['imię'], " ", $_SESSION['nazwisko'] ?>
-    </a><br><br>
-    <a style="float: left; margin-left: 3%; font-size: 18px;">Email:</a><a style=" float: left; margin-left: 7%; font-size: 18px;">
-        <?php echo $_SESSION['adres_email'] ?>
-    </a><br><br><br><br><br><br><br><br><br>
+    <a style="float: left; margin-left: 3%; font-size: 18px;">Username: <?php echo $_SESSION['imię'], " ", $_SESSION['nazwisko'] ?></a><a style="float: left; margin-left: 7%; font-size: 18px;"></a><br><br>
+    <a style="float: left; margin-left: 3%; font-size: 18px;">Email: <?php echo $_SESSION['adres_email'] ?></a><a style=" float: left; margin-left: 7%; font-size: 18px;"></a><br><br><br><br><br><br><br><br><br>
     <img style="float: left; margin-left: 15px ; margin-right: 10px;" src="img/facebook-logo.png">
     <a style="float: left;">Connect with Facebook</a><br><br>
     <img style="float: left; margin-left: 15px ; margin-right: 10px;" src="img/google-logo.png"><a style="float: left;">Connect with Google</a>
