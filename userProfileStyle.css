@@ -242,8 +242,9 @@ ul {
   background-color: #475883;
   height:50px;
   width:91%;
-  position:absolute;
+  position:fixed;
   left:9%;
+  color: #fff;
 }
 
 #form-div {
@@ -256,5 +257,15 @@ ul {
   font-family: monospace;
   visibility: hidden;
 
+}
+
+#main-screen {
+  background-color:white;
+  width: 91%;
+  height: 1000px;
+  position: relative;
+  top: 50px;
+  left: 9%;
+  padding:40px;
 }
 

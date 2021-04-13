@@ -28,10 +28,11 @@
 </ul>
 
 <div id="top-bar">
-    <p style="width: auto; padding: 5px; position: absolute; right:0%"><?php echo $_SESSION['imię'] ?></p>
-    <input type="image" id="myimage" style="height:50px; width:50px; position:absolute; right:4%" src="img/user.png" onclick="FormVis()" href="#log-popup"/>
-    <button style="position:absolute; right:8%; padding: 5px ">Send/Receive</button>
-    <button style="position:absolute; right:14%; padding: 5px">Buy/Sell</button>
+    <p style="width: auto; padding: 5px; position: absolute; right:1%"><?php echo $_SESSION['imię'] ?></p>
+    <input type="image" id="myimage" style="height:50px; width:50px; position:absolute; right:5%" src="img/user.png" onclick="FormVis()" href="#log-popup"/>
+    <button style="position:absolute; right:9%; padding: 5px ">Send/Receive</button>
+    <button style="position:absolute; right:15%; padding: 5px">Buy/Sell</button>
+    <p style="position:absolute; left: 0%">CRYPTOEXCH - Main Page</p>
 </div>
 
 <!-- Wallet -->
@@ -155,6 +156,15 @@
     </form>
 </div>
 
+<!-- Main screen -->
+
+<div id="main-screen">
+
+    <div style="background-color:mediumpurple; height:350px; width:700px ">
+
+    </div>
+
+</div>
 
 </body>
 <script src="homePageScript.js"></script>
