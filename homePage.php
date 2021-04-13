@@ -285,9 +285,13 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
 <div id="contact" class="container-fluid">
 <div id="div-fotter" style="background-color: #d586f1; color: #ffffff ">
     <img style=" " src="img/logo%20-%20white.png">
-    <p>Contact: </p>
-    <p>Telephone number</p>
+    <div style="border: 1px solid #d586f1; border-bottom-color: antiquewhite; width: 100%;">
+
+    </div>
+
 </div>
+
+
 
 </body>
 <script src="homePageScript.js"></script>

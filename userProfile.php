@@ -25,11 +25,14 @@
     <li><a onclick="switchPanel(document.getElementById('buy').style)">Buy crypto</a></li>
     <li><a>History</a></li>
     <li><a onclick="switchPanel(document.getElementById('account').style)">My account</a></li>
-    <form action="logOut.php">
-        <button type="submit" class="btn" id="close">Log Out</button>
-    </form>
-
 </ul>
+
+<div id="top-bar">
+    <p style="width: auto; padding: 5px; position: absolute; right:0%"><?php echo $_SESSION['imię'] ?></p>
+    <input type="image" id="myimage" style="height:50px; width:50px; position:absolute; right:4%" src="img/user.png" onclick="FormVis()" href="#log-popup"/>
+    <button style="position:absolute; right:8%; padding: 5px ">Send/Receive</button>
+    <button style="position:absolute; right:14%; padding: 5px">Buy/Sell</button>
+</div>
 
 <!-- Wallet -->
 
@@ -135,6 +138,25 @@
     
 </div>
 
+<div class="log-popup" id="form-div" style="visibility: hidden;">
+<!--
+    <form class="login-form" action="logIn.php" method=post>
+        <h1 style="font-size: 20px;">Login</h1>
+        <label class="napis"><b>Email</b></label><br>
+        <input class="text" type="text" placeholder="Enter Email" name="email" required><br>
+        <label class="napis"><b>Password</b></label><br>
+        <input class="text" type="password" placeholder="Enter Password" name="password" required><br>
+        <?php if (isset($_SESSION['error'])) echo $_SESSION['error']; ?>
+        <button type="submit" class="btn" id="login">Login</button>
+    </form>
+-->
+    <form action="logOut.php">
+        <button type="submit" class="btn" id="close">Log Out</button>
+    </form>
+</div>
+
+
 </body>
+<script src="homePageScript.js"></script>
 <script src="userProfileScript.js"></script>
 </html>
