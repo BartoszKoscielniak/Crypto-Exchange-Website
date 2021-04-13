@@ -25,6 +25,7 @@
     <li><a onclick="switchPanel(document.getElementById('buy').style)">Buy crypto</a></li>
     <li><a>History</a></li>
     <li><a onclick="switchPanel(document.getElementById('account').style)">My account</a></li>
+    <p style="position:relative; top: 500px; color: antiquewhite; text-align: center">Powered by CoinGecko API</p>
 </ul>
 
 <div id="top-bar">
@@ -160,8 +161,12 @@
 
 <div id="main-screen">
 
-    <div style="background-color:mediumpurple; height:350px; width:700px ">
+    <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
+    <coingecko-coin-price-marquee-widget  coin-ids="bitcoin,ethereum,litecoin,ripple" currency="usd" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
 
+    <div style="background-color:mediumpurple; height:350px; width:700px ">
+        <script src="https://widgets.coingecko.com/coingecko-coin-price-chart-widget.js"></script>
+        <coingecko-coin-price-chart-widget  coin-id="bitcoin" currency="usd" height="350" locale="en"></coingecko-coin-price-chart-widget>
     </div>
 
 </div>
