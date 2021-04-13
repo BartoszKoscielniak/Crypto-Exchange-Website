@@ -14,8 +14,8 @@
 }
 
 body {
-  background-color:#0099cc;
-
+  background-color: #ffffff;
+  margin: 0px;
 }
 
 table {
@@ -146,8 +146,8 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 10%;
-  background-color: #003366;
+  width: 9%;
+  background-color: #284875;
   position: fixed;
   height: 100%;
   overflow: auto;
@@ -195,47 +195,77 @@ ul {
   
     }
 
-    #crypto {
-      
-      position: relative;
-      padding: 15px 0 0;
-      margin-top: 10px;
-      
-    }
+#crypto {
 
-    #euro {
-      
-      position: relative;
-      padding: 15px 0 0;
-      margin-top: 10px;
-      
-    }
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
 
-    #crypto, #euro, #arrow {
-      
-      display: inline-block;
-    }
+}
 
-    #submit {
-      width: 200px;
-      height: 35px;
-      position: relative;
-      background-color: #4CAF50;
-      border: none;
-      font-size: 20px;
-      color: #FFFFFF;
-      border-radius: 5px;
-      text-align: center;
-      -webkit-transition-duration: 0.4s; 
-      transition-duration: 0.4s;
-      text-decoration: none;
-      overflow: hidden;
-      cursor: pointer;
-      outline: none;
-    }
+#euro {
 
-    #submit:hover {
-      background-color: rgb(51, 196, 129);
-    }
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
 
+}
+
+#crypto, #euro, #arrow {
+
+  display: inline-block;
+}
+
+#submit {
+  width: 200px;
+  height: 35px;
+  position: relative;
+  background-color: #4CAF50;
+  border: none;
+  font-size: 20px;
+  color: #FFFFFF;
+  border-radius: 5px;
+  text-align: center;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  text-decoration: none;
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+}
+
+#submit:hover {
+  background-color: rgb(51, 196, 129);
+}
+
+#top-bar {
+  background-color: #475883;
+  height:50px;
+  width:91%;
+  position:fixed;
+  left:9%;
+  color: #fff;
+}
+
+#form-div {
+  /* display: none; */
+  position: fixed;
+  top: 60px;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+  font-family: monospace;
+  visibility: hidden;
+
+}
+
+#main-screen {
+  background-color:white;
+  width: 91%;
+  height: 1000px;
+  position: relative;
+  top: 50px;
+  left: 9%;
+
+}
 

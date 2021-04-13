@@ -25,11 +25,16 @@
     <li><a onclick="switchPanel(document.getElementById('buy').style)">Buy crypto</a></li>
     <li><a>History</a></li>
     <li><a onclick="switchPanel(document.getElementById('account').style)">My account</a></li>
-    <form action="logOut.php">
-        <button type="submit" class="btn" id="close">Log Out</button>
-    </form>
-
+    <p style="position:relative; top: 500px; color: antiquewhite; text-align: center">Powered by CoinGecko API</p>
 </ul>
+
+<div id="top-bar">
+    <p style="width: auto; padding: 5px; position: absolute; right:1%"><?php echo $_SESSION['imię'] ?></p>
+    <input type="image" id="myimage" style="height:50px; width:50px; position:absolute; right:5%" src="img/user.png" onclick="FormVis()" href="#log-popup"/>
+    <button style="position:absolute; right:9%; padding: 5px ">Send/Receive</button>
+    <button style="position:absolute; right:15%; padding: 5px">Buy/Sell</button>
+    <p style="position:absolute; left: 0%">CRYPTOEXCH - Main Page</p>
+</div>
 
 <!-- Wallet -->
 
@@ -127,18 +132,46 @@
 
     <img style="float: left; margin-left: 2%;" src="img/user.png">
     <hr style="border: 1px solid #000; margin-right: 3%"><br><br><br>
-    <a style="float: left; margin-left: 3%; font-size: 18px;">Username:</a><a style="float: left; margin-left: 7%; font-size: 18px;">
-        <?php echo $_SESSION['imię'], " ", $_SESSION['nazwisko'] ?>
-    </a><br><br>
-    <a style="float: left; margin-left: 3%; font-size: 18px;">Email:</a><a style=" float: left; margin-left: 7%; font-size: 18px;">
-        <?php echo $_SESSION['adres_email'] ?>
-    </a><br><br><br><br><br><br><br><br><br>
+    <a style="float: left; margin-left: 3%; font-size: 18px;">Username: <?php echo $_SESSION['imię'], " ", $_SESSION['nazwisko'] ?></a><a style="float: left; margin-left: 7%; font-size: 18px;"></a><br><br>
+    <a style="float: left; margin-left: 3%; font-size: 18px;">Email: <?php echo $_SESSION['adres_email'] ?></a><a style=" float: left; margin-left: 7%; font-size: 18px;"></a><br><br><br><br><br><br><br><br><br>
     <img style="float: left; margin-left: 15px ; margin-right: 10px;" src="img/facebook-logo.png">
     <a style="float: left;">Connect with Facebook</a><br><br>
     <img style="float: left; margin-left: 15px ; margin-right: 10px;" src="img/google-logo.png"><a style="float: left;">Connect with Google</a>
     
 </div>
 
+<div class="log-popup" id="form-div" style="visibility: hidden;">
+<!--
+    <form class="login-form" action="logIn.php" method=post>
+        <h1 style="font-size: 20px;">Login</h1>
+        <label class="napis"><b>Email</b></label><br>
+        <input class="text" type="text" placeholder="Enter Email" name="email" required><br>
+        <label class="napis"><b>Password</b></label><br>
+        <input class="text" type="password" placeholder="Enter Password" name="password" required><br>
+        <?php if (isset($_SESSION['error'])) echo $_SESSION['error']; ?>
+        <button type="submit" class="btn" id="login">Login</button>
+    </form>
+-->
+    <form action="logOut.php">
+        <button type="submit" class="btn" id="close">Log Out</button>
+    </form>
+</div>
+
+<!-- Main screen -->
+
+<div id="main-screen">
+
+    <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
+    <coingecko-coin-price-marquee-widget  coin-ids="bitcoin,ethereum,litecoin,ripple" currency="usd" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
+
+    <div style="background-color:mediumpurple; height:350px; width:700px ">
+        <script src="https://widgets.coingecko.com/coingecko-coin-price-chart-widget.js"></script>
+        <coingecko-coin-price-chart-widget  coin-id="bitcoin" currency="usd" height="350" locale="en"></coingecko-coin-price-chart-widget>
+    </div>
+
+</div>
+
 </body>
+<script src="homePageScript.js"></script>
 <script src="userProfileScript.js"></script>
 </html>

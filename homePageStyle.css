@@ -1,10 +1,24 @@
 body {
-    background-color: #0099cc;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  margin: 0px;
 
 }
+
+#div-panels {
+  display: flex;
+  height: 100px;
+  padding: 100px;
+}
+
+#div-fotter {
+  display: flex;
+  height: 100px;
+  padding: 50px;
+  color: #ffffff;
+}
+
 #form-div {
   max-width: 300px;
   padding: 10px;
@@ -24,7 +38,6 @@ body {
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
   width: auto;
 
 }
@@ -38,10 +51,12 @@ body {
   font-size: 16px;
   font-family: monospace;
 }
+
 .panel {
   color:black;
   background-color:#fff;
 }
+
 #form-div2 input[type=text] {
   width: 170px;
   padding: 10px;
@@ -123,7 +138,9 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #003366;
+    background-color: #284875;
+    position: fixed;
+    width: 100%;
   }
 
   
