@@ -62,7 +62,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
         $validationCompleted = false;
         $_SESSION['err_phone'] = '<span style = "color:#ff0000">Phone number contain only numbers</span><br>';
     }
-
+    /*
     $_SESSION['RF_name'] = $name;
     $_SESSION['RF_surname'] = $surname;
     $_SESSION['RF_emailRegistration'] = $emailRegister;
@@ -70,7 +70,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
     $_SESSION['RF_password1'] = $password1;
     $_SESSION['RF_password2'] = $password2;
     if (isset($_POST['regulations'])) $_SESSION['RF_regulations'] = true;
-
+    */
 
     require_once "dataBaseConnector.php";
 
@@ -102,7 +102,11 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
             }
 
             if ($validationCompleted == true) {
-                if ($connection->query("INSERT INTO użytkownicy VALUES (NULL,2,'$name','$surname','$phone_number','$emailRegister','$password1_hash')")) {
+                $result = $connection->query("SELECT MAX(id_portfela) FROM portfele");
+                $row = $result->fetch_assoc();
+                $row['MAX(id_portfela)'] = $row['MAX(id_portfela)'] + 1;
+                $connection->query("INSERT INTO portfele VALUES (".$row['MAX(id_portfela)'].",NULL,NULL,0)");
+                if ($connection->query("INSERT INTO użytkownicy VALUES (NULL,".$row['MAX(id_portfela)'].",'$name','$surname','$phone_number','$emailRegister','$password1_hash')")) {
                     $_SESSION['registrationSuccessful'] = true;
                     unset($_SESSION['RF_regulations']);
                     unset($_SESSION['RF_password2']);
@@ -117,7 +121,6 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
                     unset($_SESSION['err_name']);
                     unset($_SESSION['err_phone']);
                     unset($_SESSION['err_surname']);
-
                 }else {
                     throw new Exception($connection->error);
                 }
@@ -128,8 +131,6 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
         echo "Error: " . $exception;
     }
 }
-//TODO: Kod sql do poprawy, tworzenie portfela przy utworzeniu użytkownika, inkrementacja indexu użytkownika
-//TODO: Poprawic wyswietlanie zapamietanych danych w formularzu rejestracji
 ?>
 
 <!DOCTYPE HTML>
@@ -181,67 +182,40 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
         <form method=post>
             <h1 style="font-size: 20px; user-select: none">Register<h1></h1>
                 <label class="napis" style="user-select: none">Name</label><br>
-                <input class="text" type="text" value="
-                <?php if (isset($_SESSION['RF_name'])) {
-                    echo $_SESSION['RF_name'];
-                    unset($_SESSION['RF_name']);
-                } ?>" placeholder="Enter Name" name="name" required><br>
+                <input class="text" type="text" value="<?php if (isset($_SESSION['RF_name'])) { echo $_SESSION['RF_name'];unset($_SESSION['RF_name']);
+                } ?>" placeholder="Enter Name" name="name" required/><br>
                 <?php if (isset($_SESSION['err_name'])) {
                     echo $_SESSION['err_name'];
                     unset($_SESSION['err_name']);
                 } ?>
                 <label class="napis" style="user-select: none">Surname</label><br>
-                <input class="text" type="text" value="
-                <?php if (isset($_SESSION['RF_surname'])) {
-                    echo $_SESSION['RF_surname'];
-                    unset($_SESSION['RF_surname']);
-                } ?>" placeholder="Enter Surname" name="surname" required><br>
+                <input class="text" type="text" value="<?php if (isset($_SESSION['RF_surname'])) { echo $_SESSION['RF_surname']; unset($_SESSION['RF_surname']);} ?>" placeholder="Enter Surname" name="surname" required><br>
                 <?php if (isset($_SESSION['err_surname'])) {
                     echo $_SESSION['err_surname'];
                     unset($_SESSION['err_surname']);
                 } ?>
                 <label class="napis" style="user-select: none">Email</label><br>
-                <input class="text" type="text" value="
-                <?php if (isset($_SESSION['RF_emailRegistration'])) {
-                    echo $_SESSION['RF_emailRegistration'];
-                    unset($_SESSION['RF_emailRegistration']);
-                } ?>" placeholder="Enter Email" name="emailRegister" required><br>
+                <input class="text" type="text" value="<?php if (isset($_SESSION['RF_emailRegistration'])) { echo $_SESSION['RF_emailRegistration']; unset($_SESSION['RF_emailRegistration']);} ?>" placeholder="Enter Email" name="emailRegister" required><br>
                 <?php if (isset($_SESSION['err_email'])) {
                     echo $_SESSION['err_email'];
                     unset($_SESSION['err_email']);
                 } ?>
                 <label class="napis" style="user-select: none">Phone Number</label><br>
-                <input class="text" type="text" value="
-                <?php if (isset($_SESSION['RF_phone_number'])) {
-                    echo $_SESSION['RF_phone_number'];
-                    unset($_SESSION['RF_phone_number']);
-                } ?>" placeholder="Enter Phone Number" name="phone_number" required><br>
+                <input class="text" type="text" value="<?php if (isset($_SESSION['RF_phone_number'])) { echo $_SESSION['RF_phone_number']; unset($_SESSION['RF_phone_number']);} ?>" placeholder="Enter Phone Number" name="phone_number" required><br>
                 <?php if (isset($_SESSION['err_phone'])) {
                     echo $_SESSION['err_phone'];
                     unset($_SESSION['err_phone']);
                 } ?>
                 <label class="napis" style="user-select: none">Password</label><br>
-                <input class="text" type="text" value="
-                <?php if (isset($_SESSION['RF_password1'])) {
-                    echo $_SESSION['RF_password1'];
-                    unset($_SESSION['RF_password1']);
-                } ?>" placeholder="Enter Password" name="password1" required><br>
+                <input class="text" type="password" value="<?php if (isset($_SESSION['RF_password1'])) { echo $_SESSION['RF_password1']; unset($_SESSION['RF_password1']); } ?>" placeholder="Enter Password" name="password1" required><br>
                 <?php if (isset($_SESSION['err_psswd'])) {
                     echo $_SESSION['err_psswd'];
                     unset($_SESSION['err_psswd']);
                 } ?>
                 <label class="napis" style="user-select: none">Repeat password</label><br>
-                <input class="text" type="text" value="
-                <?php if (isset($_SESSION['RF_password2'])) {
-                    echo $_SESSION['RF_password2'];
-                    unset($_SESSION['RF_password2']);
-                } ?>" placeholder="Repeat Password" name="password2" required><br>
+                <input class="text" type="password" value="<?php if (isset($_SESSION['RF_password2'])) {echo $_SESSION['RF_password2']; unset($_SESSION['RF_password2']); } ?>" placeholder="Repeat Password" name="password2" required><br>
                 <label style="user-select: none">
-                    <input type="checkbox" name="regulations" value="
-                <?php if (isset($_SESSION['RF_regulations'])) {
-                        echo "checked";
-                        unset($_SESSION['RF_regulations']);
-                    } ?>"/> I have read and agree to the Terms of Service.<br>
+                    <input type="checkbox" name="regulations" value="<?php if (isset($_SESSION['RF_regulations'])) { echo "checked"; unset($_SESSION['RF_regulations']); } ?>"/> I have read and agree to the Terms of Service.<br>
                 </label>
                 <?php if (isset($_SESSION['err_regulations'])) {
                     echo $_SESSION['err_regulations'];
@@ -255,7 +229,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
     </div>
 
 </div>
-<!--
+
 <div id="div-panels" style="background-color: #ffffff; ">
     <p>abc</p>
 </div>
@@ -263,7 +237,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
 <div id="div-panels" style="background-color: #252379; color: #ffffff; ">
     <p>abc</p>
 </div>
--->
+
 <!-- How to start -->
 <div id="div-panels" style="background-color: #ffffff; ">
     <p>abc</p>
