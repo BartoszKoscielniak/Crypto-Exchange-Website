@@ -7,7 +7,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
 }else if ((isset($_POST['name'])) && (isset($_POST['surname'])) && (isset($_POST['emailRegister'])) && (isset($_POST['phone_number']))
     && (isset($_POST['password1'])) && (isset($_POST['password2']))) {
     $validationCompleted = true;
-
+    $_SESSION['popup_status'] = "block";
     $name = $_POST['name'];
     $surname = $_POST['surname'];
     $emailRegister = $_POST['emailRegister'];
@@ -62,7 +62,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
         $validationCompleted = false;
         $_SESSION['err_phone'] = '<span style = "color:#ff0000">Phone number contain only numbers</span><br>';
     }
-    /*
+
     $_SESSION['RF_name'] = $name;
     $_SESSION['RF_surname'] = $surname;
     $_SESSION['RF_emailRegistration'] = $emailRegister;
@@ -70,7 +70,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
     $_SESSION['RF_password1'] = $password1;
     $_SESSION['RF_password2'] = $password2;
     if (isset($_POST['regulations'])) $_SESSION['RF_regulations'] = true;
-    */
+
 
     require_once "dataBaseConnector.php";
 
@@ -105,9 +105,12 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
                 $result = $connection->query("SELECT MAX(id_portfela) FROM portfele");
                 $row = $result->fetch_assoc();
                 $row['MAX(id_portfela)'] = $row['MAX(id_portfela)'] + 1;
+
                 $connection->query("INSERT INTO portfele VALUES (".$row['MAX(id_portfela)'].",NULL,NULL,0)");
                 if ($connection->query("INSERT INTO użytkownicy VALUES (NULL,".$row['MAX(id_portfela)'].",'$name','$surname','$phone_number','$emailRegister','$password1_hash')")) {
                     $_SESSION['registrationSuccessful'] = true;
+                    $_SESSION['emailToLogIn'] = $emailRegister;
+                    $_SESSION['passwordToLogIn'] = $password1;
                     unset($_SESSION['RF_regulations']);
                     unset($_SESSION['RF_password2']);
                     unset($_SESSION['RF_password1']);
@@ -121,16 +124,21 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
                     unset($_SESSION['err_name']);
                     unset($_SESSION['err_phone']);
                     unset($_SESSION['err_surname']);
+                    //unset($_SESSION['popup_status']);
+                    $result -> free();
+                    $connection->close();
+                    header('Location: logIn.php');
                 }else {
                     throw new Exception($connection->error);
                 }
             }
+            $result -> free();
             $connection->close();
         }
     } catch (Exception $exception) {
         echo "Error: " . $exception;
     }
-}
+}//TODO: Relacja uzytkownicy - portfele
 ?>
 
 <!DOCTYPE HTML>

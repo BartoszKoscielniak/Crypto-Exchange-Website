@@ -2,7 +2,7 @@
     require_once "dataBaseConnector.php";
     session_start();
 
-    if((!isset($_POST['email'])) || (!isset($_POST['password']))){
+    if( ((!isset($_POST['email'])) || (!isset($_POST['password']))) && ((!isset($_SESSION['emailToLogIn'])) || (!isset($_SESSION['passwordToLogIn']))) ){
         header('Location:homePage.php');
         exit();
     }
@@ -14,6 +14,8 @@
     } else {
         $email = $_POST['email'];
         $password = $_POST['password'];
+
+        if(isset($_SESSION['emailToLogIn']) && isset($_SESSION['passwordToLogIn'])) {$email = $_SESSION['emailToLogIn']; $password = $_SESSION['passwordToLogIn'];}
 
         $email = htmlentities($email,ENT_QUOTES, "UTF-8");
 
