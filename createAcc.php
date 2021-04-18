@@ -1,5 +1,4 @@
 <?php
-    //43:30 wyszukiwanie w sql
     require_once "dataBaseConnector.php";
 
     $connection = @new mysqli($host, $db_user, $db_password, $db_name);
@@ -7,8 +6,6 @@
     if($connection -> connect_errno != 0){
         echo "Error: ".$connection -> connect_errno. "Description: ".$connection -> connect_errno;
     } else {
-        echo "Gitara";
-
         $name = $_POST['name'];
         $surname = $_POST['surname'];
         $email = $_POST['email'];
