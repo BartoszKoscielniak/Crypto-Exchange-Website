@@ -102,11 +102,13 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
             }
 
             if ($validationCompleted == true) {
+
                 $result = $connection->query("SELECT MAX(id_użytkownika) FROM użytkownicy");
                 $row = $result->fetch_assoc();
                 if($row['MAX(id_użytkownika)'] == NULL) $row['MAX(id_użytkownika)'] = 0;
                 $row['MAX(id_użytkownika)'] = $row['MAX(id_użytkownika)'] + 1;
                 $_SESSION['id_uzyt'] = $row['MAX(id_użytkownika)'];
+
                 if ($connection->query("INSERT INTO użytkownicy VALUES (".$_SESSION['id_uzyt'].",'$name','$surname','$phone_number','$emailRegister','$password1_hash')")) {
                     $result -> free();
 
@@ -114,7 +116,6 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
                     $row = $result->fetch_assoc();
                     if($row['MAX(id_portfela)'] == NULL) $row['MAX(id_portfela)'] = 0;
                     $row['MAX(id_portfela)'] = $row['MAX(id_portfela)'] + 1;
-
                     $connection->query("INSERT INTO portfele VALUES (".$row['MAX(id_portfela)'].",".$_SESSION['id_uzyt'].",NULL,0)");
 
                     $_SESSION['registrationSuccessful'] = true;
@@ -133,7 +134,6 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
                     unset($_SESSION['err_name']);
                     unset($_SESSION['err_phone']);
                     unset($_SESSION['err_surname']);
-                    //unset($_SESSION['popup_status']);
                     $result -> free();
                     $connection->close();
                     header('Location: logIn.php');
