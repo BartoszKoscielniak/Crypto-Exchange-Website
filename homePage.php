@@ -147,7 +147,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
     } catch (Exception $exception) {
         echo "Error: " . $exception;
     }
-}//TODO: Relacja uzytkownicy - portfele
+}
 ?>
 
 <!DOCTYPE HTML>
