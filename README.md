@@ -39,6 +39,7 @@ CREATE TABLE Kryptowaluty (
   kurs FLOAT(24),
   PRIMARY KEY (id_krypto)
 );
+
 CREATE TABLE Lista_walut (
   id_listy INT NOT NULL,
   id_krypto INT,
