@@ -12,6 +12,7 @@
     if($connection -> connect_errno != 0){
         echo "Error: ".$connection -> connect_errno;
     } else {
+        
         $email = $_POST['email'];
         $password = $_POST['password'];
 
@@ -23,11 +24,13 @@
             sprintf("SELECT * FROM użytkownicy WHERE BINARY adres_email = '%s'",
             mysqli_real_escape_string($connection,$email))))
         {
+            
             $correct_users = $result -> num_rows;
+            
             if($correct_users == 1){
                 $data = $result -> fetch_assoc();
-
-                if(password_verify($password,$data['haslo'])) {
+        
+                if(password_verify($password, $data['haslo'])) {
 
                     $_SESSION['isLoggedIn'] = true;
 
@@ -45,7 +48,7 @@
                 }else {
                     echo "Bledne dane do logowania!";
 
-                    $_SESSION['error'] = '<span style = "color:#ff0000">Błędny login lub hasło!</span>';
+                    $_SESSION['error'] = '<span style = "color:#ff0000">Błędny loGin lub hasło!</span>';
                     header('Location: homePage.php#log-popup');
                 }
 
