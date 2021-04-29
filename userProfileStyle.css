@@ -35,6 +35,12 @@ tr {
   width: 40px;
 }
 
+#sell_value {
+  color: #4CAF50;
+  font-size: 24px;
+  font-weight: bold;
+}
+
 #table {
   border-style: solid;
   border: none;
@@ -68,20 +74,142 @@ tr {
   font-size: 16px;
   border-radius: 15px;
 }
-
-#buy {
-  border-style: solid;
-  display: none;
-  width: 89%; 
+#cr_textfield {
+  background-color: #f1f1f1;
+  text-align-last: center;
+  color: #888585;
+  width: 250px;
   border: none;
-  float: right; 
-  background-color: #b5bcc4;
-  text-align: center;
-  height: auto;
-  font-weight: bold;
+  font-size: 22px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  -webkit-appearance: button;
+  appearance: button;
+  outline: none;
+
+}
+
+.inscription {
+  color: #4E5066;
   font-family: monospace;
+  font-weight: bold;
+  text-align: left;
   font-size: 16px;
-  border-radius: 15px;
+  margin-right: 80%;
+}
+
+#operation-div{
+  z-index:3;
+  padding-top:100px;
+  position:fixed;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  overflow:auto;
+  background-color:rgb(0,0,0);
+  background-color:rgba(0,0,0,0.4)
+}
+.nav-button {
+  background-color:rgb(198, 201, 200);
+  border: none;
+  width: 70px;
+  height: 20px;
+  font-family:sans-serif;
+  font-weight: bold;
+  color: #4E5066;
+  border-radius: 3px;
+}
+.nav-button:hover {
+  color: white;
+  background-color: rgb(75, 73, 73);
+  cursor: pointer;
+}
+#euro-amount {
+  font-size: 60px;
+  font-family:sans-serif;
+  color: #b5bcc4;
+}
+#nav-div {
+  width: 250px;
+  padding: 10px;
+  margin: 5px 0 22px 0;
+  border: none;
+  border-radius: 4px;
+  background: #888585;
+  text-align: center;
+  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#buy-form {
+  width: 250px;
+  padding: 10px;
+  margin: 5px 0 22px 0;
+  border: none;
+  border-radius: 4px;
+  background: #f1f1f1;
+  text-align: center;
+  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+#sell-form {
+  width: 250px;
+  padding: 10px;
+  margin: 5px 0 22px 0;
+  border: none;
+  border-radius: 4px;
+  background: #f1f1f1;
+  text-align: center;
+  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#crypto {
+
+  background-color: #f1f1f1;
+  text-align-last: center;
+  color: #888585;
+  padding: 12px;
+  width: 250px;
+  border: none;
+  font-size: 22px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  -webkit-appearance: button;
+  appearance: button;
+  outline: none;
+
+}
+
+#BuyCrypto {
+  
+  border:none;
+  background-color: royalblue;
+  height: 40px;
+  cursor: pointer;
+  color: #fff;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+  font-size: 15px;
+  border-radius: 4px;
+}
+
+#CloseDiv {
+  background-color: red;
+  height: 40px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+  font-size: 15px;
+  border-radius: 4px ;
+  
 }
 
 #wallet-table {
@@ -91,7 +219,7 @@ tr {
   margin-right: 15%;
   font-size: 17px ;
   vertical-align: middle;
-  
+  visibility: inherit;
 }
 
 #account {

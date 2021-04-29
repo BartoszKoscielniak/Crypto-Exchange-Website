@@ -9,4 +9,13 @@ function switchPanel(id) {
     id.display = "block";
 
 }
+function controlBuyAndSellPanel(id){
+    document.getElementById('buy-form').style.display = "none";
+    document.getElementById('sell-form').style.display = "none";
+    
+
+    id.style.display = "block";
+
+
+}
 

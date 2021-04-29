@@ -32,7 +32,7 @@
     <p style="width: auto; padding: 5px; position: absolute; right:1%"><?php echo $_SESSION['imię'] ?></p>
     <input type="image" id="myimage" style="height:50px; width:50px; position:absolute; right:5%" src="img/user.png" onclick="FormVis()" href="#log-popup"/>
     <button style="position:absolute; right:9%; padding: 5px ">Send/Receive</button>
-    <button style="position:absolute; right:15%; padding: 5px">Buy/Sell</button>
+    <button style="position:absolute; right:15%; padding: 5px" onclick="document.getElementById('operation-div').style.display='block'">Buy/Sell</button>
     <p style="position:absolute; left: 0%">CRYPTOEXCH - Main Page</p>
 </div>
 
@@ -91,13 +91,87 @@
         <input style="text-align: center;" type="input" class="form__field" placeholder="Bitcoin" required>
     </div>
     <br><br>
-    <input id="submit" type="button" value="Submit"><br><br>
+    <input id="submit" type="button" value="Submit" ><br><br>
     
 </div>
 
 <!-- Buy crypto -->
 
-<div id="buy">
+
+<div id="operation-div" style="display: none">
+
+    <div id="nav-div">
+        <button id="buy" class="nav-button" onclick="controlBuyAndSellPanel(document.getElementById('buy-form'))">Buy</button>
+        <button id="sell" class="nav-button" onclick="controlBuyAndSellPanel(document.getElementById('sell-form'))">Sell</button>
+    </div>
+
+    
+    <div id="buy-form">
+
+        <!--Euro in wallet-->
+        <div >
+            <h1 id="euro-amount"><a>0</a><a style="font-size: 20px;">€</a></h1>    
+        </div>
+
+    <form >
+
+        <img src="img/mastercard.png" width="60" height="60" style="float:left"></img>
+        
+        <input id="cr_textfield" type="text" placeholder="How much?"></input><br><br>
+
+        <label class="inscription">Buy:</label>
+        <select name="crypto" id="crypto" style="border:none; text-align: center;">
+            <option value="bitcoin">Bitcoin</option>
+            <option value="ethereum">Ethereum</option>
+        </select><br><br>
+        <label class="inscription">Pay:</label>
+        <select name="crypto" id="crypto" style="border:none;">
+
+            <option value="wallet">My wallet</option>
+            <option value="bitcoin">Bitcoin</option>
+            <option value="ethereum">Ethereum</option>
+            
+        </select>
+        
+    </form>
+
+    <br>
+        <button id="BuyCrypto">Buy Crypto</button>
+        <button id="CloseDiv" onclick="document.getElementById('operation-div').style.display='none'">Close</button>
+    
+
+    </div>
+    <div id="sell-form" style="display: none">
+
+        <!--Euro in wallet-->
+        <div >
+            <h1 id="euro-amount"><a>0</a><a style="font-size: 20px;">€</a></h1>    
+        </div>
+
+
+    <form >
+
+        <img src="img/mastercard.png" width="60" height="60" style="float:left"></img>
+        <label class="inscription">Sell:</label>
+        <select name="crypto" id="crypto" style="border:none; text-align: center;">
+            <option value="bitcoin">Bitcoin</option>
+            <option value="ethereum">Ethereum</option>
+        </select><br><br>
+        <input id="cr_textfield" type="text" placeholder="How much?"></input><br><br>
+
+        <lable id="sell_value"><a>+</a><a>0</a><a style="font-size: 16px">€</a></label><br>
+        
+    </form>
+
+    <br>
+        <button id="BuyCrypto">Sell Crypto</button>
+        <button id="CloseDiv" onclick="document.getElementById('operation-div').style.display='none'">Close</button>
+ 
+</div>
+
+</div>
+
+<!-- <div class="nav-button">
 
     <h4 style="text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; font-weight: bold; color: rgb(51, 196, 129); margin-right: 80%; font-size: 40px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">Buy crypto</h4>
 
@@ -117,7 +191,7 @@
     <br><br>
     <input id="submit" type="button" value="Submit"><br><br>
     
-</div>
+</div> -->
 
 <!-- History -->
 
@@ -159,7 +233,7 @@
 
 <!-- Main screen -->
 
-<div id="main-screen">
+<!-- <div id="main-screen">
 
     <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
     <coingecko-coin-price-marquee-widget  coin-ids="bitcoin,ethereum,litecoin,ripple" currency="usd" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
@@ -169,7 +243,7 @@
         <coingecko-coin-price-chart-widget  coin-id="bitcoin" currency="usd" height="350" locale="en"></coingecko-coin-price-chart-widget>
     </div>
 
-</div>
+</div> -->
 
 </body>
 <script src="homePageScript.js"></script>

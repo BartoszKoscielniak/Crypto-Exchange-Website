@@ -5,6 +5,7 @@
 
     if($connection -> connect_errno != 0){
         echo "Error: ".$connection -> connect_errno. "Description: ".$connection -> connect_errno;
+        
     } else {
         $name = $_POST['name'];
         $surname = $_POST['surname'];
