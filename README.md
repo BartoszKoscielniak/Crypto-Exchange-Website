@@ -33,13 +33,6 @@
 ![alt text](baza.png)
 
 ####	Skrypt do utworzenia struktury bazy danych
-CREATE TABLE Kryptowaluty (
-  id_krypto INT NOT NULL,
-  nazwa VARCHAR(255) NOT NULL,
-  kurs FLOAT(24),
-  PRIMARY KEY (id_krypto)
-);
-
 CREATE TABLE Kryptowaluty ( id_krypto INT NOT NULL, nazwa VARCHAR(255) NOT NULL, kurs FLOAT(24), PRIMARY KEY (id_krypto) );
 
 CREATE TABLE Użytkownicy ( id_użytkownika INT NOT NULL, imię VARCHAR(255) NOT NULL, nazwisko VARCHAR(255) NOT NULL, nr_telefonu INT NOT NULL, adres_email VARCHAR(255) NOT NULL, haslo VARCHAR(255) NOT NULL, PRIMARY KEY (id_użytkownika) );
