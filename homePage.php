@@ -116,7 +116,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
                     $row = $result->fetch_assoc();
                     if($row['MAX(id_portfela)'] == NULL) $row['MAX(id_portfela)'] = 0;
                     $row['MAX(id_portfela)'] = $row['MAX(id_portfela)'] + 1;
-                    $connection->query("INSERT INTO portfele VALUES (".$row['MAX(id_portfela)'].",".$_SESSION['id_uzyt'].",NULL,0)");
+                    $connection->query("INSERT INTO portfele VALUES (".$row['MAX(id_portfela)'].",".$_SESSION['id_uzyt'].",0)");
 
                     $_SESSION['registrationSuccessful'] = true;
                     $_SESSION['emailToLogIn'] = $emailRegister;

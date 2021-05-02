@@ -1,10 +1,78 @@
 <?php
     session_start();
+    require_once "dataBaseConnector.php";
 
     if(!isset($_SESSION['isLoggedIn'])){
         header('Location: homePage.php');
         exit();
     }
+    //pobranie informacji o krypto
+    $ch = curl_init();
+    $url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=20&page=1&sparkline=false";
+    curl_setopt($ch,CURLOPT_URL,$url);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+    $response = curl_exec($ch);
+
+    //wpisanie krytpto do bazy/aktualizacja ceny
+    if($e = curl_error($ch)){
+        echo $e;
+    }else{
+        $decoded = json_decode($response,true);
+
+        mysqli_report(MYSQLI_REPORT_STRICT);
+        $connection = new mysqli($host, $db_user, $db_password, $db_name);
+
+        if ($connection->connect_errno != 0) {
+            throw new Exception(mysqli_connect_error());
+        }else{
+            for($i = 0; $i < sizeof($decoded); $i++) {
+
+                $result = $connection->query("SELECT COUNT(*) FROM kryptowaluty WHERE nazwa = '".$decoded[$i]['name']."'");
+                $row = $result->fetch_assoc();
+
+                if ($row['COUNT(*)'] == 0) {
+                    $connection->query("INSERT INTO kryptowaluty VALUES (".($i+1).",'".$decoded[$i]['name']."','".$decoded[$i]['current_price']."')");
+                }else{
+                    $connection->query("UPDATE kryptowaluty SET kurs = '".$decoded[$i]['current_price']."' WHERE nazwa = '".$decoded[$i]['name']."'");
+                }
+                $result->free();
+            }
+            $connection->close();
+        }
+
+    }
+    curl_close($ch);
+
+    //sprawdzanie ktore krypto posiadamy
+    mysqli_report(MYSQLI_REPORT_STRICT);
+    $connection = new mysqli($host, $db_user, $db_password, $db_name);
+    if ($connection->connect_errno != 0) {
+        throw new Exception(mysqli_connect_error());
+    }else{
+        $result = $connection->query("SELECT * FROM portfele WHERE id_użytkownika = '".$_SESSION['id_użytkownika']."'");
+        $portfel = $result->fetch_all();
+        $result->free();
+
+        $result = $connection->query("SELECT * FROM lista_walut WHERE id_portfela = '".$portfel[0][0]."'");
+        $lista_walut = $result->fetch_all();
+        $result->free();
+
+        $connection->close();
+    }
+
+    //pobranie listy krypto dostepnej w bazie
+    mysqli_report(MYSQLI_REPORT_STRICT);
+    $connection = new mysqli($host, $db_user, $db_password, $db_name);
+    if ($connection->connect_errno != 0) {
+        throw new Exception(mysqli_connect_error());
+    }else{
+        $result = $connection->query("SELECT * FROM kryptowaluty ");
+        $krypto = $result->fetch_all();
+        $result->free();
+        $connection->close();
+}
+    //print_r($portfel[0][0]);
+    //TODO:Zoptymalizowac sposob laczenia z baza danych
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -46,27 +114,32 @@
 
     <div id="dollars">
         <img style="float: right;" src="img/dollar.png">
-        <a>0</a>
+        <?php
+            echo '<a>'.$portfel[0][2].'</a>'
+        ?>
+
     </div>
     
     <table id="wallet-table">
         
         <tr style="background-color: rgb(51, 196, 129); color: #000; "><th class="rank">Rank</th><th>Logo</th><th>Crypto</th><th>Balance</th></tr>
-        <tr><th class="rank">1.</th><th style="width: 100px;"><img src="img/btc.png" ></th><th>BTC</th><th>0</th></tr>
-        <tr><th class="rank">2.</th><th style="width: 100px;"><img src="img/ethereum.png"></th><th>Ethereum</th><th>0</th></tr>
-        <tr><th class="rank">3.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">4.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">5.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">6.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">7.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">8.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">9.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">10.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">11.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">12.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">13.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">14.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
-        <tr><th class="rank">15.</th><th style="width: 100px;"><img src="img/eos.png"></th><th>Eos</th><th>0</th></tr>
+        <?php
+        $temp = 0;
+
+        for($i = 0; $i < sizeof($lista_walut); $i++) {
+            for ($a = 0; $a < sizeof($krypto); $a++) {
+                if ($lista_walut[$i][2] == $krypto[$a][0]) {
+                    echo '<tr><th class="rank">' . ($a + 1) . '</th><th style="width: 100px;"><img src="' . $decoded[$a]['image'] . '" width="50px" height="50px"></th><th>' . $decoded[$a]['name'] . '</th><th>'.$lista_walut[$i][3].'</th></tr>' . "\n";
+                    $temp += 1;
+                    break;
+                }
+            }
+        }
+        if($temp == 0){
+            echo '<tr><th>Looks like there is no assets associated with your wallet. Add some funds and start Your journey</th></tr>' . "\n";
+        }
+        //TODO:FRONTEND: Alert ma sie wyswietlac na calej szerokosci tabeli
+        ?>
     </table>
 
 </div>
@@ -95,9 +168,7 @@
     
 </div>
 
-<!-- Buy crypto -->
-
-
+<!-- Buy crypto(POP UP) -->
 <div id="operation-div" style="display: none">
 
     <div id="nav-div">
@@ -105,7 +176,6 @@
         <button id="sell" class="nav-button" onclick="controlBuyAndSellPanel(document.getElementById('sell-form'))">Sell</button>
     </div>
 
-    
     <div id="buy-form">
 
         <!--Euro in wallet-->
@@ -121,16 +191,26 @@
 
         <label class="inscription">Buy:</label>
         <select name="crypto" id="crypto" style="border:none; text-align: center;">
-            <option value="bitcoin">Bitcoin</option>
-            <option value="ethereum">Ethereum</option>
+
+            <?php
+            for($i = 0; $i < sizeof($decoded); $i++) {
+                echo '<option value="' . htmlspecialchars($decoded[$i]['id']) . '" >'.$decoded[$i]['name']. '</option>'. "\n";
+            }
+            ?>
+
         </select><br><br>
         <label class="inscription">Pay:</label>
         <select name="crypto" id="crypto" style="border:none;">
 
             <option value="wallet">My wallet</option>
-            <option value="bitcoin">Bitcoin</option>
-            <option value="ethereum">Ethereum</option>
-            
+            <?php
+            for($i = 0; $i < sizeof($decoded); $i++) {
+
+                echo '<option value="' . htmlspecialchars($decoded[$i]['id']) . '" >'.$decoded[$i]['name']. '</option>'. "\n";
+            }
+            //TODO: Pokazuj w nawiasie dostepne srodki
+            //TODO: Pokazuj do sprzedania tylko te krypto ktore posiadasz w porfelu
+            ?>
         </select>
         
     </form>
@@ -141,6 +221,7 @@
     
 
     </div>
+
     <div id="sell-form" style="display: none">
 
         <!--Euro in wallet-->
@@ -159,7 +240,7 @@
         </select><br><br>
         <input id="cr_textfield" type="text" placeholder="How much?"></input><br><br>
 
-        <lable id="sell_value"><a>+</a><a>0</a><a style="font-size: 16px">€</a></label><br>
+        <label id="sell_value"><a>+</a><a>0</a><a style="font-size: 16px">€</a></label><br>
         
     </form>
 
