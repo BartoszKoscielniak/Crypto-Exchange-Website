@@ -44,5 +44,5 @@
             }
         }
     }
-
+    //TODO: Odnoszenie do okienka zakupu jesli blad/odnoszenie do userProfile
 ?>
