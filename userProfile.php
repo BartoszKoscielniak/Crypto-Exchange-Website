@@ -50,11 +50,11 @@
         throw new Exception(mysqli_connect_error());
     }else{
         $result = $connection->query("SELECT * FROM portfele WHERE id_użytkownika = '".$_SESSION['id_użytkownika']."'");
-        $portfel = $result->fetch_all();
+        $_SESSION['portfel'] = $result->fetch_all();
         $result->free();
 
-        $result = $connection->query("SELECT * FROM lista_walut WHERE id_portfela = '".$portfel[0][0]."'");
-        $lista_walut = $result->fetch_all();
+        $result = $connection->query("SELECT * FROM lista_walut WHERE id_portfela = '".$_SESSION['portfel'][0][0]."'");
+        $_SESSION['lista_walut'] = $result->fetch_all();
         $result->free();
 
         $connection->close();
@@ -115,7 +115,7 @@
     <div id="dollars">
         <img style="float: right;" src="img/dollar.png">
         <?php
-            echo '<a>'.$portfel[0][2].'</a>'
+            echo '<a>'.$_SESSION['portfel'][0][2].'</a>'
         ?>
 
     </div>
@@ -126,10 +126,10 @@
         <?php
         $temp = 0;
 
-        for($i = 0; $i < sizeof($lista_walut); $i++) {
+        for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
             for ($a = 0; $a < sizeof($krypto); $a++) {
-                if ($lista_walut[$i][2] == $krypto[$a][0]) {
-                    echo '<tr><th class="rank">' . ($a + 1) . '</th><th style="width: 100px;"><img src="' . $decoded[$a]['image'] . '" width="50px" height="50px"></th><th>' . $decoded[$a]['name'] . '</th><th>'.$lista_walut[$i][3].'</th></tr>' . "\n";
+                if ($_SESSION['lista_walut'][$i][2] == $krypto[$a][0]) {
+                    echo '<tr><th class="rank">' . $decoded[$a]['market_cap_rank'] . '</th><th style="width: 100px;"><img src="' . $decoded[$a]['image'] . '" width="50px" height="50px"></th><th>' . $decoded[$a]['name'] . '</th><th>'.$_SESSION['lista_walut'][$i][3].'</th></tr>' . "\n";
                     $temp += 1;
                     break;
                 }
@@ -180,43 +180,53 @@
 
         <!--Euro in wallet-->
         <div >
-            <h1 id="euro-amount"><a>0</a><a style="font-size: 20px;">€</a></h1>    
+            <h1 id="euro-amount">
+                <?php
+                echo '<a>'.$_SESSION['portfel'][0][2].'</a>'
+                ?>
+                <a style="font-size: 20px;">€</a></h1>
         </div>
 
-    <form >
+    <form action="buyCrypto.php" method="post" >
 
         <img src="img/mastercard.png" width="60" height="60" style="float:left"></img>
-        
-        <input id="cr_textfield" type="text" placeholder="How much?"></input><br><br>
+        <input id="cr_textfield" type="text" name="amount" placeholder="How much?"></input><br><br>
 
         <label class="inscription">Buy:</label>
-        <select name="crypto" id="crypto" style="border:none; text-align: center;">
+        <select name="buy" id="crypto" style="border:none; text-align: center;">
 
             <?php
-            for($i = 0; $i < sizeof($decoded); $i++) {
+            for($i = 0; $i < 10; $i++) {
                 echo '<option value="' . htmlspecialchars($decoded[$i]['id']) . '" >'.$decoded[$i]['name']. '</option>'. "\n";
             }
             ?>
 
         </select><br><br>
         <label class="inscription">Pay:</label>
-        <select name="crypto" id="crypto" style="border:none;">
+        <select name="pay" id="crypto" style="border:none;">
 
-            <option value="wallet">My wallet</option>
+            <option value="myWallet">My Wallet</option>
             <?php
-            for($i = 0; $i < sizeof($decoded); $i++) {
-
-                echo '<option value="' . htmlspecialchars($decoded[$i]['id']) . '" >'.$decoded[$i]['name']. '</option>'. "\n";
+            for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
+                for ($a = 0; $a < sizeof($krypto); $a++) {
+                    if ($_SESSION['lista_walut'][$i][2] == $krypto[$a][0]) {
+                        echo '<option value="' . htmlspecialchars($decoded[$a]['id']) . '" >'.$decoded[$a]['name']. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
+                        break;
+                    }
+                }
             }
             //TODO: Pokazuj w nawiasie dostepne srodki
             //TODO: Pokazuj do sprzedania tylko te krypto ktore posiadasz w porfelu
+            //TODO:FRONTEND: Lista z krypto w popupie mogla by sie otwierac w nowym okienku na srodku ekranu po kliknieciu w nia
+            //TODO:FRONTEND: Przy wlaczeniu roznych zakladek wallet/exchange itd znika opcja buy w popupie
+            //TODO:FRONTEND: zakladka exchange tabela z wszystkimi krypto i pole do wybrania jednej i jej zakupu
             ?>
         </select>
-        
+        <br>
+        <br>
+        <button type="submit" id="BuyCrypto">Buy Crypto</button>
     </form>
 
-    <br>
-        <button id="BuyCrypto">Buy Crypto</button>
         <button id="CloseDiv" onclick="document.getElementById('operation-div').style.display='none'">Close</button>
     
 
@@ -226,7 +236,11 @@
 
         <!--Euro in wallet-->
         <div >
-            <h1 id="euro-amount"><a>0</a><a style="font-size: 20px;">€</a></h1>    
+            <h1 id="euro-amount">
+                <?php
+                echo '<a>'.$_SESSION['portfel'][0][2].'</a>'
+                ?>
+                <a style="font-size: 20px;">€</a></h1>
         </div>
 
 
@@ -235,8 +249,23 @@
         <img src="img/mastercard.png" width="60" height="60" style="float:left"></img>
         <label class="inscription">Sell:</label>
         <select name="crypto" id="crypto" style="border:none; text-align: center;">
-            <option value="bitcoin">Bitcoin</option>
-            <option value="ethereum">Ethereum</option>
+
+            <?php
+            $temp = 0;
+            for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
+                for ($a = 0; $a < sizeof($krypto); $a++) {
+                    if ($_SESSION['lista_walut'][$i][2] == $krypto[$a][0]) {
+                        echo '<option value="' . htmlspecialchars($decoded[$a]['id']) . '" >'.$decoded[$a]['name']. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
+                        $temp += 1;
+                        break;
+                    }
+                }
+            }
+            if($temp == 0){
+                echo "No assets to sell";
+            }
+            ?>
+
         </select><br><br>
         <input id="cr_textfield" type="text" placeholder="How much?"></input><br><br>
 
