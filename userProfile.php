@@ -209,7 +209,7 @@
             <?php
             for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                 for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                    if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0]) {
+                    if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
                         echo '<option value="' . htmlspecialchars($decoded[$a]['name']) . '" >'.$decoded[$a]['name']. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
                         break;
                     }
