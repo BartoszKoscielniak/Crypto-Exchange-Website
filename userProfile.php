@@ -67,7 +67,7 @@
         throw new Exception(mysqli_connect_error());
     }else{
         $result = $connection->query("SELECT * FROM kryptowaluty ");
-        $krypto = $result->fetch_all();
+        $_SESSION['krypto'] = $result->fetch_all();
         $result->free();
         $connection->close();
 }
@@ -127,8 +127,8 @@
         $temp = 0;
 
         for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
-            for ($a = 0; $a < sizeof($krypto); $a++) {
-                if ($_SESSION['lista_walut'][$i][2] == $krypto[$a][0]) {
+            for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
+                if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0]) {
                     echo '<tr><th class="rank">' . $decoded[$a]['market_cap_rank'] . '</th><th style="width: 100px;"><img src="' . $decoded[$a]['image'] . '" width="50px" height="50px"></th><th>' . $decoded[$a]['name'] . '</th><th>'.$_SESSION['lista_walut'][$i][3].'</th></tr>' . "\n";
                     $temp += 1;
                     break;
@@ -197,7 +197,7 @@
 
             <?php
             for($i = 0; $i < 10; $i++) {
-                echo '<option value="' . htmlspecialchars($decoded[$i]['id']) . '" >'.$decoded[$i]['name']. '</option>'. "\n";
+                echo '<option value="' . htmlspecialchars($decoded[$i]['name']) . '" >'.$decoded[$i]['name']. '</option>'. "\n";
             }
             ?>
 
@@ -208,9 +208,9 @@
             <option value="myWallet">My Wallet</option>
             <?php
             for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
-                for ($a = 0; $a < sizeof($krypto); $a++) {
-                    if ($_SESSION['lista_walut'][$i][2] == $krypto[$a][0]) {
-                        echo '<option value="' . htmlspecialchars($decoded[$a]['id']) . '" >'.$decoded[$a]['name']. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
+                for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
+                    if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0]) {
+                        echo '<option value="' . htmlspecialchars($decoded[$a]['name']) . '" >'.$decoded[$a]['name']. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
                         break;
                     }
                 }
@@ -220,10 +220,12 @@
             //TODO:FRONTEND: Lista z krypto w popupie mogla by sie otwierac w nowym okienku na srodku ekranu po kliknieciu w nia
             //TODO:FRONTEND: Przy wlaczeniu roznych zakladek wallet/exchange itd znika opcja buy w popupie
             //TODO:FRONTEND: zakladka exchange tabela z wszystkimi krypto i pole do wybrania jednej i jej zakupu
+            //TODO:FRONTEND: Dodac maly przycisk obok how much *max*
             ?>
         </select>
         <br>
         <br>
+        <?php if (isset($_SESSION['err_fund'])) { echo $_SESSION['err_fund'];unset($_SESSION['err_fund']);} ?>
         <button type="submit" id="BuyCrypto">Buy Crypto</button>
     </form>
 
@@ -253,9 +255,9 @@
             <?php
             $temp = 0;
             for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
-                for ($a = 0; $a < sizeof($krypto); $a++) {
-                    if ($_SESSION['lista_walut'][$i][2] == $krypto[$a][0]) {
-                        echo '<option value="' . htmlspecialchars($decoded[$a]['id']) . '" >'.$decoded[$a]['name']. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
+                for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
+                    if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0]) {
+                        echo '<option value="' . htmlspecialchars($decoded[$a]['name']) . '" >'.$decoded[$a]['name']. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
                         $temp += 1;
                         break;
                     }
