@@ -129,9 +129,13 @@
         for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
             for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
                 if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0]) {
-                    echo '<tr><th class="rank">' . $decoded[$a]['market_cap_rank'] . '</th><th style="width: 100px;"><img src="' . $decoded[$a]['image'] . '" width="50px" height="50px"></th><th>' . $decoded[$a]['name'] . '</th><th>'.$_SESSION['lista_walut'][$i][3].'</th></tr>' . "\n";
-                    $temp += 1;
-                    break;
+                    for ($b = 0; $b < sizeof($decoded); $b++) {
+                        if ($_SESSION['krypto'][$a][1] == $decoded[$b]['name']) {
+                            echo '<tr><th class="rank">' . ($i + 1) . '</th><th style="width: 100px;"><img src="' . $decoded[$b]['image'] . '" width="50px" height="50px"></th><th>' . $_SESSION['krypto'][$a][1] . '</th><th>' . $_SESSION['lista_walut'][$i][3] . '</th></tr>' . "\n";
+                            $temp += 1;
+                            break 2;
+                        }
+                    }
                 }
             }
         }
@@ -197,7 +201,7 @@
 
             <?php
             for($i = 0; $i < 10; $i++) {
-                echo '<option value="' . htmlspecialchars($decoded[$i]['name']) . '" >'.$decoded[$i]['name']. '</option>'. "\n";
+                echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$i][1]) . '" >'.$_SESSION['krypto'][$i][1]. '</option>'. "\n";
             }
             ?>
 
@@ -210,7 +214,7 @@
             for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                 for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
                     if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
-                        echo '<option value="' . htmlspecialchars($decoded[$a]['name']) . '" >'.$decoded[$a]['name']. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
+                        echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >'.$_SESSION['krypto'][$a][1]. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
                         break;
                     }
                 }
@@ -257,7 +261,7 @@
             for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                 for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
                     if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0]) {
-                        echo '<option value="' . htmlspecialchars($decoded[$a]['name']) . '" >'.$decoded[$a]['name']. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
+                        echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >'.$_SESSION['krypto'][$a][1]. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
                         $temp += 1;
                         break;
                     }

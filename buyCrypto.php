@@ -66,12 +66,43 @@
                             if($_SESSION['lista_walut'][$b][2] == $_SESSION['krypto'][$i][0]){
                                 if ($_SESSION['lista_walut'][$b][3] >= $toPay){
 
+                                    //szukanie czy jest lista z taka krypto
+                                    $exist = false;
+                                    for ($c = 0; $c < sizeof($_SESSION['lista_walut']); $c++){
+                                        if ($_SESSION['lista_walut'][$c][2] == $_SESSION['krypto'][$a][0]){
+                                            if ($connection->connect_errno != 0) {
+                                                throw new Exception(mysqli_connect_error());
+                                            }else {
+                                                $connection->query("UPDATE lista_walut SET ilość_krypto = '".($_SESSION['lista_walut'][$c][3] + $_POST['amount'])."' WHERE id_krypto = '".$_SESSION['krypto'][$a][0]."'");
+                                                $exist = true;
+                                            }
+                                            //break;
+                                        }
+                                    }
+
+                                    //lista nie istnieje
+                                    if (!$exist){
+                                        if ($connection->connect_errno != 0) {
+                                            throw new Exception(mysqli_connect_error());
+                                        }else {
+                                            $connection->query("INSERT INTO  lista_walut (id_portfela, id_krypto, ilość_krypto) VALUES('".$_SESSION['portfel'][0][0]."','".$_SESSION['krypto'][$a][0]."','".$_POST['amount']."')");
+                                        }
+                                    }
+
+                                    //zabieramy krypto z listy
+                                    if ($connection->connect_errno != 0) {
+                                        throw new Exception(mysqli_connect_error());
+                                    }else {
+                                        $connection->query("UPDATE lista_walut SET ilość_krypto = '".($_SESSION['lista_walut'][$b][3] - $toPay)."' WHERE id_krypto = '".$_SESSION['krypto'][$i][0]."'");
+                                        $exist = true;
+                                    }
+
                                     header('Location: userProfile.php');
-                                    break 3;
+                                    //break 3;
                                 }else{
                                     $_SESSION['err_fund'] = '<span style = "color:#ff0000">You have not enough assets</span><br>';
                                     header('Location: userProfile.php');
-                                    break 3;
+                                   // break 3;
                                 }
                             }
                         }
