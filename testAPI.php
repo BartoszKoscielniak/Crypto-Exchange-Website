@@ -1,5 +1,5 @@
 <?php
-
+/*
 $ch = curl_init();
 
 $url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=20&page=1&sparkline=false";
@@ -17,5 +17,8 @@ if($e = curl_error($ch)){
 }
 //print_r($decoded['1']['name']);
 curl_close($ch);
+*/
 
+echo date("H:i");
+echo date("Y-m-d");
 ?>
