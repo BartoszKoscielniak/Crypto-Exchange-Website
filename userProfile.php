@@ -128,7 +128,7 @@
 
         for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
             for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0]) {
+                if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
                     for ($b = 0; $b < sizeof($decoded); $b++) {
                         if ($_SESSION['krypto'][$a][1] == $decoded[$b]['name']) {
                             echo '<tr><th class="rank">' . ($i + 1) . '</th><th style="width: 100px;"><img src="' . $decoded[$b]['image'] . '" width="50px" height="50px"></th><th>' . $_SESSION['krypto'][$a][1] . '</th><th>' . $_SESSION['lista_walut'][$i][3] . '</th></tr>' . "\n";
@@ -191,7 +191,7 @@
                 <a style="font-size: 20px;">€</a></h1>
         </div>
 
-    <form action="buyCrypto.php" method="post" >
+    <form action="buyCrypto.php" method="post">
 
         <img src="img/mastercard.png" width="60" height="60" style="float:left"></img>
         <input id="cr_textfield" type="text" name="amount" placeholder="How much?"></input><br><br>
@@ -225,6 +225,7 @@
             //TODO:FRONTEND: Przy wlaczeniu roznych zakladek wallet/exchange itd znika opcja buy w popupie
             //TODO:FRONTEND: zakladka exchange tabela z wszystkimi krypto i pole do wybrania jednej i jej zakupu
             //TODO:FRONTEND: Dodac maly przycisk obok how much *max*
+            //TODO: Walidacja formularza zeby wstawiac tylko liczby buy/sell
             ?>
         </select>
         <br>
@@ -250,18 +251,18 @@
         </div>
 
 
-    <form >
+    <form action="sellCrypto.php" method="post">
 
         <img src="img/mastercard.png" width="60" height="60" style="float:left"></img>
         <label class="inscription">Sell:</label>
-        <select name="crypto" id="crypto" style="border:none; text-align: center;">
+        <select name="sell" id="crypto" style="border:none; text-align: center;">
 
             <?php
             $temp = 0;
             for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                 for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
                     if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0]) {
-                        echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >'.$_SESSION['krypto'][$a][1]. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
+                        echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >'.$_SESSION['krypto'][$a][1]. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
                         $temp += 1;
                         break;
                     }
@@ -273,14 +274,12 @@
             ?>
 
         </select><br><br>
-        <input id="cr_textfield" type="text" placeholder="How much?"></input><br><br>
+        <input id="cr_textfield" type="text" placeholder="How much?" name="amount"></input><br><br>
 
         <label id="sell_value"><a>+</a><a>0</a><a style="font-size: 16px">€</a></label><br>
-        
+        <?php if (isset($_SESSION['err_fund2'])) { echo $_SESSION['err_fund2'];unset($_SESSION['err_fund2']);} ?>
+        <button type="submit" id="BuyCrypto">Sell Crypto</button>
     </form>
-
-    <br>
-        <button id="BuyCrypto">Sell Crypto</button>
         <button id="CloseDiv" onclick="document.getElementById('operation-div').style.display='none'">Close</button>
  
 </div>
