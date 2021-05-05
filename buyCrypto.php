@@ -9,6 +9,7 @@
 
     mysqli_report(MYSQLI_REPORT_STRICT);
     $connection = new mysqli($host, $db_user, $db_password, $db_name);
+
     if ($_POST['pay'] == 'myWallet'){
         for ($i = 0; $i < sizeof($_SESSION['krypto']); $i++){
             if ($_POST['buy'] == $_SESSION['krypto'][$i][1]){
@@ -54,6 +55,9 @@
             header('Location: userProfile.php');
         }
         $connection->close();
+        unset($_POST['amount']);
+        unset($_POST['pay']);
+        unset($_POST['buy']);
         header('Location: userProfile.php');
     }else{
         for ($i = 0; $i < sizeof($_SESSION['krypto']); $i++) {
@@ -96,11 +100,16 @@
                                         $connection->query("UPDATE lista_walut SET ilość_krypto = '".($_SESSION['lista_walut'][$b][3] - $toPay)."' WHERE id_krypto = '".$_SESSION['krypto'][$i][0]."'");
                                         $exist = true;
                                     }
-
+                                    unset($_POST['amount']);
+                                    unset($_POST['pay']);
+                                    unset($_POST['buy']);
                                     header('Location: userProfile.php');
                                     //break 3;
                                 }else{
                                     $_SESSION['err_fund'] = '<span style = "color:#ff0000">You have not enough assets</span><br>';
+                                    unset($_POST['amount']);
+                                    unset($_POST['pay']);
+                                    unset($_POST['buy']);
                                     header('Location: userProfile.php');
                                    // break 3;
                                 }
