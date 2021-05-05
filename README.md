@@ -41,7 +41,7 @@ CREATE TABLE Portfele ( id_portfela INT NOT NULL, id_użytkownika INT NOT NULL, 
 
 CREATE TABLE Lista_walut ( id_listy INT NOT NULL AUTO_INCREMENT, id_portfela INT NOT NULL ,id_krypto INT, ilość_krypto FLOAT NOT NULL, PRIMARY KEY (id_listy), FOREIGN KEY (id_krypto) REFERENCES Kryptowaluty(id_krypto), FOREIGN KEY (id_portfela) REFERENCES Portfele(id_portfela) );
 
-CREATE TABLE Transakcje ( id_transakcji INT NOT NULL AUTO_INCREMENT, id_krypto INT NOT NULL, id_portfela INT NOT NULL, data_transakcji DATE NOT NULL, czas_zawarcia TIME NOT NULL, ilosc FLOAT NOT NULL, status VARCHAR(255) NOT NULL, PRIMARY KEY (id_transakcji), FOREIGN KEY (id_krypto) REFERENCES Kryptowaluty(id_krypto), FOREIGN KEY (id_portfela) REFERENCES Portfele (id_portfela) );
+CREATE TABLE Transakcje ( id_transakcji INT NOT NULL AUTO_INCREMENT, id_krypto INT NOT NULL, id_portfela INT NOT NULL, data_transakcji DATE NOT NULL, czas_zawarcia TIME NOT NULL, ilosc FLOAT NOT NULL, status VARCHAR(255) NOT NULL, kurs_transakcji FLOAT NOT NULL, PRIMARY KEY (id_transakcji), FOREIGN KEY (id_krypto) REFERENCES Kryptowaluty(id_krypto), FOREIGN KEY (id_portfela) REFERENCES Portfele (id_portfela) );
 
 ## Wykorzystane technologie
 
