@@ -20,7 +20,8 @@
                         throw new Exception(mysqli_connect_error());
                     }else {
                         $connection->query("UPDATE lista_walut SET ilość_krypto = '" . ($_SESSION['lista_walut'][$a][3] - $_POST['amount']) . "' WHERE id_krypto = '" . $_POST['sell'] . "' AND id_portfela = '" . $_SESSION['portfel'][0][0] . "'");
-                        $connection->query("UPDATE portfele SET ilość_euro = '" . ($_SESSION['portfel'][0][3] + ($_POST['amount'] * $_SESSION['krypto'][$b][2])) . "' WHERE id_portfela = '" . $_SESSION['portfel'][0][0] . "'");
+                        $connection->query("UPDATE portfele SET ilość_euro = '" . ($_SESSION['portfel'][0][2] + ($_POST['amount'] * $_SESSION['krypto'][$b][2])) . "' WHERE id_portfela = '" . $_SESSION['portfel'][0][0] . "'");
+                        $connection->query("INSERT INTO transakcje (id_krypto,id_portfela,data_transakcji,czas_zawarcia,ilosc,status,kurs_transakcji) VALUES ('".$_POST['sell']."','".$_SESSION['portfel'][0][0]."','".date("Y-m-d")."','".date("H:i")."','".$_POST['amount']."','"."SOLD"."','".$_SESSION['krypto'][$b][2]."')");
                         $connection->close();
                     }
                     header('Location: userProfile.php');

@@ -13,14 +13,14 @@
     curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
     $response = curl_exec($ch);
 
+    mysqli_report(MYSQLI_REPORT_STRICT);
+    $connection = new mysqli($host, $db_user, $db_password, $db_name);
+
     //wpisanie krytpto do bazy/aktualizacja ceny
     if($e = curl_error($ch)){
         echo $e;
     }else{
         $decoded = json_decode($response,true);
-
-        mysqli_report(MYSQLI_REPORT_STRICT);
-        $connection = new mysqli($host, $db_user, $db_password, $db_name);
 
         if ($connection->connect_errno != 0) {
             throw new Exception(mysqli_connect_error());
@@ -37,15 +37,12 @@
                 }
                 $result->free();
             }
-            $connection->close();
         }
 
     }
     curl_close($ch);
 
     //sprawdzanie ktore krypto posiadamy
-    mysqli_report(MYSQLI_REPORT_STRICT);
-    $connection = new mysqli($host, $db_user, $db_password, $db_name);
     if ($connection->connect_errno != 0) {
         throw new Exception(mysqli_connect_error());
     }else{
@@ -56,23 +53,17 @@
         $result = $connection->query("SELECT * FROM lista_walut WHERE id_portfela = '".$_SESSION['portfel'][0][0]."'");
         $_SESSION['lista_walut'] = $result->fetch_all();
         $result->free();
-
-        $connection->close();
     }
 
     //pobranie listy krypto dostepnej w bazie
-    mysqli_report(MYSQLI_REPORT_STRICT);
-    $connection = new mysqli($host, $db_user, $db_password, $db_name);
-    if ($connection->connect_errno != 0) {
+       if ($connection->connect_errno != 0) {
         throw new Exception(mysqli_connect_error());
     }else{
         $result = $connection->query("SELECT * FROM kryptowaluty ");
         $_SESSION['krypto'] = $result->fetch_all();
         $result->free();
-        $connection->close();
 }
-    //print_r($portfel[0][0]);
-    //TODO:Zoptymalizowac sposob laczenia z baza danych
+$connection->close();
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -93,7 +84,7 @@
     <li><a onclick="switchPanel(document.getElementById('buy').style)">Buy crypto</a></li>
     <li><a>History</a></li>
     <li><a onclick="switchPanel(document.getElementById('account').style)">My account</a></li>
-    <p style="position:relative; top: 500px; color: antiquewhite; text-align: center">Powered by CoinGecko API</p>
+    <p style="position:relative; top: 522px; color: antiquewhite; text-align: center">Powered by CoinGecko</p>
 </ul>
 
 <div id="top-bar">
@@ -131,7 +122,7 @@
                 if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
                     for ($b = 0; $b < sizeof($decoded); $b++) {
                         if ($_SESSION['krypto'][$a][1] == $decoded[$b]['name']) {
-                            echo '<tr><th class="rank">' . ($i + 1) . '</th><th style="width: 100px;"><img src="' . $decoded[$b]['image'] . '" width="50px" height="50px"></th><th>' . $_SESSION['krypto'][$a][1] . '</th><th>' . $_SESSION['lista_walut'][$i][3] . '</th></tr>' . "\n";
+                            echo '<tr><th class="rank">' . ($temp + 1) . '</th><th style="width: 100px;"><img src="' . $decoded[$b]['image'] . '" width="50px" height="50px"></th><th>' . $_SESSION['krypto'][$a][1] . '</th><th>' . $_SESSION['lista_walut'][$i][3] . '</th></tr>' . "\n";
                             $temp += 1;
                             break 2;
                         }
@@ -219,8 +210,7 @@
                     }
                 }
             }
-            //TODO: Pokazuj w nawiasie dostepne srodki
-            //TODO: Pokazuj do sprzedania tylko te krypto ktore posiadasz w porfelu
+            //TODO:FRONTEND: Live walidacja inputow w okienkach
             //TODO:FRONTEND: Lista z krypto w popupie mogla by sie otwierac w nowym okienku na srodku ekranu po kliknieciu w nia
             //TODO:FRONTEND: Przy wlaczeniu roznych zakladek wallet/exchange itd znika opcja buy w popupie
             //TODO:FRONTEND: zakladka exchange tabela z wszystkimi krypto i pole do wybrania jednej i jej zakupu
@@ -261,7 +251,7 @@
             $temp = 0;
             for($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                 for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                    if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0]) {
+                    if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
                         echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >'.$_SESSION['krypto'][$a][1]. '('.$_SESSION['lista_walut'][$i][3].')</option>'. "\n";
                         $temp += 1;
                         break;
