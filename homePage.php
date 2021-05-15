@@ -2,7 +2,7 @@
 session_start();
 
 if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
-    header('Location: userProfile.php');
+    header('Location:home.php');
     exit();
 }else if ((isset($_POST['name'])) && (isset($_POST['surname'])) && (isset($_POST['emailRegister'])) && (isset($_POST['phone_number']))
     && (isset($_POST['password1'])) && (isset($_POST['password2']))) {

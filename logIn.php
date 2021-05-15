@@ -44,7 +44,7 @@
                     unset($_SESSION['error']);
                     $result->free();
 
-                    header('Location: userProfile.php');
+                    header('Location:home.php');
                 }else {
                     echo "Bledne dane do logowania!";
 
