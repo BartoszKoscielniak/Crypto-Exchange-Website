@@ -5,11 +5,12 @@
     date_default_timezone_set('Europe/Warsaw');
 
     $fileName = $_POST['area'];
-
     if(!isset($_POST['amount']) || !isset($_POST['buy']) || !isset($_POST['pay'])){
         header("Location:".$fileName);
         exit();
     }
+
+
 
     mysqli_report(MYSQLI_REPORT_STRICT);
     $connection = new mysqli($host, $db_user, $db_password, $db_name);
@@ -54,7 +55,9 @@
                         $exist = true;
                     }
                 }else{
-                    $_SESSION['err_fund'] = '<span style = "color:#ff0000">You have not enough money</span><br>';
+                    $_SESSION['err_fund'] = '<div class="alert alert-danger" role="alert">
+                                             You have not enough money
+                                             </div>';
                     header("Location:".$fileName);
                 }
                 $connection->close();
@@ -83,7 +86,7 @@
                                                 throw new Exception(mysqli_connect_error());
                                             }else {
                                                 $connection->query("UPDATE lista_walut SET ilość_krypto = '".($_SESSION['lista_walut'][$c][3] + $_POST['amount'])."' WHERE id_krypto = '".$_SESSION['krypto'][$a][0]."'");
-                                                $connection->query("INSERT INTO transakcje (id_krypto,id_portfela,data_transakcji,czas_zawarcia,ilosc,status,kurs_transakcji) VALUES ('".$_SESSION['krypto'][$a][0]."','".$_SESSION['portfel'][0][0]."','".date("Y-m-d")."','".date("H:i")."','".$_POST['amount']."','"."SWAPPED OF ".$toPay." ".$_SESSION['krypto'][$i][1].""."','".$_SESSION['krypto'][$a][2]."')");
+                                                $connection->query("INSERT INTO transakcje (id_krypto,id_portfela,data_transakcji,czas_zawarcia,ilosc,status,kurs_transakcji) VALUES ('".$_SESSION['krypto'][$a][0]."','".$_SESSION['portfel'][0][0]."','".date("Y-m-d")."','".date("H:i")."','".$_POST['amount']."','"."SWAPPED OF ".$_SESSION['krypto'][$i][1].""."','".$_SESSION['krypto'][$a][2]."')");
                                                 $exist = true;
                                             }
                                             break;
@@ -114,7 +117,9 @@
                                     header("Location:".$fileName);
                                     break 3;
                                 }else{
-                                    $_SESSION['err_fund'] = '<span style = "color:#ff0000">You have not enough assets</span><br>';
+                                    $_SESSION['err_fund'] = '<div class="alert alert-danger" role="alert">
+                                                             You have not enough assets
+                                                             </div>';
                                     unset($_POST['amount']);
                                     unset($_POST['pay']);
                                     unset($_POST['buy']);
