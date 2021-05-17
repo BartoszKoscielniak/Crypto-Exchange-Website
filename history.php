@@ -108,7 +108,7 @@ $connection->close();
                 <a href="wallet.php" class="nav-link text-light pl-4"><img src="img/wallet.png">   Wallet</a>
             </li>
             <li class="nav-item w-100">
-                <a href="#" class="nav-link text-light pl-4"><img src="img/buy.png">   Buy/Sell</a>
+                <a href="buyOrSell.php" class="nav-link text-light pl-4"><img src="img/buy.png">   Buy/Sell</a>
             </li>
             <li class="nav-item w-100">
                 <a href="#" class="nav-link text-light pl-4"><img src="img/exchange.png">   Exchange</a>
@@ -130,7 +130,7 @@ $connection->close();
             <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="usd" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
             <h2>History of tearing</h2>
 
-            <form action="/logOut.php">
+            <form action="/20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l/logOut.php">
                 <button type="submit" class="btn btn-outline-danger" data-mdb-ripple-color="dark" style=" float:right; margin-right:10px">
                     Log Out
                 </button>
@@ -223,11 +223,11 @@ $connection->close();
                                                 </select>
                                                 <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">How much?</label>
                                                 <div class="input-group mb-3">
-                                                    <input name="amount" type="text" class="form-control">
+                                                    <input id="amountInput" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
                                                    
                                                 </div>
                                                 <textarea name="area" style="display:none">history.php</textarea>
-                                                <button type="submit" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark">Buy</button>
+                                                <button id="submitButton" type="submit" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark">Buy</button>
                                             </form>
 
                                         </div>
@@ -268,14 +268,14 @@ $connection->close();
 
                                             <form action="sellCrypto.php" method="post" class="mb-3">
 
-                                                <select name="sell" class="form-select" aria-label="Default select example">
+                                                <select id="toSell" name="sell" class="form-select" aria-label="Default select example">
 
                                                     <?php
                                                     $temp = 0;
                                                     for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                         for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
                                                             if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
-                                                                echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
+                                                                echo '<option id="'.$_SESSION['lista_walut'][$i][3].'" value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                                 $temp += 1;
                                                                 break;
                                                             }
@@ -290,8 +290,10 @@ $connection->close();
                                                 <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">How much?</label>
 
                                                 <div class="input-group mb-3">
-                                                    <input name="amount" type="text" class="form-control">
-                                                    
+                                                    <input id="amountInputSell" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
+                                                    <div class="input-group-append">
+                                                        <button id="maxButton" class="btn btn-outline-primary" type="button" onclick="sendMax()">MAX</button>
+                                                    </div>
                                                 </div>
 
                                                 <?php if (isset($_SESSION['err_fund2'])) {
@@ -299,7 +301,7 @@ $connection->close();
                                                     unset($_SESSION['err_fund2']);
                                                 } ?>
                                                 <textarea name="area" style="display:none">history.php</textarea>
-                                                <button type="submit" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark">Sell</button>
+                                                <button id="submitButtonSell" type="submit" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark">Sell</button>
                                             </form>
                                         </div>
 
@@ -410,6 +412,47 @@ $connection->close();
             sidebar.classList.toggle("active-nav")
             container.classList.toggle("active-cont")
         })
+
+        function onlyNumberKey(evt) {
+            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+            if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode != 46) {
+                validateBuy();
+                return false;
+            }else{
+                validateBuy();
+                return true;
+            }
+        }
+
+        function validateBuy(){
+            var input = document.getElementById('amountInput').value;
+            const button = document.getElementById('submitButton');
+
+            if(input > 0){
+                button.disabled = false;
+            }else {
+                button.disabled = true;
+            }
+        }
+        setInterval(validateBuy,250);
+
+        function validateSell(){
+            var input = document.getElementById('amountInputSell').value;
+            const button = document.getElementById('submitButtonSell');
+
+            if(input > 0){
+                button.disabled = false;
+            }else {
+                button.disabled = true;
+            }
+        }
+
+        function sendMax(max){
+            document.getElementById('maxButton').onclick = function () {
+                var e =document.getElementById('toSell');
+                document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;}
+        }
+        setInterval(validateSell,250);
     </script>
 </body>
 
