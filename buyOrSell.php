@@ -331,7 +331,7 @@ $connection->close();
 
                                 <?php
                                 for ($b = 0; $b < sizeof($decoded); $b++) {
-                                    echo '<tr><th class="rank" style="width:10%">' . $decoded[$b]['market_cap_rank'] . '</th><th style="width: 18%;"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:18%">' . $decoded[$b]['name'] . '</th><th style="width:18%">' . $decoded[$b]['current_price'] . '€</th><th style="width:18%">' . $decoded[$b]['market_cap'] . '€</th><th style="width:18%">' . sprintf("%.1f", round($decoded[$b]['price_change_percentage_24h'], 3)) . '%</th></tr>' . "\n";
+                                    echo '<tr><th class="rank" style="width:10%">' . $decoded[$b]['market_cap_rank'] . '</th><th style="width: 18%;"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:18%">' . $decoded[$b]['name'] . '</th><th style="width:18%">' . number_format($decoded[$b]['current_price'],2) . '€</th><th style="width:18%">' . number_format($decoded[$b]['market_cap']) . '€</th><th style="width:18%">' . sprintf("%.1f", round($decoded[$b]['price_change_percentage_24h'], 3)) . '%</th></tr>' . "\n";
                                 }
                                 ?>
                         </div>
@@ -349,7 +349,7 @@ $connection->close();
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script>
 <!-- custom js -->
 <script>
-    var menu_btn = document.querySelector("#menu-btn")
+        var menu_btn = document.querySelector("#menu-btn")
     var sidebar = document.querySelector("#sidebar")
     var container = document.querySelector(".my-container")
     menu_btn.addEventListener("click", () => {
