@@ -8,7 +8,7 @@ if (!isset($_SESSION['isLoggedIn'])) {
 }
 //pobranie informacji o krypto
 $ch = curl_init();
-$url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=20&page=1&sparkline=false";
+$url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false";
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
@@ -111,7 +111,7 @@ $connection->close();
     <section id="wallet" class="p-4 my-container">
         <div style="display: inline">
             <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
-            <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="usd" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
+            <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="eur" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
             <h2>Wallet</h2>
 
             <form action="/20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l/logOut.php">

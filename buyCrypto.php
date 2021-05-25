@@ -29,7 +29,7 @@
                             if ($connection->connect_errno != 0) {
                                 throw new Exception(mysqli_connect_error());
                             }else {
-                                $connection->query("UPDATE lista_walut SET ilość_krypto = '".($_SESSION['lista_walut'][$x][3] + $_POST['amount'])."' WHERE id_krypto = '".$_SESSION['krypto'][$i][0]."'");
+                                $connection->query("UPDATE lista_walut SET ilość_krypto = '".($_SESSION['lista_walut'][$x][3] + $_POST['amount'])."' WHERE id_krypto = '".$_SESSION['krypto'][$i][0]."' AND id_portfela = '".$_SESSION['portfel'][0][0]."'");
                                 $connection->query("INSERT INTO transakcje (id_krypto,id_portfela,data_transakcji,czas_zawarcia,ilosc,status,kurs_transakcji) VALUES ('".$_SESSION['krypto'][$i][0]."','".$_SESSION['portfel'][0][0]."','".date("Y-m-d")."','".date("H:i")."','".$_POST['amount']."','"."BOUGHT"."','".$_SESSION['krypto'][$i][2]."')");
                                 $exist = true;
                             }
@@ -132,5 +132,4 @@
             }
         }
     }
-    //TODO: Odnoszenie do okienka zakupu jesli blad/odnoszenie do userProfile
 ?>

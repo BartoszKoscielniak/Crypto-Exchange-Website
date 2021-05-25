@@ -8,7 +8,7 @@ if (!isset($_SESSION['isLoggedIn'])) {
 }
 //pobranie informacji o krypto
 $ch = curl_init();
-$url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=20&page=1&sparkline=false";
+$url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false";
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
@@ -70,6 +70,13 @@ $connection->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+
     <title>userProfile</title>
     <!-- bootstrap 5 css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
@@ -111,7 +118,7 @@ $connection->close();
 <section id="wallet" class="p-4 my-container">
     <div style="display: inline">
         <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
-        <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="usd" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
+        <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="eur" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
         <h2>Buy or sell Your crypto assets</h2>
 
         <form action="/20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l/logOut.php">
@@ -315,7 +322,7 @@ $connection->close();
                             <h3 class="mb-0">TOP 100 Cryptocurrency</h3>
                         </div>
                         <div class="table-responsive">
-                            <table class="table align-items-center table-flush">
+                            <table id="buySellTable" class="table align-items-center table-flush">
                                 <thead class="thead-light">
                                 <tr>
                                     <th scope="col">Rank</th>
@@ -331,7 +338,12 @@ $connection->close();
 
                                 <?php
                                 for ($b = 0; $b < sizeof($decoded); $b++) {
-                                    echo '<tr><th class="rank" style="width:10%">' . $decoded[$b]['market_cap_rank'] . '</th><th style="width: 18%;"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:18%">' . $decoded[$b]['name'] . '</th><th style="width:18%">' . number_format($decoded[$b]['current_price'],2) . '€</th><th style="width:18%">' . number_format($decoded[$b]['market_cap']) . '€</th><th style="width:18%">' . sprintf("%.1f", round($decoded[$b]['price_change_percentage_24h'], 3)) . '%</th></tr>' . "\n";
+                                    if ($decoded[$b]['price_change_percentage_24h'] <= 0) {
+                                        $_SESSION['24h_change_color'] = "red";
+                                    }else{
+                                        $_SESSION['24h_change_color'] = "green";
+                                    }
+                                    echo '<tr><th class="rank" style="width:10%">' . $decoded[$b]['market_cap_rank'] . '</th><th style="width: 18%;"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:18%">' . $decoded[$b]['name'] . '</th><th style="width:18%">' . number_format($decoded[$b]['current_price'],2) . '€</th><th style="width:18%">' . number_format($decoded[$b]['market_cap']) . '€</th><th style="width:18%; color: '.$_SESSION['24h_change_color'].' ">' . sprintf("%.1f", round($decoded[$b]['price_change_percentage_24h'], 3)) . '%</th></tr>' . "\n";
                                 }
                                 ?>
                         </div>
@@ -397,6 +409,14 @@ $connection->close();
             document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;}
     }
     setInterval(validateSell,250);
+
+    $(document).ready(function () {
+        $('#buySellTable').DataTable({
+            "pagingType": "numbers"
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+
 </script>
 </body>
 
