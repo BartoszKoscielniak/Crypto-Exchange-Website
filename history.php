@@ -352,7 +352,7 @@ $connection->close();
                                     <th scope="col">Date</th>
                                     <th scope="col">Time</th>
                                     <th scope="col">Amount</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col" style="text-align: center">Status</th>
                                     <th scope="col">Course</th>
 
                                 </tr>
@@ -395,7 +395,7 @@ $connection->close();
                                                 . $_SESSION['transakcje'][$i][3] .
                                                 '</td>
                                             
-                                            <td>'
+                                            <td style="text-align: center">'
                                                 . $_SESSION['tempo'] .
                                                 '</td>
                                             

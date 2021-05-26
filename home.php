@@ -434,39 +434,37 @@ $connection->close();
                 document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;}
         }
 
-        function sendMaxBuy(max){
+        function sendMaxBuy(max) {
             var a = document.getElementById('toBuy');
             var e = document.getElementById('toPay');
             //pay buy
 
-            $('#buyForm').submit(function(e) {
-                e.preventDefault();
-                $.ajax({
-                    type: "POST",
-                    url: 'home.php',
-                    data: $(this).serialize(),
-                    success: function(response)
-                    {
-                        var jsonData = JSON.parse(response);
+            var http = new XMLHttpRequest();
+            var url = 'home.php';
+            var params = 'orem=ipsum&name=binny';
+            http.open('POST', url, true);
 
-                        // user is logged in successfully in the back-end
-                        // let's redirect
-                        if (jsonData.success == "1")
-                        {
-                            alert('xd');
-                        }
-                        else
-                        {
-                            alert('Invalid Credentials!');
-                        }
+            //Send the proper header information along with the request
+            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            http.onreadystatechange = function () {//Call a function when the state changes.
+                if (http.readyState == 4 && http.status == 200) {
+                    //alert(http.responseText);
+                    document.getElementById('amountInputBuy').value =<?php
+                    if (isset($_POST["orem"])) {
+                        echo json_encode($_POST['orem']);
+                    }else {
+                        echo json_encode("xd");
                     }
-                });
-            });
+                    ?>;
 
-
+                }
+            }
+            http.send(params);
 
 
         }
+
 
        /* function createCookie(name, value, days) {
             var expires;
