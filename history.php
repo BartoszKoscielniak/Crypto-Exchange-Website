@@ -63,12 +63,14 @@ if ($connection->connect_errno != 0) {
     $result->free();
 }
 
+
+
 //pobranie informacji o transakcjach
 if ($connection->connect_errno != 0) {
     throw new Exception(mysqli_connect_error());
 } else {
     $sql = "SELECT k.nazwa as name, t.data_transakcji as date, t.czas_zawarcia as time, t.ilosc as amount, t.status as stat, kurs_transakcji as course FROM 
-    kryptowaluty k, transakcje t WHERE t.id_krypto=k.id_krypto ORDER BY data_transakcji DESC, czas_zawarcia DESC" ;
+    kryptowaluty k, transakcje t WHERE t.id_krypto=k.id_krypto AND t.id_portfela = '" . $_SESSION['portfel'][0][0] . "' ORDER BY data_transakcji DESC, czas_zawarcia DESC";
 
     $result = $connection->query($sql);
     $_SESSION['transakcje'] = $result->fetch_all();
@@ -84,6 +86,7 @@ $connection->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>userProfile</title>
@@ -102,22 +105,22 @@ $connection->close();
         </a>
         <ul class="navbar-nav d-flex flex-column mt-5 w-100">
             <li class="nav-item w-100">
-                <a href="home.php" class="nav-link text-light pl-4"><img src="img/home.png">   Home</a>
+                <a href="home.php" class="nav-link text-light pl-4"><img src="img/home.png"> Home</a>
             </li>
             <li class="nav-item w-100">
-                <a href="wallet.php" class="nav-link text-light pl-4"><img src="img/wallet.png">   Wallet</a>
+                <a href="wallet.php" class="nav-link text-light pl-4"><img src="img/wallet.png"> Wallet</a>
             </li>
             <li class="nav-item w-100">
-                <a href="buyOrSell.php" class="nav-link text-light pl-4"><img src="img/buy.png">   Buy/Sell</a>
+                <a href="buyOrSell.php" class="nav-link text-light pl-4"><img src="img/buy.png"> Buy/Sell</a>
             </li>
             <li class="nav-item w-100">
-                <a href="#" class="nav-link text-light pl-4"><img src="img/exchange.png">   Exchange</a>
+                <a href="#" class="nav-link text-light pl-4"><img src="img/exchange.png"> Exchange</a>
             </li>
             <li class="nav-item w-100">
-                <a href="history.php" class="nav-link text-light pl-4"><img src="img/history.png">   History</a>
+                <a href="history.php" class="nav-link text-light pl-4"><img src="img/history.png"> History</a>
             </li>
             <li class="nav-item w-100">
-                <a href="#" class="nav-link text-light pl-4"><img src="img/post.png">   Contact</a>
+                <a href="#" class="nav-link text-light pl-4"><img src="img/post.png"> Contact</a>
             </li>
         </ul>
     </nav>
@@ -134,18 +137,125 @@ $connection->close();
                 <button type="submit" class="btn btn-outline-danger" data-mdb-ripple-color="dark" style=" float:right; margin-right:10px">
                     Log Out
                 </button>
-                <button type="button" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark" style="float:right; margin-right:10px" data-target="#myModal" data-toggle="modal">
+                <button type="button" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark" style="float:right; margin-right:10px" data-target="#myModal" data-toggle="modal" onclick="document.getElementsByClassName('payOpt').style.display = 'block'">
                     Buy/Sell
                 </button>
-                <h1 style=" float:right; margin-right:20px">
-                    <?php
-                    echo '<a>' . $_SESSION['portfel'][0][2] . '</a>'
-                    ?>
-                    <a style="font-size: 20px;">€</a>
-                </h1>
+
+                <div>
+
+                    <h1 style=" float:right; margin-right:20px">
+                        <?php
+                        echo '<a>' . $_SESSION['portfel'][0][2] . '</a>'
+                        ?>
+                        <a style="font-size: 20px;">€</a>
+                    </h1>
+
+                    <button data-target="#getMoneyModal" data-toggle="modal" style="float:right; border-color: rgb(71, 209, 71); background-color: rgb(71, 209, 71); margin-right: 10px; margin-top: 5px;" type="button" class="btn btn-success btn-sm btn-round"><img src="img/white-plus.png" style="position:absolute; top: 50%; left:50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);"><span class="glyphicon glyphicon-align-center"></span></button>
+
+                </div>
 
             </form>
 
+        </div>
+
+        <div class="container">
+
+            <!-- Trigger the modal with a button -->
+
+            <!-- Modal -->
+            <!--Modal: Get Money Label Form-->
+            <div class="modal fade" id="getMoneyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog cascading-modal" role="document">
+                    <!--Content-->
+                    <div class="modal-content">
+
+                        <!--Modal cascading tabs-->
+                        <div class="modal-body mb-1" style="text-align: center;">
+
+
+                            <label style="margin-left: 5%; margin-top: 5%; margin:5%" data-success="right" for="modalLRInput12" class="wallet-val">Enter how many euro you want to add:</label>
+
+                            <form action="addMoney.php" method="post">
+
+                                <div class="input-group mb-3">
+
+                                    <input id="amountInput" style=" margin-left: 5%; margin-right: 2%" name="amountttt" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
+                                    <a style="font-size: 20px;">€</a>
+                                </div>
+
+
+                                <label style=" margin-top: 5%;" data-success="right" for="modalLRInput12" class="wallet-val">Payment method</label>
+
+
+                                <div class="payOpt " onclick="selectPayMet('payCard1')" style="cursor:pointer; margin: 5%; margin-left: 5%; margin-right:5%; border: 1px solid #ccc!important; text-align: left; border-radius: 5px;" >
+                                    <div style="display: inline-block; vertical-align: baseline; ">
+
+                                        <input id="payCard1" style="float: left; margin: 5%;" type="checkbox">
+                                        <h6 style="float: left; margin-left: 10px;"><strong>BLIK</strong></h6><br>
+                                        <img style="float: left; margin-left: 10px; margin-bottom: 5px;" src="img/blik.png" width="30px" height="18px">
+
+                                    </div>
+                                </div>
+
+                                <div class="payOpt" onclick="selectPayMet('payCard2')" style=" display: block;cursor:pointer; margin: 5%; margin-left: 5%; margin-right:5%; border: 1px solid #ccc!important; text-align: left; border-radius: 5px;" >
+                                    <div class="cos" style="display: inline-block; vertical-align: baseline;">
+
+                                        <input id="payCard2" style="float: left; margin: 5%;" type="checkbox">
+                                        <h6 style="float: left; margin-left: 10px;"><strong>Credit card</strong></h6><br>
+                                        <img style="float: left; margin-left: 10px; margin-bottom: 5px;" src="img/vm.png" width="90px" height="18px">
+
+                                    </div>
+                                </div>
+
+
+                                <div id="creditCard" class="input-group mb-3" style="display:none;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                    <h6 style="margin-left:5%;float:left">Card number:</h6>
+                                    <input id="cardNumber" name="amount" type="text" class="form-control" style="width: 90%; margin-left: 5%; margin-right:5%; text-align: center;" placeholder='xxxx-xxxx-xxxx-xxxx' onkeypress="return onlyNumberKey(event)" autocomplete="off">
+
+                                    <label style="float:left; margin: 1%" data-success="right" for="modalLRInput12" class="wallet-val"></label>
+
+                                    <div style="margin-top: 5%;">
+                                        <div style="float: left;">
+                                            <h6 style="display: inline-block;">Expiration Date</h6>
+                                            <input style="text-align: center;" id="cardNumber" name="amount" type="text" class="form-control" placeholder='mm/yyyy' onkeypress="return onlyNumberKey(event)" autocomplete="off">
+
+                                        </div>
+                                        <div style="float: right;">
+                                            <h6 style="display: inline-block; text-align: center; ">CVV</h6>
+
+                                            <input id="cardNumber" name="amount" type="text" class="form-control" placeholder='123' onkeypress="return onlyNumberKey(event)" autocomplete="off">
+
+                                        </div>
+                                        <div><a>Powered by: </a> <img src="img/mastercard.png" width="40px" height="35px"></div>
+
+                                    </div>
+
+                                </div>
+
+                                <div style="display:none;" id="blikk">
+
+                                    <img src="img/blik.png"><br>
+                                    <h6 style="display: inline-block;">Enter the 6-character code</h6>
+                                    <input id="cardNumber" name="amount" type="text" class="form-control" style="width:200px; margin-left:28% ;text-align: center;" placeholder='x-x-x-x-x-x' onkeypress="return onlyNumberKey(event)" autocomplete="off"><br>
+
+                                </div>
+
+                                <!--Footer-->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-primary btn-rounded" onclick="startValue()" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-outline-success" onclick="startValue()">Pay</button>
+                                    <textarea name="area" style="display:none">history.php</textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--/.Content-->
+            </div>
+        </div>
+
+        <!--Modal: Login / Register Form-->
         </div>
 
         <div class="container">
@@ -182,7 +292,7 @@ $connection->close();
                                     <!--Body-->
                                     <div class="modal-body mb-1">
                                         <div class="md-form form-sm mb-5">
-                                            
+
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Your wallet</label>
                                             <h1 id="euro-amount">
                                                 <?php
@@ -224,7 +334,7 @@ $connection->close();
                                                 <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">How much?</label>
                                                 <div class="input-group mb-3">
                                                     <input id="amountInput" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
-                                                   
+
                                                 </div>
                                                 <textarea name="area" style="display:none">history.php</textarea>
                                                 <button id="submitButton" type="submit" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark">Buy</button>
@@ -247,7 +357,7 @@ $connection->close();
 
                                     <div class="modal-body">
                                         <div class="md-form form-sm mb-5">
-                                           
+
 
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Your wallet</label>
                                             <h1 id="euro-amount">
@@ -257,8 +367,6 @@ $connection->close();
                                                 ?>
                                                 <a style="font-size: 20px;">€</a>
                                             </h1>
-
-                                           
 
                                         </div>
 
@@ -275,7 +383,7 @@ $connection->close();
                                                     for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                         for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
                                                             if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
-                                                                echo '<option id="'.$_SESSION['lista_walut'][$i][3].'" value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
+                                                                echo '<option id="' . $_SESSION['lista_walut'][$i][3] . '" value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                                 $temp += 1;
                                                                 break;
                                                             }
@@ -389,7 +497,7 @@ $connection->close();
                                         } //TODO:FRONTEND: Alert ma sie wyswietlac na calej szerokosci tabeli TML <nav aria-label="Page navigation example">
 
                                         ?>
- 
+
                             </div>
                         </div>
                     </div>
@@ -408,51 +516,97 @@ $connection->close();
         var menu_btn = document.querySelector("#menu-btn")
         var sidebar = document.querySelector("#sidebar")
         var container = document.querySelector(".my-container")
+        var moneyAmount;
         menu_btn.addEventListener("click", () => {
             sidebar.classList.toggle("active-nav")
             container.classList.toggle("active-cont")
         })
+
+        
+
+        function startValue() {
+
+            setTimeout(() => {
+
+                document.getElementById('payCard1').checked = false;
+                document.getElementById('payCard2').checked = false;
+                
+                document.getElementsByClassName('payOpt')[0].style.display = 'block';
+                document.getElementsByClassName('payOpt')[1].style.display = 'block';
+                
+                document.getElementById('creditCard').style.display = 'none';
+                document.getElementById('blikk').style.display = 'none';
+
+            }, 500)
+        }
+
+        //Credit card
+        function selectPayMet(id) {
+
+            document.getElementById(id).checked = true;
+
+            if (id.localeCompare('payCard2') == 0) {
+                setTimeout(() => {
+                    document.getElementsByClassName('payOpt')[0].style.display = 'none';
+                    document.getElementsByClassName('payOpt')[1].style.display = 'none';
+                    
+                    document.getElementById('creditCard').style.display = 'block';
+                }, 500);
+            }
+            if(id.localeCompare('payCard1') == 0){
+                setTimeout(() => {
+                    document.getElementsByClassName('payOpt')[0].style.display = 'none';
+                    document.getElementsByClassName('payOpt')[1].style.display = 'none';
+                   
+                    document.getElementById('blikk').style.display = 'block';
+                }, 500);
+            }
+
+        }
+
+
 
         function onlyNumberKey(evt) {
             var ASCIICode = (evt.which) ? evt.which : evt.keyCode
             if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode != 46) {
                 validateBuy();
                 return false;
-            }else{
+            } else {
                 validateBuy();
                 return true;
             }
         }
 
-        function validateBuy(){
+        function validateBuy() {
             var input = document.getElementById('amountInput').value;
             const button = document.getElementById('submitButton');
 
-            if(input > 0){
+            if (input > 0) {
                 button.disabled = false;
-            }else {
+            } else {
                 button.disabled = true;
             }
         }
-        setInterval(validateBuy,250);
+        setInterval(validateBuy, 250);
 
-        function validateSell(){
+        function validateSell() {
             var input = document.getElementById('amountInputSell').value;
             const button = document.getElementById('submitButtonSell');
 
-            if(input > 0){
+            if (input > 0) {
                 button.disabled = false;
-            }else {
+            } else {
                 button.disabled = true;
             }
         }
 
-        function sendMax(max){
-            document.getElementById('maxButton').onclick = function () {
-                var e =document.getElementById('toSell');
-                document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;}
+        function sendMax(max) {
+            document.getElementById('maxButton').onclick = function() {
+                var e = document.getElementById('toSell');
+                document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;
+            }
         }
-        setInterval(validateSell,250);
+        setInterval(validateSell, 250);
     </script>
 </body>
 
