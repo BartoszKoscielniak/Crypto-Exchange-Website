@@ -29,13 +29,17 @@ if ($e = curl_error($ch)) {
 
             $result = $connection->query("SELECT COUNT(*) FROM kryptowaluty WHERE nazwa = '" . $decoded[$i]['name'] . "'");
             $row = $result->fetch_assoc();
+            $result->free();
+
+            $result = $connection->query("SELECT MAX(id_krypto) FROM kryptowaluty");
+            $max = $result->fetch_assoc();
+            $result->free();
 
             if ($row['COUNT(*)'] == 0) {
-                $connection->query("INSERT INTO kryptowaluty VALUES (" . ($i + 1) . ",'" . $decoded[$i]['name'] . "','" . $decoded[$i]['current_price'] . "')");
+                $connection->query("INSERT INTO kryptowaluty VALUES (" . ($max['MAX(id_krypto)'] + 1) . ",'" . $decoded[$i]['name'] . "','" . $decoded[$i]['current_price'] . "')");
             } else {
                 $connection->query("UPDATE kryptowaluty SET kurs = '" . $decoded[$i]['current_price'] . "' WHERE nazwa = '" . $decoded[$i]['name'] . "'");
             }
-            $result->free();
         }
     }
 }
