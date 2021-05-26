@@ -134,7 +134,7 @@ $connection->close();
 <section id="wallet" class="p-4 my-container">
     <div style="display: inline">
         <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
-        <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="usd" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
+        <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="eur" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
         <h2>History of tearing</h2>
 
         <form action="/20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l/logOut.php">
@@ -203,7 +203,7 @@ $connection->close();
                                         <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Buy:</label>
 
                                         <form action="buyCrypto.php" method="post" class="mb-3">
-                                            <select name="buy" id="crypto" class="form-select" aria-label="Default select example">
+                                            <select name="buy" id="cryptoBuy" class="form-select" aria-label="Default select example" onclick="samePayBuyBlock(event)">
 
                                                 <?php
                                                 for ($i = 0; $i < 10; $i++) {
@@ -213,7 +213,7 @@ $connection->close();
 
                                             </select>
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Pay:</label>
-                                            <select name="pay" id="crypto" class="form-select" aria-label="Default select example">
+                                            <select name="pay" id="cryptoPay" class="form-select" aria-label="Default select example" onclick="samePayBuyBlock(event)">
 
                                                 <option value="myWallet">My Wallet</option>
                                                 <?php
@@ -230,9 +230,13 @@ $connection->close();
                                             </select>
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">How much?</label>
                                             <div class="input-group mb-3">
-                                                <input id="amountInput" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
+                                                <input id="amountInputBuy" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
 
                                             </div>
+                                            <?php if (isset($_SESSION['err_fund'])) {
+                                                echo $_SESSION['err_fund'];
+                                                unset($_SESSION['err_fund']);
+                                            } ?>
                                             <textarea name="area" style="display:none">history.php</textarea>
                                             <button id="submitButton" type="submit" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark">Buy</button>
                                         </form>
@@ -347,13 +351,13 @@ $connection->close();
                             <table id="historyTable" class="table align-items-center table-flush">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">Logo</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Time</th>
-                                    <th scope="col">Amount</th>
+                                    <th scope="col"style="text-align: center">Logo</th>
+                                    <th scope="col"style="text-align: center">Name</th>
+                                    <th scope="col"style="text-align: center">Date</th>
+                                    <th scope="col"style="text-align: center">Time</th>
+                                    <th scope="col"style="text-align: center">Amount</th>
                                     <th scope="col" style="text-align: center">Status</th>
-                                    <th scope="col">Course</th>
+                                    <th scope="col"style="text-align: center">Course</th>
 
                                 </tr>
                                 </thead>
@@ -374,24 +378,24 @@ $connection->close();
                                                                           </span>';
                                             }
                                             echo '<tr>
-                                            <td>
-                                            <img src="' . $decoded[$k]['image'] . '" width="30px" height="30px">
+                                            <td style="text-align: center">
+                                            <img src="' . $decoded[$k]['image'] . '" width="30px" height="30px" >
                                             </td>
-                                            <th scope="row">
+                                            <th scope="row" style="text-align: center">
                                                 <div class="media align-items-center">
                                                     <div class="media-body">
                                                         <span class="mb-0 text-sm">' . $_SESSION['transakcje'][$i][0] . '</span>
                                                     </div>
                                                 </div>
                                             </th>
-                                            <td>'
+                                            <td style="text-align: center">'
                                                 . $_SESSION['transakcje'][$i][1] .
                                                 '</td>
-                                            <td>'
+                                            <td style="text-align: center">'
                                                 . $_SESSION['transakcje'][$i][2] .
                                                 '</td>
                                             
-                                            <td>'
+                                            <td style="text-align: center">'
                                                 . $_SESSION['transakcje'][$i][3] .
                                                 '</td>
                                             
@@ -399,7 +403,7 @@ $connection->close();
                                                 . $_SESSION['tempo'] .
                                                 '</td>
                                             
-                                            <td>'
+                                            <td style="text-align: center">'
                                                 . $_SESSION['transakcje'][$i][5] .
                                                 '</td>
                                             
@@ -449,10 +453,10 @@ $connection->close();
     }
 
     function validateBuy(){
-        var input = document.getElementById('amountInput').value;
+        var input = document.getElementById('amountInputBuy').value;
         const button = document.getElementById('submitButton');
 
-        if(input > 0){
+        if(input > 0 & document.getElementById('cryptoBuy').value != document.getElementById('cryptoPay').value){
             button.disabled = false;
         }else {
             button.disabled = true;
@@ -472,9 +476,9 @@ $connection->close();
     }
 
     function sendMax(max){
-        document.getElementById('maxButton').onclick = function () {
+
             var e =document.getElementById('toSell');
-            document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;}
+            document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;
     }
     setInterval(validateSell,250);
 

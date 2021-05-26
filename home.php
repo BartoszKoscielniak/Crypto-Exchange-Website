@@ -70,7 +70,7 @@ $connection->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>userProfile</title>
+    <title>Octopus Exchange</title>
     <!-- bootstrap 5 css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
     <!-- custom css -->
@@ -234,7 +234,7 @@ $connection->close();
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Buy:</label>
 
                                             <form id="buyForm" action="buyCrypto.php" method="post" class="mb-3">
-                                                <select name="buy" id="toBuy" class="form-select" aria-label="Default select example">
+                                                <select name="buy" id="toBuy" class="form-select" aria-label="Default select example" >
 
                                                     <?php
                                                     for ($i = 0; $i < 10; $i++) {
@@ -244,7 +244,7 @@ $connection->close();
 
                                                 </select>
                                                 <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Pay:</label>
-                                                <select name="pay" id="toPay" class="form-select" aria-label="Default select example">
+                                                <select name="pay" id="toPay" class="form-select" aria-label="Default select example" >
 
                                                     <option id="myWallet" value="myWallet">My Wallet</option>
                                                     <?php
@@ -408,7 +408,7 @@ $connection->close();
             var input = document.getElementById('amountInputBuy').value;
             const button = document.getElementById('submitButton');
 
-            if(input > 0){
+            if(input > 0 & document.getElementById('toBuy').value != document.getElementById('toPay').value){
                 button.disabled = false;
             }else {
                 button.disabled = true;

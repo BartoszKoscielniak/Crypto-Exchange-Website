@@ -70,7 +70,7 @@ $connection->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>userProfile</title>
+    <title>Octopus Exchange</title>
     <!-- bootstrap 5 css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
     <!-- custom css -->
@@ -180,7 +180,7 @@ $connection->close();
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Buy:</label>
 
                                             <form action="buyCrypto.php" method="post" class="mb-3">
-                                                <select name="buy" id="crypto" class="form-select" aria-label="Default select example">
+                                                <select name="buy" id="cryptoBuy" class="form-select" aria-label="Default select example">
 
                                                     <?php
                                                     for ($i = 0; $i < 10; $i++) {
@@ -190,7 +190,7 @@ $connection->close();
 
                                                 </select>
                                                 <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Pay:</label>
-                                                <select name="pay" id="crypto" class="form-select" aria-label="Default select example">
+                                                <select name="pay" id="cryptoPay" class="form-select" aria-label="Default select example" >
 
                                                     <option value="myWallet">My Wallet</option>
                                                     <?php
@@ -328,10 +328,10 @@ $connection->close();
                                 <table class="table align-items-center table-flush">
                                     <thead class="thead-light">
                                         <tr>
-                                            <th scope="col">Rank</th>
-                                            <th scope="col">Logo</th>
-                                            <th scope="col">Crypto</th>
-                                            <th scope="col">Balance</th>
+                                            <th scope="col" style="text-align: center">Rank</th>
+                                            <th scope="col" style="text-align: center">Logo</th>
+                                            <th scope="col" style="text-align: center">Crypto</th>
+                                            <th scope="col" style="text-align: center">Balance</th>
 
                                         </tr>
                                     </thead>
@@ -346,7 +346,7 @@ $connection->close();
                                                 if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
                                                     for ($b = 0; $b < sizeof($decoded); $b++) {
                                                         if ($_SESSION['krypto'][$a][1] == $decoded[$b]['name']) {
-                                                            echo '<tr><th class="rank" style="width:10%">' . ($temp + 1) . '</th><th style="width: 30%;"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:30%">' . $_SESSION['krypto'][$a][1] . '</th><th style="width:30%">' . sprintf("%.5f", round($_SESSION['lista_walut'][$i][3], 3)) . '</th></tr>' . "\n";
+                                                            echo '<tr><th class="rank" style="width:10%; text-align: center">' . ($temp + 1) . '</th><th style="width: 30%; text-align: center"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:30%; text-align: center">' . $_SESSION['krypto'][$a][1] . '</th><th style="width:30%; text-align: center">' . sprintf("%.5f", round($_SESSION['lista_walut'][$i][3], 3)) . '</th></tr>' . "\n";
                                                             $temp += 1;
                                                             break 2;
                                                         }
@@ -397,7 +397,7 @@ $connection->close();
             var input = document.getElementById('amountInput').value;
             const button = document.getElementById('submitButton');
 
-            if(input > 0){
+            if(input > 0 & document.getElementById('cryptoBuy').value != document.getElementById('cryptoPay').value){
                 button.disabled = false;
             }else {
                 button.disabled = true;

@@ -77,7 +77,7 @@ $connection->close();
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
 
-    <title>userProfile</title>
+    <title>Octopus Exchange</title>
     <!-- bootstrap 5 css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
     <!-- custom css -->
@@ -325,12 +325,12 @@ $connection->close();
                             <table id="buySellTable" class="table align-items-center table-flush">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">Rank</th>
-                                    <th scope="col">Logo</th>
-                                    <th scope="col">Crypto</th>
-                                    <th scope="col">Current price</th>
-                                    <th scope="col">Market Cap</th>
-                                    <th scope="col">24h change</th>
+                                    <th scope="col" style="text-align: center">Rank</th>
+                                    <th scope="col" style="text-align: center">Logo</th>
+                                    <th scope="col" style="text-align: center">Crypto</th>
+                                    <th scope="col" style="text-align: center">Current price</th>
+                                    <th scope="col" style="text-align: center">Market Cap</th>
+                                    <th scope="col" style="text-align: center">24h change</th>
 
                                 </tr>
                                 </thead>
@@ -343,7 +343,7 @@ $connection->close();
                                     }else{
                                         $_SESSION['24h_change_color'] = "green";
                                     }
-                                    echo '<tr><th class="rank" style="width:10%">' . $decoded[$b]['market_cap_rank'] . '</th><th style="width: 18%;"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:18%">' . $decoded[$b]['name'] . '</th><th style="width:18%">' . number_format($decoded[$b]['current_price'],2) . '€</th><th style="width:18%">' . number_format($decoded[$b]['market_cap']) . '€</th><th style="width:18%; color: '.$_SESSION['24h_change_color'].' ">' . sprintf("%.1f", round($decoded[$b]['price_change_percentage_24h'], 3)) . '%</th></tr>' . "\n";
+                                    echo '<tr><th class="rank" style="width:10%; text-align: center">' . $decoded[$b]['market_cap_rank'] . '</th><th style="width: 18%; text-align: center"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:18%; text-align: center">' . $decoded[$b]['name'] . '</th><th style="width:18%; text-align: center">' . number_format($decoded[$b]['current_price'],2) . '€</th><th style="width:18%; text-align: center">' . number_format($decoded[$b]['market_cap']) . '€</th><th style="width:18%; text-align: center; color: '.$_SESSION['24h_change_color'].' ">' . sprintf("%.1f", round($decoded[$b]['price_change_percentage_24h'], 3)) . '%</th></tr>' . "\n";
                                 }
                                 ?>
                         </div>
