@@ -158,8 +158,8 @@ $connection->close();
 
                                 <h2>Contact Us</h2>
 
-                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Name"><br>
-                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Email"><br>
+                                <input name="amount" type="text" class="form-control" placeholder="Name"><br>
+                                <input name="amount" type="text" class="form-control" placeholder="Email"><br>
 
                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Message"></textarea>
 

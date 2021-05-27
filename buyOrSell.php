@@ -240,7 +240,7 @@ $connection->close();
                                                 echo $_SESSION['err_fund'];
                                                 unset($_SESSION['err_fund']);
                                             } ?>
-                                            <textarea name="area" style="display:none">wallet.php</textarea>
+                                            <textarea name="area" style="display:none">buyOrSell.php</textarea>
                                             <button id="submitButton" type="submit" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark">Buy</button>
                                         </form>
 
@@ -286,9 +286,7 @@ $connection->close();
 
                                             <div class="input-group mb-3">
                                                 <input id="amountInputSell" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
-                                                <div class="input-group-append">
-                                                    <button id="maxButton" class="btn btn-outline-primary" type="button" onclick="sendMax()">MAX</button>
-                                                </div>
+
                                             </div>
 
                                             <?php if (isset($_SESSION['err_fund2'])) {

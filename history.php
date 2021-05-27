@@ -40,7 +40,6 @@ if ($e = curl_error($ch)) {
             } else {
                 $connection->query("UPDATE kryptowaluty SET kurs = '" . $decoded[$i]['current_price'] . "' WHERE nazwa = '" . $decoded[$i]['name'] . "'");
             }
-            $result->free();
         }
     }
 }
@@ -98,7 +97,7 @@ $connection->close();
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>userProfile</title>
+    <title>Octopus Exchange</title>
     <!-- bootstrap 5 css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
     <!-- custom css -->
@@ -180,8 +179,8 @@ $connection->close();
 
                                 <h2>Contact Us</h2>
 
-                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Name"><br>
-                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Email"><br>
+                                <input name="amount" type="text" class="form-control" placeholder="Name"><br>
+                                <input name="amount" type="text" class="form-control" placeholder="Email"><br>
 
                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Message"></textarea>
 
@@ -583,60 +582,56 @@ $connection->close();
             container.classList.toggle("active-cont")
         })
 
-        $(".datepicker").datepicker({
-            format: 'yyyy-mm-dd'
-        });
+    function startValue() {
 
-        function startValue() {
+        setTimeout(() => {
 
+            document.getElementById('payCard1').checked = false;
+            document.getElementById('payCard2').checked = false;
+
+            document.getElementsByClassName('payOpt')[0].style.display = 'block';
+            document.getElementsByClassName('payOpt')[1].style.display = 'block';
+
+            document.getElementById('creditCard').style.display = 'none';
+            document.getElementById('blikk').style.display = 'none';
+
+        }, 500)
+    }
+
+    //Credit card
+    function selectPayMet(id) {
+
+        document.getElementById(id).checked = true;
+
+        if (id.localeCompare('payCard2') == 0) {
             setTimeout(() => {
+                document.getElementsByClassName('payOpt')[0].style.display = 'none';
+                document.getElementsByClassName('payOpt')[1].style.display = 'none';
 
-                document.getElementById('payCard1').checked = false;
-                document.getElementById('payCard2').checked = false;
+                document.getElementById('creditCard').style.display = 'block';
+            }, 500);
+        }
+        if(id.localeCompare('payCard1') == 0){
+            setTimeout(() => {
+                document.getElementsByClassName('payOpt')[0].style.display = 'none';
+                document.getElementsByClassName('payOpt')[1].style.display = 'none';
 
-                document.getElementsByClassName('payOpt')[0].style.display = 'block';
-                document.getElementsByClassName('payOpt')[1].style.display = 'block';
-
-                document.getElementById('creditCard').style.display = 'none';
-                document.getElementById('blikk').style.display = 'none';
-
-            }, 500)
+                document.getElementById('blikk').style.display = 'block';
+            }, 500);
         }
 
-        //Credit card
-        function selectPayMet(id) {
+    }
 
-            document.getElementById(id).checked = true;
-
-            if (id.localeCompare('payCard2') == 0) {
-                setTimeout(() => {
-                    document.getElementsByClassName('payOpt')[0].style.display = 'none';
-                    document.getElementsByClassName('payOpt')[1].style.display = 'none';
-
-                    document.getElementById('creditCard').style.display = 'block';
-                }, 500);
-            }
-            if(id.localeCompare('payCard1') == 0){
-                setTimeout(() => {
-                    document.getElementsByClassName('payOpt')[0].style.display = 'none';
-                    document.getElementsByClassName('payOpt')[1].style.display = 'none';
-
-                    document.getElementById('blikk').style.display = 'block';
-                }, 500);
-            }
-
+    function onlyNumberKey(evt) {
+        var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+        if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode != 46) {
+            validateBuy();
+            return false;
+        } else {
+            validateBuy();
+            return true;
         }
-
-        function onlyNumberKey(evt) {
-            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
-            if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode != 46) {
-                validateBuy();
-                return false;
-            } else {
-                validateBuy();
-                return true;
-            }
-        }
+    }
 
     function validateBuy(){
         var input = document.getElementById('amountInputBuy').value;
