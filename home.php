@@ -266,9 +266,6 @@ $connection->close();
                                                 <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">How much?</label>
                                                 <div class="input-group mb-3">
                                                     <input id="amountInputBuy" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
-                                                    <div class="input-group-append">
-                                                        <button id="maxButtonBuy" class="btn btn-outline-primary" type="button" onclick="sendMaxBuy()">MAX</button>
-                                                    </div>
                                                 </div>
                                                 <?php if (isset($_SESSION['err_fund'])) {
                                                     echo $_SESSION['err_fund'];
@@ -328,7 +325,7 @@ $connection->close();
                                                                 break;
                                                             }
                                                         }
-                                                    }//'.$_SESSION['lista_walut'][$i][3].'
+                                                    }
                                                     if ($temp == 0) {
                                                         echo "No assets to sell";
                                                     }
@@ -433,9 +430,8 @@ $connection->close();
         setInterval(validateSell,250);
 
         function sendMax(max){
-            document.getElementById('maxButton').onclick = function () {
-                var e =document.getElementById('toSell');
-                document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;}
+            var e =document.getElementById('toSell');
+            document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;
         }
 
         function sendMaxBuy(max) {

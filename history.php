@@ -8,7 +8,7 @@ if (!isset($_SESSION['isLoggedIn'])) {
 }
 //pobranie informacji o krypto
 $ch = curl_init();
-$url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=20&page=1&sparkline=false";
+$url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false";
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
@@ -480,9 +480,8 @@ $connection->close();
     }
 
     function sendMax(max){
-
-            var e =document.getElementById('toSell');
-            document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;
+        var e =document.getElementById('toSell');
+        document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;
     }
     setInterval(validateSell,250);
 

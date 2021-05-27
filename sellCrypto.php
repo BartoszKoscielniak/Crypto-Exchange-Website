@@ -11,6 +11,38 @@
         exit();
     }
 
+    $ch = curl_init();
+    $url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+
+    mysqli_report(MYSQLI_REPORT_STRICT);
+    $connection = new mysqli($host, $db_user, $db_password, $db_name);
+
+    //wpisanie krytpto do bazy/aktualizacja ceny
+    if ($e = curl_error($ch)) {
+        echo $e;
+    } else {
+        $decoded = json_decode($response, true);
+    }
+    curl_close($ch);
+echo $_POST['sell'];
+    if ($_POST['sell'] >= 1000){
+        $_POST['sell'] = $_POST['sell']/1000;
+        for ($xdx = 0; $xdx < sizeof($decoded); $xdx++){
+            if ($_POST['sell'] == $decoded[$xdx]['market_cap_rank']){
+                for ($xdxx = 0; $xdxx < sizeof($_SESSION['krypto']); $xdxx++) {
+                    if ($decoded[$xdx]['name'] == $_SESSION['krypto'][$xdxx][1]){
+                        $_POST['sell'] = $_SESSION['krypto'][$xdxx][0];
+                        echo " po zmianie".$_POST['sell'];
+                        break 2;
+                    }
+                }
+            }
+        }
+    }
+
     mysqli_report(MYSQLI_REPORT_STRICT);
     $connection = new mysqli($host, $db_user, $db_password, $db_name);
 
@@ -34,6 +66,11 @@
                     header('Location:'.$fileName);
                 }
                 break 2;
+            }else{
+                $_SESSION['err_fund2'] = '<div class="alert alert-danger" role="alert">
+                                              You !
+                                              </div>';
+                header('Location:'.$fileName);
             }
         }
     }

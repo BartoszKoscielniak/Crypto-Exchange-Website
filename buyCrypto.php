@@ -10,6 +10,31 @@
         exit();
     }
 
+    $ch = curl_init();
+    $url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+
+    mysqli_report(MYSQLI_REPORT_STRICT);
+    $connection = new mysqli($host, $db_user, $db_password, $db_name);
+
+    //wpisanie krytpto do bazy/aktualizacja ceny
+    if ($e = curl_error($ch)) {
+        echo $e;
+    } else {
+        $decoded = json_decode($response, true);
+    }
+    curl_close($ch);
+
+    if (is_numeric($_POST['buy'])){
+        for ($xdx = 0; $xdx < sizeof($decoded); $xdx++){
+            if ($_POST['buy'] == $decoded[$xdx]['market_cap_rank']){
+                $_POST['buy'] = $decoded[$xdx]['name'];
+                break;
+            }
+        }
+    }
 
 
     mysqli_report(MYSQLI_REPORT_STRICT);

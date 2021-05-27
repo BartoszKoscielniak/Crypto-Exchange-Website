@@ -67,6 +67,10 @@ if ($connection->connect_errno != 0) {
     $result->free();
 }
 $connection->close();
+
+//liczenie zmiany wartosci portfela
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -421,9 +425,8 @@ $connection->close();
         }
 
         function sendMax(max){
-            document.getElementById('maxButton').onclick = function () {
-                var e =document.getElementById('toSell');
-                document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;}
+            var e =document.getElementById('toSell');
+            document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;
         }
         setInterval(validateSell,250);
     </script>

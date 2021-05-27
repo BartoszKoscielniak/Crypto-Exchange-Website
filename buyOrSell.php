@@ -178,20 +178,11 @@ $connection->close();
                                     </div>
 
                                     <div class="md-form form-sm mb-4">
-                                        <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Buy:</label>
+                                         <form action="buyCrypto.php" method="post" class="mb-3">
+                                            <input id="cryptoToBuy" name="buy" type="text" class="form-control" autocomplete="off" hidden>
 
-                                        <form action="buyCrypto.php" method="post" class="mb-3">
-                                            <select name="buy" id="crypto" class="form-select" aria-label="Default select example">
-
-                                                <?php
-                                                for ($i = 0; $i < 10; $i++) {
-                                                    echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$i][1]) . '" >' . $_SESSION['krypto'][$i][1] . '</option>' . "\n";
-                                                }
-                                                ?>
-
-                                            </select>
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Pay:</label>
-                                            <select name="pay" id="crypto" class="form-select" aria-label="Default select example">
+                                            <select name="pay" id="cryptotoPay" class="form-select" aria-label="Default select example">
 
                                                 <option value="myWallet">My Wallet</option>
                                                 <?php
@@ -253,28 +244,9 @@ $connection->close();
 
                                     <div>
 
-                                        <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Sell</label>
 
                                         <form action="sellCrypto.php" method="post" class="mb-3">
-
-                                            <select id="toSell" name="sell" class="form-select" aria-label="Default select example">
-
-                                                <?php
-                                                $temp = 0;
-                                                for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
-                                                    for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                        if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
-                                                            echo '<option id="'.$_SESSION['lista_walut'][$i][3].'" value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
-                                                            $temp += 1;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-                                                if ($temp == 0) {
-                                                    echo "No assets to sell";
-                                                }
-                                                ?>
-                                            </select>
+                                            <input id="cryptoToSell" name="sell" type="text" class="form-control" autocomplete="off" hidden>
 
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">How much?</label>
 
@@ -326,7 +298,7 @@ $connection->close();
                             <h3 class="mb-0">TOP 100 Cryptocurrency</h3>
                         </div>
                         <div class="table-responsive">
-                            <table id="buySellTable" class="table align-items-center table-flush">
+                            <table id="buySellTable" class="table align-items-center table-flush" >
                                 <thead class="thead-light">
                                 <tr>
                                     <th scope="col" style="text-align: center">Rank</th>
@@ -334,6 +306,7 @@ $connection->close();
                                     <th scope="col" style="text-align: center">Crypto</th>
                                     <th scope="col" style="text-align: center">Current price</th>
                                     <th scope="col" style="text-align: center">Market Cap</th>
+                                    <th scope="col" style="text-align: center">24h change</th>
                                     <th scope="col" style="text-align: center">24h change</th>
 
                                 </tr>
@@ -347,7 +320,7 @@ $connection->close();
                                     }else{
                                         $_SESSION['24h_change_color'] = "green";
                                     }
-                                    echo '<tr><th class="rank" style="width:10%; text-align: center">' . $decoded[$b]['market_cap_rank'] . '</th><th style="width: 18%; text-align: center"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:18%; text-align: center">' . $decoded[$b]['name'] . '</th><th style="width:18%; text-align: center">' . number_format($decoded[$b]['current_price'],2) . '€</th><th style="width:18%; text-align: center">' . number_format($decoded[$b]['market_cap']) . '€</th><th style="width:18%; text-align: center; color: '.$_SESSION['24h_change_color'].' ">' . sprintf("%.1f", round($decoded[$b]['price_change_percentage_24h'], 3)) . '%</th></tr>' . "\n";
+                                    echo '<tr><th class="rank" style="width:10%; text-align: center">' . $decoded[$b]['market_cap_rank'] . '</th><th style="width: 18%; text-align: center"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:18%; text-align: center">' . $decoded[$b]['name'] . '</th><th style="width:18%; text-align: center">' . number_format($decoded[$b]['current_price'],2) . '€</th><th style="width:18%; text-align: center">' . number_format($decoded[$b]['market_cap']) . '€</th><th style="width:18%; text-align: center; color: '.$_SESSION['24h_change_color'].' ">' . sprintf("%.1f", round($decoded[$b]['price_change_percentage_24h'], 3)) . '%</th><th style="text-align: center"><button type="button" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark" style="float:right; margin-right:10px" data-target="#myModal" data-toggle="modal" onclick="choosedOneRow(' . $decoded[$b]['market_cap_rank'] . ')">Buy/Sell</button></th></tr>' . "\n";
                                 }
                                 ?>
                         </div>
@@ -365,7 +338,7 @@ $connection->close();
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script>
 <!-- custom js -->
 <script>
-        var menu_btn = document.querySelector("#menu-btn")
+    var menu_btn = document.querySelector("#menu-btn")
     var sidebar = document.querySelector("#sidebar")
     var container = document.querySelector(".my-container")
     menu_btn.addEventListener("click", () => {
@@ -408,9 +381,8 @@ $connection->close();
     }
 
     function sendMax(max){
-        document.getElementById('maxButton').onclick = function () {
-            var e =document.getElementById('toSell');
-            document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;}
+        var e =document.getElementById('toSell');
+        document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;
     }
     setInterval(validateSell,250);
 
@@ -420,6 +392,11 @@ $connection->close();
         });
         $('.dataTables_length').addClass('bs-select');
     });
+
+    function choosedOneRow(id){
+        document.getElementById('cryptoToBuy').value = id;
+        document.getElementById('cryptoToSell').value = id * 1000;
+    }
 
 </script>
 </body>
