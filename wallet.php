@@ -108,8 +108,8 @@ $connection->close();
             <li class="nav-item w-100">
                 <a href="history.php" class="nav-link text-light pl-4"><img src="img/history.png"> History</a>
             </li>
-            <li class="nav-item w-100">
-                <a href="#" class="nav-link text-light pl-4"><img src="img/post.png"> Contact</a>
+            <li class="nav-item w-100" data-toggle="modal" data-target="#myContactModal">
+                <a href="#" class="nav-link text-light pl-4"><img src="img/post.png"> Contact Us</a>
             </li>
         </ul>
     </nav>
@@ -122,7 +122,7 @@ $connection->close();
             <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="eur" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
             <h2>Wallet</h2>
 
-            <form action="/20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l/logOut.php">
+            <form action="logOut.php">
                 <button type="submit" class="btn btn-outline-danger" data-mdb-ripple-color="dark" style=" float:right; margin-right:10px">
                     Log Out
                 </button>
@@ -136,9 +136,142 @@ $connection->close();
                     <a style="font-size: 20px;">€</a>
                 </h1>
 
+                <button data-target="#getMoneyModal" data-toggle="modal" style="float:right; border-color: rgb(71, 209, 71); background-color: rgb(71, 209, 71); margin-right: 10px; margin-top: 5px;" type="button" class="btn btn-success btn-sm btn-round"><img src="img/white-plus.png" style="position:absolute; top: 50%; left:50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);"><span class="glyphicon glyphicon-align-center"></span></button>
+
             </form>
 
         </div>
+
+        <div class="container">
+
+            <!-- Trigger the modal with a button -->
+
+            <!-- Modal -->
+            <!--Modal: Login / Register Form-->
+            <div class="modal fade" id="myContactModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog cascading-modal" role="document">
+                    <!--Content-->
+                    <div class="modal-content">
+                        <div class="modal-body mb-1">
+
+                            <form>
+
+                                <h2>Contact Us</h2>
+
+                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Name"><br>
+                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Email"><br>
+
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Message"></textarea>
+
+                                <!--Footer-->
+                                <div class="modal-footer">
+                                    <button style="width:70px" type="submit" class="btn btn-outline-success">Send</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+<!-- Trigger the modal with a button -->
+
+<!-- Modal -->
+<!--Modal: Get Money Label Form-->
+<div class="modal fade" id="getMoneyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Modal cascading tabs-->
+            <div class="modal-body mb-1" style="text-align: center;">
+
+
+                <label style="margin-left: 5%; margin-top: 5%; margin:5%" data-success="right" for="modalLRInput12" class="wallet-val">Enter how many euro you want to add:</label>
+
+                <form action="addMoney.php" method="post">
+
+                    <div class="input-group mb-3">
+
+                        <input id="amountInput" style=" margin-left: 5%; margin-right: 2%" name="amountttt" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
+                        <a style="font-size: 20px;">€</a>
+                    </div>
+
+
+                    <label style=" margin-top: 5%;" data-success="right" for="modalLRInput12" class="wallet-val">Payment method</label>
+
+
+                    <div class="payOpt " onclick="selectPayMet('payCard1')" style="cursor:pointer; margin: 5%; margin-left: 5%; margin-right:5%; border: 1px solid #ccc!important; text-align: left; border-radius: 5px;" >
+                        <div style="display: inline-block; vertical-align: baseline; ">
+
+                            <input id="payCard1" style="float: left; margin: 5%;" type="checkbox">
+                            <h6 style="float: left; margin-left: 10px;"><strong>BLIK</strong></h6><br>
+                            <img style="float: left; margin-left: 10px; margin-bottom: 5px;" src="img/blik.png" width="30px" height="18px">
+
+                        </div>
+                    </div>
+
+                    <div class="payOpt" onclick="selectPayMet('payCard2')" style=" display: block;cursor:pointer; margin: 5%; margin-left: 5%; margin-right:5%; border: 1px solid #ccc!important; text-align: left; border-radius: 5px;" >
+                        <div class="cos" style="display: inline-block; vertical-align: baseline;">
+
+                            <input id="payCard2" style="float: left; margin: 5%;" type="checkbox">
+                            <h6 style="float: left; margin-left: 10px;"><strong>Credit card</strong></h6><br>
+                            <img style="float: left; margin-left: 10px; margin-bottom: 5px;" src="img/vm.png" width="90px" height="18px">
+
+                        </div>
+                    </div>
+
+
+                    <div id="creditCard" class="input-group mb-3" style="display:none;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                        <h6 style="margin-left:5%;float:left">Card number:</h6>
+                        <input id="cardNumber" name="amount" type="text" class="form-control" style="width: 90%; margin-left: 5%; margin-right:5%; text-align: center;" placeholder='xxxx-xxxx-xxxx-xxxx' onkeypress="return onlyNumberKey(event)" autocomplete="off">
+
+                        <label style="float:left; margin: 1%" data-success="right" for="modalLRInput12" class="wallet-val"></label>
+
+                        <div style="margin-top: 5%;">
+                            <div style="float: left;">
+                                <h6 style="display: inline-block;">Expiration Date</h6>
+                                <input style="text-align: center;" id="cardNumber" name="amount" type="text" class="form-control" placeholder='mm/yyyy' onkeypress="return onlyNumberKey(event)" autocomplete="off">
+
+                            </div>
+                            <div style="float: right;">
+                                <h6 style="display: inline-block; text-align: center; ">CVV</h6>
+
+                                <input id="cardNumber" name="amount" type="text" class="form-control" placeholder='123' onkeypress="return onlyNumberKey(event)" autocomplete="off">
+
+                            </div>
+                            <div><a>Powered by: </a> <img src="img/mastercard.png" width="40px" height="35px"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div style="display:none;" id="blikk">
+
+                        <img src="img/blik.png"><br>
+                        <h6 style="display: inline-block;">Enter the 6-character code</h6>
+                        <input id="cardNumber" name="amount" type="text" class="form-control" style="width:200px; margin-left:28% ;text-align: center;" placeholder='x-x-x-x-x-x' onkeypress="return onlyNumberKey(event)" autocomplete="off"><br>
+
+                    </div>
+
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary btn-rounded" onclick="startValue()" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-outline-success" onclick="startValue()">Pay</button>
+                        <textarea name="area" style="display:none">history.php</textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--/.Content-->
+</div>
+</div>
 
         <div class="container">
 
@@ -389,6 +522,46 @@ $connection->close();
             sidebar.classList.toggle("active-nav")
             container.classList.toggle("active-cont")
         })
+
+        function startValue() {
+
+setTimeout(() => {
+
+    document.getElementById('payCard1').checked = false;
+    document.getElementById('payCard2').checked = false;
+    
+    document.getElementsByClassName('payOpt')[0].style.display = 'block';
+    document.getElementsByClassName('payOpt')[1].style.display = 'block';
+    
+    document.getElementById('creditCard').style.display = 'none';
+    document.getElementById('blikk').style.display = 'none';
+
+}, 500)
+}
+
+//Credit card
+function selectPayMet(id) {
+
+document.getElementById(id).checked = true;
+
+if (id.localeCompare('payCard2') == 0) {
+    setTimeout(() => {
+        document.getElementsByClassName('payOpt')[0].style.display = 'none';
+        document.getElementsByClassName('payOpt')[1].style.display = 'none';
+        
+        document.getElementById('creditCard').style.display = 'block';
+    }, 500);
+}
+if(id.localeCompare('payCard1') == 0){
+    setTimeout(() => {
+        document.getElementsByClassName('payOpt')[0].style.display = 'none';
+        document.getElementsByClassName('payOpt')[1].style.display = 'none';
+       
+        document.getElementById('blikk').style.display = 'block';
+    }, 500);
+}
+
+}
 
         function onlyNumberKey(evt) {
             var ASCIICode = (evt.which) ? evt.which : evt.keyCode

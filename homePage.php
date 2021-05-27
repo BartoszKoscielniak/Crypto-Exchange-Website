@@ -4,8 +4,9 @@ session_start();
 if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
     header('Location:home.php');
     exit();
-}else if ((isset($_POST['name'])) && (isset($_POST['surname'])) && (isset($_POST['emailRegister'])) && (isset($_POST['phone_number']))
-    && (isset($_POST['password1'])) && (isset($_POST['password2']))) {
+} else if ((isset($_POST['name'])) && (isset($_POST['surname'])) && (isset($_POST['emailRegister'])) && (isset($_POST['phone_number']))
+    && (isset($_POST['password1'])) && (isset($_POST['password2']))
+) {
     $validationCompleted = true;
     $_SESSION['popup_status'] = "block";
     $name = $_POST['name'];
@@ -81,7 +82,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
 
         if ($connection->connect_errno != 0) {
             throw new Exception(mysqli_connect_error());
-        }else {
+        } else {
             //whether that email exist in db
             $result = $connection->query("SELECT id_użytkownika FROM użytkownicy WHERE adres_email = '$emailRegister'");
 
@@ -105,18 +106,18 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
 
                 $result = $connection->query("SELECT MAX(id_użytkownika) FROM użytkownicy");
                 $row = $result->fetch_assoc();
-                if($row['MAX(id_użytkownika)'] == NULL) $row['MAX(id_użytkownika)'] = 0;
+                if ($row['MAX(id_użytkownika)'] == NULL) $row['MAX(id_użytkownika)'] = 0;
                 $row['MAX(id_użytkownika)'] = $row['MAX(id_użytkownika)'] + 1;
                 $_SESSION['id_uzyt'] = $row['MAX(id_użytkownika)'];
 
-                if ($connection->query("INSERT INTO użytkownicy VALUES (".$_SESSION['id_uzyt'].",'$name','$surname','$phone_number','$emailRegister','$password1_hash')")) {
-                    $result -> free();
+                if ($connection->query("INSERT INTO użytkownicy VALUES (" . $_SESSION['id_uzyt'] . ",'$name','$surname','$phone_number','$emailRegister','$password1_hash')")) {
+                    $result->free();
 
                     $result = $connection->query("SELECT MAX(id_portfela) FROM portfele");
                     $row = $result->fetch_assoc();
-                    if($row['MAX(id_portfela)'] == NULL) $row['MAX(id_portfela)'] = 0;
+                    if ($row['MAX(id_portfela)'] == NULL) $row['MAX(id_portfela)'] = 0;
                     $row['MAX(id_portfela)'] = $row['MAX(id_portfela)'] + 1;
-                    $connection->query("INSERT INTO portfele VALUES (".$row['MAX(id_portfela)'].",".$_SESSION['id_uzyt'].",0)");
+                    $connection->query("INSERT INTO portfele VALUES (" . $row['MAX(id_portfela)'] . "," . $_SESSION['id_uzyt'] . ",0)");
 
                     $_SESSION['registrationSuccessful'] = true;
                     $_SESSION['emailToLogIn'] = $emailRegister;
@@ -134,14 +135,14 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
                     unset($_SESSION['err_name']);
                     unset($_SESSION['err_phone']);
                     unset($_SESSION['err_surname']);
-                    $result -> free();
+                    $result->free();
                     $connection->close();
                     header('Location: logIn.php');
-                }else {
+                } else {
                     throw new Exception($connection->error);
                 }
             }
-            $result -> free();
+            $result->free();
             $connection->close();
         }
     } catch (Exception $exception) {
@@ -150,140 +151,196 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
 }
 ?>
 
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Strona</title>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="homePageStyle.css">
 </head>
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
-<!-- Menu -->
+<body>
 
-<ul>
+    <nav class="navbar navbar-expand-md navbar-dark" style="width: 100%;position:fixed; overflow: hidden; top:0; background-color:transparent;">
 
-    <li><a onclick="FormVis()" href="#log-popup">LOG IN</a></li>
-    <li><a onclick="CreateAccountFormVis()" href="#create">CREATE ACCOUNT</a></li>
-    <li style="float: left;"><a href="#contact">CONTACT</a></li>
-    <li style="float: left;"><a href="#faq">FAQ</a></li>
-    <li style="float: left"><a href="#about">ABOUT US</a></li>
+        <img src="img/oct.png" width="50px" height="40px">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item" style="margin-left:5%">
+                    <button style="width:80px" type="button" class="btn btn-outline-success" data-target="#myModal" data-toggle="modal">Join</button>
+                </li>
+                <li class="nav-item" style="margin-left:5%">
+                    <button style="width:80px" type="button" class="btn btn-outline-danger" data-target="#myMod" data-toggle="modal">Log</button>
+                </li>
 
-</ul>
 
-<div >
-    <img id="bcg" src="img/background2.jpg">
-    <!--<img style="position: absolute; left: 5%; top: 3%;" id="logo" src="img/logo_homepage.png"> -->
-</div>
+            </ul>
+        </div>
+    </nav>
+    <br>
 
-<!-- Login form -->
 
-<div class="log-popup" id="form-div" style="visibility: hidden;">
 
-    <form class="login-form" action="logIn.php" method=post>
-        <h1 style="font-size: 20px;">Login</h1>
-        <label class="napis"><b>Email</b></label><br>
-        <input class="text" type="text" placeholder="Enter Email" name="email" required><br>
-        <label class="napis"><b>Password</b></label><br>
-        <input class="text" type="password" placeholder="Enter Password" name="password" required><br>
-        <?php if (isset($_SESSION['error'])) echo $_SESSION['error']; ?>
-        <button type="submit" class="btn" id="login">Login</button>
-    </form>
-    <button class="btn" id="close" onclick="FormVis()">Close</button>
-</div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <div class="modal-body mb-1">
 
-<!-- New account form -->
+                    <form method="post">
+                        <h2>Register</h2>
 
-<div class="new-account" id="create-account-form" style="display: none; position: fixed;">
-    <div id="form-div2">
-        <form method=post>
-            <h1 style="font-size: 20px; user-select: none">Register<h1></h1>
-                <label class="napis" style="user-select: none">Name</label><br>
-                <input class="text" type="text" value="<?php if (isset($_SESSION['RF_name'])) { echo $_SESSION['RF_name'];unset($_SESSION['RF_name']);
-                } ?>" placeholder="Enter Name" name="name" required/><br>
-                <?php if (isset($_SESSION['err_name'])) {
-                    echo $_SESSION['err_name'];
-                    unset($_SESSION['err_name']);
-                } ?>
-                <label class="napis" style="user-select: none">Surname</label><br>
-                <input class="text" type="text" value="<?php if (isset($_SESSION['RF_surname'])) { echo $_SESSION['RF_surname']; unset($_SESSION['RF_surname']);} ?>" placeholder="Enter Surname" name="surname" required><br>
-                <?php if (isset($_SESSION['err_surname'])) {
-                    echo $_SESSION['err_surname'];
-                    unset($_SESSION['err_surname']);
-                } ?>
-                <label class="napis" style="user-select: none">Email</label><br>
-                <input class="text" type="text" value="<?php if (isset($_SESSION['RF_emailRegistration'])) { echo $_SESSION['RF_emailRegistration']; unset($_SESSION['RF_emailRegistration']);} ?>" placeholder="Enter Email" name="emailRegister" required><br>
-                <?php if (isset($_SESSION['err_email'])) {
-                    echo $_SESSION['err_email'];
-                    unset($_SESSION['err_email']);
-                } ?>
-                <label class="napis" style="user-select: none">Phone Number</label><br>
-                <input class="text" type="text" value="<?php if (isset($_SESSION['RF_phone_number'])) { echo $_SESSION['RF_phone_number']; unset($_SESSION['RF_phone_number']);} ?>" placeholder="Enter Phone Number" name="phone_number" required><br>
-                <?php if (isset($_SESSION['err_phone'])) {
-                    echo $_SESSION['err_phone'];
-                    unset($_SESSION['err_phone']);
-                } ?>
-                <label class="napis" style="user-select: none">Password</label><br>
-                <input class="text" type="password" value="<?php if (isset($_SESSION['RF_password1'])) { echo $_SESSION['RF_password1']; unset($_SESSION['RF_password1']); } ?>" placeholder="Enter Password" name="password1" required><br>
-                <?php if (isset($_SESSION['err_psswd'])) {
-                    echo $_SESSION['err_psswd'];
-                    unset($_SESSION['err_psswd']);
-                } ?>
-                <label class="napis" style="user-select: none">Repeat password</label><br>
-                <input class="text" type="password" value="<?php if (isset($_SESSION['RF_password2'])) {echo $_SESSION['RF_password2']; unset($_SESSION['RF_password2']); } ?>" placeholder="Repeat Password" name="password2" required><br>
-                <label style="user-select: none">
-                    <input type="checkbox" name="regulations" value="<?php if (isset($_SESSION['RF_regulations'])) { echo "checked"; unset($_SESSION['RF_regulations']); } ?>"/> I have read and agree to the Terms of Service.<br>
-                </label>
-                <?php if (isset($_SESSION['err_regulations'])) {
-                    echo $_SESSION['err_regulations'];
-                    unset($_SESSION['err_regulations']);
-                } ?>
-                <button type="submit" class="btn" id="create">Create</button>
+                        <label class="napis" style="user-select: none">Name</label><br>
+                        <input class="form-control" class="text" type="text" value="<?php if (isset($_SESSION['RF_name'])) {
+                                                                                        echo $_SESSION['RF_name'];
+                                                                                        unset($_SESSION['RF_name']);
+                                                                                    } ?>" placeholder="Enter Name" name="name" required /><br>
+                        <?php if (isset($_SESSION['err_name'])) {
+                            echo '<div class="alert alert-danger" role="alert">' . $_SESSION['err_name'] . '</div>';
+                            unset($_SESSION['err_name']);
+                        } ?>
+                        <label class="napis" style="user-select: none">Surname</label><br>
+                        <input class="form-control" class="text" type="text" value="<?php if (isset($_SESSION['RF_surname'])) {
+                                                                                        echo $_SESSION['RF_surname'];
+                                                                                        unset($_SESSION['RF_surname']);
+                                                                                    } ?>" placeholder="Enter Surname" name="surname" required><br>
+                        <?php if (isset($_SESSION['err_surname'])) {
+                            echo '<div class="alert alert-danger" role="alert">' . $_SESSION['err_surname'] . '</div>';
+                            unset($_SESSION['err_surname']);
+                        } ?>
+                        <label class="napis" style="user-select: none">Email</label><br>
+                        <input class="form-control" class="text" type="text" value="<?php if (isset($_SESSION['RF_emailRegistration'])) {
+                                                                                        echo $_SESSION['RF_emailRegistration'];
+                                                                                        unset($_SESSION['RF_emailRegistration']);
+                                                                                    } ?>" placeholder="Enter Email" name="emailRegister" required><br>
+                        <?php if (isset($_SESSION['err_email'])) {
+                            echo '<div class="alert alert-danger" role="alert">' . $_SESSION['err_email'] . '</div>';
+                            unset($_SESSION['err_email']);
+                        } ?>
+                        <label class="napis" style="user-select: none">Phone Number</label><br>
+                        <input class="form-control" style="margin-bottom:0%;" class="text" type="text" value="<?php if (isset($_SESSION['RF_phone_number'])) {
+                                                                                                                    echo $_SESSION['RF_phone_number'];
+                                                                                                                    unset($_SESSION['RF_phone_number']);
+                                                                                                                } ?>" placeholder="Enter Phone Number" name="phone_number" required><br>
+                        <?php if (isset($_SESSION['err_phone'])) {
+                            echo '<div class="alert alert-danger" role="alert">' . $_SESSION['err_phone'] . '</div>';
+                            unset($_SESSION['err_phone']);
+                        } ?>
+                        <label class="napis" style="user-select: none">Password</label><br>
 
-        </form>
-        <button class="btn" onclick="CreateAccountFormVis()" id="close">Close</button>
 
+
+
+                        <input class="form-control" class="text" type="password" value="<?php if (isset($_SESSION['RF_password1'])) {
+                                                                                            echo $_SESSION['RF_password1'];
+                                                                                            unset($_SESSION['RF_password1']);
+                                                                                        } ?>" placeholder="Enter Password" name="password1" required><br>
+
+
+                        <?php if (isset($_SESSION['err_psswd'])) {
+                            echo '<div class="alert alert-danger" role="alert">' . $_SESSION['err_psswd'] . '</div>';
+                            unset($_SESSION['err_psswd']);
+                        } ?>
+
+
+                        <label class="napis" style="user-select: none">Repeat password</label><br>
+                        <input class="form-control" class="text" type="password" value="<?php if (isset($_SESSION['RF_password2'])) {
+                                                                                            echo $_SESSION['RF_password2'];
+                                                                                            unset($_SESSION['RF_password2']);
+                                                                                        } ?>" placeholder="Repeat Password" name="password2" required><br>
+                        <label style="user-select: none">
+                            <input type="checkbox" name="regulations" value="<?php if (isset($_SESSION['RF_regulations'])) {
+                                                                                    echo "checked";
+                                                                                    unset($_SESSION['RF_regulations']);
+                                                                                } ?>" /> I have read and agree to the Terms of Service.<br>
+                        </label>
+                        <?php if (isset($_SESSION['err_regulations'])) {
+                            echo '<div class="alert alert-danger" role="alert">' . $_SESSION['err_regulations'] . '</div>';
+                            unset($_SESSION['err_regulations']);
+                        } ?>
+
+                        <br>
+
+                        <!--Footer-->
+                        <div class="modal-footer">
+                            <img src="img/oct.png" width="50px" height="40px">
+
+                            <button style="width:70px" type="submit" class="btn btn-outline-success">Join</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
     </div>
 
-</div>
+    <div id="myMod" class="modal fade">
+        <div class="modal-dialog modal-login">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Login</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="logIn.php" method="post">
 
-<div id="div-panels" style="background-color: #ffffff; ">
-    <p>abc</p>
-</div>
+                        <input class="form-control" class="text" type="text" placeholder="Enter Email" name="email" required><br>
 
-<div id="div-panels" style="background-color: #252379; color: #ffffff; ">
-    <p>abc</p>
-</div>
+                        <input class="form-control" class="text" type="password" placeholder="Enter Password" name="password" required><br>
 
-<!-- How to start -->
-<div id="div-panels" style="background-color: #ffffff; ">
-    <p>abc</p>
-</div>
 
-<!-- Frequently asked -->
-<div id="faq" class="container-fluid">
-<div id="div-panels" style="background-color: #8b54ae; color: #ffffff; ">
-    <p>abc</p>
-</div>
+                        <?php if (isset($_SESSION['error'])) echo '<div class="alert alert-danger" role="alert">' . $_SESSION['error'] . '</div>'; ?>
 
-<!-- About us -->
-<div id="about" class="container-fluid">
-<div id="div-panels" style="background-color: #ffffff; ">
-    <p>abc</p>
-</div>
 
-<!-- Contact/Fotter -->
-<div id="contact" class="container-fluid">
-<div id="div-fotter" style="background-color: #d586f1; color: #ffffff ">
-    <img style=" " src="img/logo%20-%20white.png">
-    <div style="border: 1px solid #d586f1; border-bottom-color: antiquewhite; width: 100%;">
+                        <!--Footer-->
+                        <div class="modal-footer">
+                            <img src="img/oct.png" width="50px" height="40px">
+                            <button type="submit" class="btn btn-outline-danger" id="login">Login</button>
+                        </div>
 
+                        <!-- <button type="submit" class="btn" id="login">Login</button> -->
+                    </form>
+
+                </div>
+            </div>
+        </div>
     </div>
 
-</div>
+    <section>
 
+        <img src="img/g5.png" style="width:100%; height:70%px; margin-top: -15%;">
 
+    </section>
+    <section>
+
+        <img src="img/g12.png" style="width:100%; ">
+
+    </section>
+
+    <section>
+
+        <img src="img/g6.png" style="width:100%; margin-top:-10%">
+
+    </section>
+    <section style="background-color: #525f7f; width:100%; height: 120px">
+        <div style="text-align: center;">
+        <img src="img/oct.png" width="80px" height="60px" style="margin: 1%;">
+        <span style=" color:#fff; font-size: 36px; font-weight: bold; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">Octopus</span>
+        </div>
+
+    </section>
 
 </body>
-<script src="homePageScript.js"></script>
+
 </html>

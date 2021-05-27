@@ -48,7 +48,7 @@
                 }else {
                     echo "Bledne dane do logowania!";
 
-                    $_SESSION['error'] = '<span style = "color:#ff0000">Błędny loGin lub hasło!</span>';
+                    $_SESSION['error'] = '<span style = "color:#ff0000">Błędny login lub hasło!</span>';
                     header('Location: homePage.php#log-popup');
                 }
 

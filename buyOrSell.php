@@ -90,40 +90,40 @@ $connection->close();
 
 <body>
 
-<nav class="navbar navbar-expand d-flex flex-column align-item-start" id="sidebar">
-    <a href="#" class="navbar-brand text-light mt-5">
+    <nav class="navbar navbar-expand d-flex flex-column align-item-start" id="sidebar">
+        <a href="#" class="navbar-brand text-light mt-5">
 
-        <img src="img/oct.png" style="width: 240px; height: 170px; margin-left:3%" alt="niema">
-    </a>
-    <ul class="navbar-nav d-flex flex-column mt-5 w-100">
-        <li class="nav-item w-100">
-            <a href="home.php" class="nav-link text-light pl-4"><img src="img/home.png"> Home</a>
-        </li>
-        <li class="nav-item w-100">
-            <a href="wallet.php" class="nav-link text-light pl-4"><img src="img/wallet.png"> Wallet</a>
-        </li>
-        <li class="nav-item w-100">
-            <a href="buyOrSell.php" class="nav-link text-light pl-4"><img src="img/buy.png"> Buy/Sell</a>
-        </li>
-        <li class="nav-item w-100" data-toggle="modal" data-target="#myModal">
-            <a href="#" class="nav-link text-light pl-4"><img src="img/exchange.png"> Exchange</a>
-        </li>
-        <li class="nav-item w-100">
-            <a href="history.php" class="nav-link text-light pl-4"><img src="img/history.png"> History</a>
-        </li>
-        <li class="nav-item w-100">
-            <a href="#" class="nav-link text-light pl-4"><img src="img/post.png"> Contact</a>
-        </li>
-    </ul>
-</nav>
+            <img src="img/oct.png" style="width: 240px; height: 170px; margin-left:3%" alt="niema">
+        </a>
+        <ul class="navbar-nav d-flex flex-column mt-5 w-100">
+            <li class="nav-item w-100">
+                <a href="home.php" class="nav-link text-light pl-4"><img src="img/home.png"> Home</a>
+            </li>
+            <li class="nav-item w-100">
+                <a href="wallet.php" class="nav-link text-light pl-4"><img src="img/wallet.png"> Wallet</a>
+            </li>
+            <li class="nav-item w-100">
+                <a href="buyOrSell.php" class="nav-link text-light pl-4"><img src="img/buy.png"> Buy/Sell</a>
+            </li>
+            <li class="nav-item w-100" data-toggle="modal" data-target="#myModal">
+                <a href="#" class="nav-link text-light pl-4"><img src="img/exchange.png"> Exchange</a>
+            </li>
+            <li class="nav-item w-100">
+                <a href="history.php" class="nav-link text-light pl-4"><img src="img/history.png"> History</a>
+            </li>
+            <li class="nav-item w-100" data-toggle="modal" data-target="#myContactModal">
+                <a href="#" class="nav-link text-light pl-4"><img src="img/post.png"> Contact Us</a>
+            </li>
+        </ul>
+    </nav>
 
-<!-- Wallet section -->
+    <!-- Wallet section -->
 
-<section id="wallet" class="p-4 my-container">
-    <div style="display: inline">
-        <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
-        <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="eur" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
-        <h2>Buy or sell Your crypto assets</h2>
+    <section id="wallet" class="p-4 my-container">
+        <div style="display: inline">
+            <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
+            <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="eur" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
+            <h2>Buy or sell Your crypto assets</h2>
 
         <form action="/20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l/logOut.php">
             <button type="submit" class="btn btn-outline-danger" data-mdb-ripple-color="dark" style=" float:right; margin-right:10px">
@@ -131,51 +131,85 @@ $connection->close();
             </button>
         </form>
 
-    </div>
+        </div>
 
-    <div class="container">
+        <div class="container">
 
-        <!-- Trigger the modal with a button -->
+            <!-- Trigger the modal with a button -->
 
-        <!-- Modal -->
-        <!--Modal: Login / Register Form-->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog cascading-modal" role="document">
-                <!--Content-->
-                <div class="modal-content">
+            <!-- Modal -->
+            <!--Modal: Login / Register Form-->
+            <div class="modal fade" id="myContactModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog cascading-modal" role="document">
+                    <!--Content-->
+                    <div class="modal-content">
+                        <div class="modal-body mb-1">
 
-                    <!--Modal cascading tabs-->
-                    <div class="modal-c-tabs">
+                            <form>
 
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i class="fas fa-user mr-1"></i>
-                                    Buy</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#panel8" role="tab"><i class="fas fa-user-plus mr-1"></i>
-                                    Sell</a>
-                            </li>
-                        </ul>
+                                <h2>Contact Us</h2>
 
-                        <!-- Tab panels -->
-                        <div class="tab-content">
-                            <!--Buy tab-->
-                            <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Name"><br>
+                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Email"><br>
 
-                                <!--Body-->
-                                <div class="modal-body mb-1">
-                                    <div class="md-form form-sm mb-5">
-                                        <i class="fas fa-envelope prefix"></i>
-                                        <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Your wallet</label>
-                                        <h1 id="euro-amount">
-                                            <?php
-                                            echo '<a>' . $_SESSION['portfel'][0][2] . '</a>'
-                                            ?>
-                                            <a style="font-size: 20px;">€</a>
-                                        </h1>
-                                    </div>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Message"></textarea>
+
+                                <!--Footer-->
+                                <div class="modal-footer">
+                                    <button style="width:70px" type="submit" class="btn btn-outline-success">Send</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- Trigger the modal with a button -->
+
+            <!-- Modal -->
+            <!--Modal: Login / Register Form-->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog cascading-modal" role="document">
+                    <!--Content-->
+                    <div class="modal-content">
+
+                        <!--Modal cascading tabs-->
+                        <div class="modal-c-tabs">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i class="fas fa-user mr-1"></i>
+                                        Buy</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#panel8" role="tab"><i class="fas fa-user-plus mr-1"></i>
+                                        Sell</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panels -->
+                            <div class="tab-content">
+                                <!--Buy tab-->
+                                <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+
+                                    <!--Body-->
+                                    <div class="modal-body mb-1">
+                                        <div class="md-form form-sm mb-5">
+                                            <i class="fas fa-envelope prefix"></i>
+                                            <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Your wallet</label>
+                                            <h1 id="euro-amount">
+                                                <?php
+                                                echo '<a>' . $_SESSION['portfel'][0][2] . '</a>'
+                                                ?>
+                                                <a style="font-size: 20px;">€</a>
+                                            </h1>
+                                        </div>
 
                                     <div class="md-form form-sm mb-4">
                                          <form action="buyCrypto.php" method="post" class="mb-3">
@@ -286,11 +320,11 @@ $connection->close();
     <button class="btn my-4" id="menu-btn">Menu</button>
 
 
-    <div class="main-content">
-        <div class="container mt-7">
-            <!-- Table -->
+        <div class="main-content">
+            <div class="container mt-7">
+                <!-- Table -->
 
-            <div class="row">
+                <div class="row">
 
                 <div class="col">
                     <div class="card shadow">
@@ -309,9 +343,9 @@ $connection->close();
                                     <th scope="col" style="text-align: center">24h change</th>
                                     <th scope="col" style="text-align: center">24h change</th>
 
-                                </tr>
-                                </thead>
-                                <tbody>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
                                 <?php
                                 for ($b = 0; $b < sizeof($decoded); $b++) {
@@ -330,7 +364,7 @@ $connection->close();
         </div>
     </div>
 
-</section>
+    </section>
 
 
 <!-- bootstrap js -->
