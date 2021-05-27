@@ -119,8 +119,8 @@ $connection->close();
             <li class="nav-item w-100">
                 <a href="history.php" class="nav-link text-light pl-4"><img src="img/history.png"> History</a>
             </li>
-            <li class="nav-item w-100">
-                <a href="#" class="nav-link text-light pl-4"><img src="img/post.png"> Contact</a>
+            <li class="nav-item w-100" data-toggle="modal" data-target="#myContactModal">
+                <a href="#" class="nav-link text-light pl-4"><img src="img/post.png"> Contact Us</a>
             </li>
         </ul>
     </nav>
@@ -156,6 +156,40 @@ $connection->close();
 
             </form>
 
+        </div>
+
+        <div class="container">
+
+            <!-- Trigger the modal with a button -->
+
+            <!-- Modal -->
+            <!--Modal: Login / Register Form-->
+            <div class="modal fade" id="myContactModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog cascading-modal" role="document">
+                    <!--Content-->
+                    <div class="modal-content">
+                        <div class="modal-body mb-1">
+
+                            <form>
+
+                                <h2>Contact Us</h2>
+
+                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Name"><br>
+                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Email"><br>
+
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Message"></textarea>
+
+                                <!--Footer-->
+                                <div class="modal-footer">
+                                    <button style="width:70px" type="submit" class="btn btn-outline-success">Send</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="container">

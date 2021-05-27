@@ -145,22 +145,22 @@ $connection->close();
         </a>
         <ul class="navbar-nav d-flex flex-column mt-5 w-100">
             <li class="nav-item w-100">
-                <a href="home.php" class="nav-link text-light pl-4"><img src="img/home.png">   Home</a>
+                <a href="home.php" class="nav-link text-light pl-4"><img src="img/home.png"> Home</a>
             </li>
             <li class="nav-item w-100">
-                <a href="wallet.php" class="nav-link text-light pl-4"><img src="img/wallet.png">   Wallet</a>
+                <a href="wallet.php" class="nav-link text-light pl-4"><img src="img/wallet.png"> Wallet</a>
             </li>
             <li class="nav-item w-100">
-                <a href="buyOrSell.php" class="nav-link text-light pl-4"><img src="img/buy.png">   Buy/Sell</a>
+                <a href="buyOrSell.php" class="nav-link text-light pl-4"><img src="img/buy.png"> Buy/Sell</a>
             </li>
             <li class="nav-item w-100">
-                <a href="#" class="nav-link text-light pl-4"><img src="img/exchange.png">   Exchange</a>
+                <a href="#" class="nav-link text-light pl-4"><img src="img/exchange.png"> Exchange</a>
             </li>
             <li class="nav-item w-100">
-                <a href="history.php" class="nav-link text-light pl-4"><img src="img/history.png">   History</a>
+                <a href="history.php" class="nav-link text-light pl-4"><img src="img/history.png"> History</a>
             </li>
-            <li class="nav-item w-100">
-                <a href="#" class="nav-link text-light pl-4"><img src="img/post.png">   Contact</a>
+            <li class="nav-item w-100" data-toggle="modal" data-target="#myContactModal">
+                <a href="#" class="nav-link text-light pl-4"><img src="img/post.png"> Contact Us</a>
             </li>
         </ul>
     </nav>
@@ -174,9 +174,9 @@ $connection->close();
             <h2>Home</h2>
 
             <form action="logOut.php">
-            
-            <label style=" float:right; margin-right:10px; font-size:15px;">My account</label>
-            <button type="submit" class="btn btn-outline-danger" data-mdb-ripple-color="dark" style=" float:right; margin-right:10px">
+
+                <label style=" float:right; margin-right:10px; font-size:15px;">My account</label>
+                <button type="submit" class="btn btn-outline-danger" data-mdb-ripple-color="dark" style=" float:right; margin-right:10px">
                     Log Out
                 </button>
                 <button type="button" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark" style="float:right; margin-right:10px" data-target="#myModal" data-toggle="modal">
@@ -251,7 +251,7 @@ $connection->close();
                                                     for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                         for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
                                                             if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
-                                                                echo '<option id="'.$_SESSION['lista_walut'][$i][2].'" value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
+                                                                echo '<option id="' . $_SESSION['lista_walut'][$i][2] . '" value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                                 break;
                                                             }
                                                         }
@@ -279,7 +279,7 @@ $connection->close();
                                     <!--Footer-->
                                     <div class="modal-footer">
                                         <p>Powered by</p>
-                                        
+
                                         <img src="img/mastercard.png" width="60px" height="60px">
                                         <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal">Close</button>
                                     </div>
@@ -319,12 +319,12 @@ $connection->close();
                                                     for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                         for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
                                                             if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
-                                                                echo '<option id="'.$_SESSION['lista_walut'][$i][3].'" value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
+                                                                echo '<option id="' . $_SESSION['lista_walut'][$i][3] . '" value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                                 $temp += 1;
                                                                 break;
                                                             }
                                                         }
-                                                    }//'.$_SESSION['lista_walut'][$i][3].'
+                                                    } //'.$_SESSION['lista_walut'][$i][3].'
                                                     if ($temp == 0) {
                                                         echo "No assets to sell";
                                                     }
@@ -364,8 +364,44 @@ $connection->close();
                     <!--/.Content-->
                 </div>
             </div>
-            <!--Modal: Login / Register Form-->
+
         </div>
+
+        <div class="container">
+
+            <!-- Trigger the modal with a button -->
+
+            <!-- Modal -->
+            <!--Modal: Login / Register Form-->
+            <div class="modal fade" id="myContactModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog cascading-modal" role="document">
+                    <!--Content-->
+                    <div class="modal-content">
+                        <div class="modal-body mb-1">
+
+                            <form>
+
+                                <h2>Contact Us</h2>
+
+                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Name"><br>
+                                <input id="amountInputSell" name="amount" type="text" class="form-control" placeholder="Email"><br>
+
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Message"></textarea>
+
+                                <!--Footer-->
+                                <div class="modal-footer">
+                                    <button style="width:70px" type="submit" class="btn btn-outline-success">Send</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <button class="btn my-4" id="menu-btn">Menu</button>
 
         <div id="main-screen">
@@ -398,43 +434,44 @@ $connection->close();
             if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode != 46) {
                 validateBuy();
                 return false;
-            }else{
+            } else {
                 validateBuy();
                 return true;
             }
         }
 
-        function validateBuy(){
+        function validateBuy() {
             var input = document.getElementById('amountInputBuy').value;
             const button = document.getElementById('submitButton');
 
-            if(input > 0){
+            if (input > 0) {
                 button.disabled = false;
-            }else {
+            } else {
                 button.disabled = true;
             }
         }
-        setInterval(validateBuy,250);
+        setInterval(validateBuy, 250);
 
-        function validateSell(){
+        function validateSell() {
             var input = document.getElementById('amountInputSell').value;
             const button = document.getElementById('submitButtonSell');
 
-            if(input > 0){
+            if (input > 0) {
                 button.disabled = false;
-            }else {
+            } else {
                 button.disabled = true;
             }
         }
-        setInterval(validateSell,250);
+        setInterval(validateSell, 250);
 
-        function sendMax(max){
-            document.getElementById('maxButton').onclick = function () {
-                var e =document.getElementById('toSell');
-                document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;}
+        function sendMax(max) {
+            document.getElementById('maxButton').onclick = function() {
+                var e = document.getElementById('toSell');
+                document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;
+            }
         }
 
-        function sendMaxBuy(max){
+        function sendMaxBuy(max) {
             var a = document.getElementById('toBuy');
             var e = document.getElementById('toPay');
             //pay buy
@@ -445,18 +482,14 @@ $connection->close();
                     type: "POST",
                     url: 'home.php',
                     data: $(this).serialize(),
-                    success: function(response)
-                    {
+                    success: function(response) {
                         var jsonData = JSON.parse(response);
 
                         // user is logged in successfully in the back-end
                         // let's redirect
-                        if (jsonData.success == "1")
-                        {
+                        if (jsonData.success == "1") {
                             alert('xd');
-                        }
-                        else
-                        {
+                        } else {
                             alert('Invalid Credentials!');
                         }
                     }
@@ -468,22 +501,21 @@ $connection->close();
 
         }
 
-       /* function createCookie(name, value, days) {
-            var expires;
+        /* function createCookie(name, value, days) {
+             var expires;
 
-            if (days) {
-                var date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toGMTString();
-            }
-            else {
-                expires = "";
-            }
+             if (days) {
+                 var date = new Date();
+                 date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                 expires = "; expires=" + date.toGMTString();
+             }
+             else {
+                 expires = "";
+             }
 
-            document.cookie = escape(name) + "=" +
-                escape(value) + expires + "; path=/";
-        }*/
-
+             document.cookie = escape(name) + "=" +
+                 escape(value) + expires + "; path=/";
+         }*/
     </script>
 </body>
 
