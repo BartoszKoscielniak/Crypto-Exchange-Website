@@ -105,9 +105,7 @@ $connection->close();
             <li class="nav-item w-100">
                 <a href="buyOrSell.php" class="nav-link text-light pl-4"><img src="img/buy.png"> Buy/Sell</a>
             </li>
-            <li class="nav-item w-100" data-toggle="modal" data-target="#myModal">
-                <a href="#" class="nav-link text-light pl-4"><img src="img/exchange.png"> Exchange</a>
-            </li>
+            
             <li class="nav-item w-100">
                 <a href="history.php" class="nav-link text-light pl-4"><img src="img/history.png"> History</a>
             </li>
