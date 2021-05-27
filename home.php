@@ -8,7 +8,7 @@ if (!isset($_SESSION['isLoggedIn'])) {
 }
 //pobranie informacji o krypto
 $ch = curl_init();
-$url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=20&page=1&sparkline=false";
+$url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false";
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
@@ -74,6 +74,7 @@ $connection->close();
     <!-- bootstrap 5 css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
     <!-- custom css -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="userProfileStyle.css">
 </head>
 
@@ -169,7 +170,7 @@ $connection->close();
     <section id="home" class="p-4 my-container">
         <div style="display: inline">
             <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
-            <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="usd" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
+            <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="eur" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
             <h2>Home</h2>
 
             <form action="logOut.php">
@@ -232,8 +233,8 @@ $connection->close();
                                         <div class="md-form form-sm mb-4">
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Buy:</label>
 
-                                            <form action="buyCrypto.php" method="post" class="mb-3">
-                                                <select name="buy" id="crypto" class="form-select" aria-label="Default select example">
+                                            <form id="buyForm" action="buyCrypto.php" method="post" class="mb-3">
+                                                <select name="buy" id="toBuy" class="form-select" aria-label="Default select example">
 
                                                     <?php
                                                     for ($i = 0; $i < 10; $i++) {
@@ -243,14 +244,14 @@ $connection->close();
 
                                                 </select>
                                                 <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Pay:</label>
-                                                <select name="pay" id="crypto" class="form-select" aria-label="Default select example">
+                                                <select name="pay" id="toPay" class="form-select" aria-label="Default select example">
 
-                                                    <option value="myWallet">My Wallet</option>
+                                                    <option id="myWallet" value="myWallet">My Wallet</option>
                                                     <?php
                                                     for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                         for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
                                                             if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
-                                                                echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
+                                                                echo '<option id="'.$_SESSION['lista_walut'][$i][2].'" value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                                 break;
                                                             }
                                                         }
@@ -260,8 +261,10 @@ $connection->close();
                                                 </select>
                                                 <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">How much?</label>
                                                 <div class="input-group mb-3">
-                                                    <input id="amountInput" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
-                                                    
+                                                    <input id="amountInputBuy" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
+                                                    <div class="input-group-append">
+                                                        <button id="maxButtonBuy" class="btn btn-outline-primary" type="button" onclick="sendMaxBuy()">MAX</button>
+                                                    </div>
                                                 </div>
                                                 <?php if (isset($_SESSION['err_fund'])) {
                                                     echo $_SESSION['err_fund'];
@@ -367,13 +370,11 @@ $connection->close();
 
         <div id="main-screen">
 
-            <div style="background-color:mediumpurple; height:350px; width:700px; display:inline; ">
-                <div style="height:560px; background-color: #FFFFFF; overflow:hidden; box-sizing: border-box; border: 1px solid #56667F; border-radius: 4px; text-align: right; line-height:14px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #56667F;padding:1px;padding: 0px; margin: 0px; width: 100%;">
-                    <div style="height:540px; padding:0px; margin:0px; width: 100%;"><iframe src="https://widget.coinlib.io/widget?type=chart&theme=light&coin_id=859&pref_coin_id=1505" width="100%" height="536px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;line-height:14px;"></iframe></div>
-                    <div style="color: #FFFFFF; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;"><a href="https://coinlib.io" target="_blank" style="font-weight: 500; color: #FFFFFF; text-decoration:none; font-size:11px">Cryptocurrency Prices</a>&nbsp;by Coinlib</div>
+            <div style="height:560px; background-color: #FFFFFF; overflow:hidden; box-sizing: border-box; border: 1px solid #56667F; border-radius: 4px; text-align: right; line-height:14px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #56667F;padding:1px;padding: 0px; margin: 0px; width: 100%;">
+                <div style="height:540px; padding:0px; margin:0px; width: 100%;"><iframe src="https://widget.coinlib.io/widget?type=chart&theme=light&coin_id=859&pref_coin_id=1506" width="100%" height="536px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;line-height:14px;"></iframe></div>
+                <div style="color: #FFFFFF; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;"><a href="https://coinlib.io" target="_blank" style="font-weight: 500; color: #FFFFFF; text-decoration:none; font-size:11px">Cryptocurrency Prices</a>&nbsp;by Coinlib
                 </div>
             </div>
-        </div>
 
     </section>
 
@@ -404,7 +405,7 @@ $connection->close();
         }
 
         function validateBuy(){
-            var input = document.getElementById('amountInput').value;
+            var input = document.getElementById('amountInputBuy').value;
             const button = document.getElementById('submitButton');
 
             if(input > 0){
@@ -432,6 +433,56 @@ $connection->close();
                 var e =document.getElementById('toSell');
                 document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;}
         }
+
+        function sendMaxBuy(max){
+            var a = document.getElementById('toBuy');
+            var e = document.getElementById('toPay');
+            //pay buy
+
+            $('#buyForm').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: 'home.php',
+                    data: $(this).serialize(),
+                    success: function(response)
+                    {
+                        var jsonData = JSON.parse(response);
+
+                        // user is logged in successfully in the back-end
+                        // let's redirect
+                        if (jsonData.success == "1")
+                        {
+                            alert('xd');
+                        }
+                        else
+                        {
+                            alert('Invalid Credentials!');
+                        }
+                    }
+                });
+            });
+
+
+
+
+        }
+
+       /* function createCookie(name, value, days) {
+            var expires;
+
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toGMTString();
+            }
+            else {
+                expires = "";
+            }
+
+            document.cookie = escape(name) + "=" +
+                escape(value) + expires + "; path=/";
+        }*/
 
     </script>
 </body>

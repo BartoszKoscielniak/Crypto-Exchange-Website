@@ -1,24 +1,43 @@
-<?php
-/*
-$ch = curl_init();
-
-$url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=20&page=1&sparkline=false";
-
-curl_setopt($ch,CURLOPT_URL,$url);
-curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-
-$response = curl_exec($ch);
-
-if($e = curl_error($ch)){
-    echo $e;
+//ajax
+if (e.options[e.selectedIndex].id == 'myWallet') {
+document.getElementById('amountInputBuy').value = e.options[e.selectedIndex].id;
 }else{
-    $decoded = json_decode($response,true);
-    print_r($decoded);
-}
-//print_r($decoded['1']['name']);
-curl_close($ch);
-*/
+var data1 = "xd";
+$.ajax({
+method: "POST",
+url: "home.php",
+data: { data1: data1},
+}).done(function(html){
+alert("success!");
 
-echo date("H:i");
-echo date("Y-m-d");
-?>
+document.getElementById('amountInputBuy').value = <?php
+
+if(isset($_POST['data1'])){
+    echo json_encode("xd");
+}else{
+    echo json_encode("ta nie dziala");
+}
+?>;
+
+}).fail(function(html){
+alert("nah!");
+});
+}
+
+
+
+//inny sposob z cookie
+var e = document.getElementById('toPay');
+var a = document.getElementById('toBuy');
+createCookie("id",e.options[e.selectedIndex].id,10);
+
+document.getElementById('amountInputBuy').value = <?php
+
+if(isset($_COOKIE["id"])){
+    echo json_encode($_COOKIE["id"]);
+    setcookie("id", time() - 3600);
+    //echo json_encode("xd");
+}else{
+    echo json_encode("nie dziala");
+}
+?>;

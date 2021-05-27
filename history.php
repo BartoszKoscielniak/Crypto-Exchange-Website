@@ -133,7 +133,7 @@ $connection->close();
             <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,litecoin,ripple" currency="usd" background-color="#ffffff" locale="en"></coingecko-coin-price-marquee-widget>
             <h2>History of tearing</h2>
 
-            <form action="/20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l/logOut.php">
+            <form action="logOut.php">
                 <button type="submit" class="btn btn-outline-danger" data-mdb-ripple-color="dark" style=" float:right; margin-right:10px">
                     Log Out
                 </button>
@@ -522,7 +522,9 @@ $connection->close();
             container.classList.toggle("active-cont")
         })
 
-        
+        $(".datepicker").datepicker({
+            format: 'yyyy-mm-dd'
+        });
 
         function startValue() {
 
@@ -563,8 +565,6 @@ $connection->close();
             }
 
         }
-
-
 
         function onlyNumberKey(evt) {
             var ASCIICode = (evt.which) ? evt.which : evt.keyCode
