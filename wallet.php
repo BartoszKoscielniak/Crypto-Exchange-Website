@@ -85,7 +85,7 @@
                         $resp = curl_exec($chi);
                         $priceDayBefore = json_decode($resp, true);
 
-                        curl_close($chi);
+                        //curl_close($chi);
                         $_SESSION['yesterdaysTotalValueDifference'] = $_SESSION['yesterdaysTotalValueDifference'] + $_SESSION['lista_walut'][$u][3] * $priceDayBefore['prices'][0][1];
                         break 2;
                     }
@@ -526,7 +526,7 @@
                                             }
                                         }
                                         if ($temp == 0) {
-                                            echo '<tr><th>Looks like there is no assets associated with your wallet. Add some funds and start Your journey</th></tr>' . "\n";
+                                            echo '<tr><th width="100%">Looks like there is no assets associated with your wallet. Add some funds and start Your journey</th></tr>' . "\n";
                                         }  //sprintf("%.2f", round($_SESSION['totalWalletValue'], 3))
                                         echo '<tr><th></th><th></th><th>'.$_SESSION['yesterdaysTotalValueDifference'].'</th><th><h5>Total value: '.number_format($_SESSION['totalWalletValue'],2).'€</h5></th></tr>'
                                         ?>
