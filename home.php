@@ -177,7 +177,7 @@ $connection->close();
 
             <form action="/20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l/logOut.php">
             
-            <label style=" float:right; margin-right:10px; font-size:15px;">My account</label>
+
             <button type="submit" class="btn btn-outline-danger" data-mdb-ripple-color="dark" style=" float:right; margin-right:10px">
                     Log Out
                 </button>

@@ -1,74 +1,106 @@
 <?php
-session_start();
-require_once "dataBaseConnector.php";
+    session_start();
+    require_once "dataBaseConnector.php";
 
-if (!isset($_SESSION['isLoggedIn'])) {
-    header('Location: homePage.php');
-    exit();
-}
-//pobranie informacji o krypto
-$ch = curl_init();
-$url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false";
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$response = curl_exec($ch);
+    if (!isset($_SESSION['isLoggedIn'])) {
+        header('Location: homePage.php');
+        exit();
+    }
+    //pobranie informacji o krypto
+    $ch = curl_init();
+    $url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
 
-mysqli_report(MYSQLI_REPORT_STRICT);
-$connection = new mysqli($host, $db_user, $db_password, $db_name);
+    mysqli_report(MYSQLI_REPORT_STRICT);
+    $connection = new mysqli($host, $db_user, $db_password, $db_name);
 
-//wpisanie krytpto do bazy/aktualizacja ceny
-if ($e = curl_error($ch)) {
-    echo $e;
-} else {
-    $decoded = json_decode($response, true);
-
-    if ($connection->connect_errno != 0) {
-        throw new Exception(mysqli_connect_error());
+    //wpisanie krytpto do bazy/aktualizacja ceny
+    if ($e = curl_error($ch)) {
+        echo $e;
     } else {
-        for ($i = 0; $i < sizeof($decoded); $i++) {
+        $decoded = json_decode($response, true);
 
-            $result = $connection->query("SELECT COUNT(*) FROM kryptowaluty WHERE nazwa = '" . $decoded[$i]['name'] . "'");
-            $row = $result->fetch_assoc();
-            $result->free();
+        if ($connection->connect_errno != 0) {
+            throw new Exception(mysqli_connect_error());
+        } else {
+            for ($i = 0; $i < sizeof($decoded); $i++) {
 
-            $result = $connection->query("SELECT MAX(id_krypto) FROM kryptowaluty");
-            $max = $result->fetch_assoc();
-            $result->free();
+                $result = $connection->query("SELECT COUNT(*) FROM kryptowaluty WHERE nazwa = '" . $decoded[$i]['name'] . "'");
+                $row = $result->fetch_assoc();
+                $result->free();
 
-            if ($row['COUNT(*)'] == 0) {
-                $connection->query("INSERT INTO kryptowaluty VALUES (" . ($max['MAX(id_krypto)'] + 1) . ",'" . $decoded[$i]['name'] . "','" . $decoded[$i]['current_price'] . "')");
-            } else {
-                $connection->query("UPDATE kryptowaluty SET kurs = '" . $decoded[$i]['current_price'] . "' WHERE nazwa = '" . $decoded[$i]['name'] . "'");
+                $result = $connection->query("SELECT MAX(id_krypto) FROM kryptowaluty");
+                $max = $result->fetch_assoc();
+                $result->free();
+
+                if ($row['COUNT(*)'] == 0) {
+                    $connection->query("INSERT INTO kryptowaluty VALUES (" . ($max['MAX(id_krypto)'] + 1) . ",'" . $decoded[$i]['name'] . "','" . $decoded[$i]['current_price'] . "')");
+                } else {
+                    $connection->query("UPDATE kryptowaluty SET kurs = '" . $decoded[$i]['current_price'] . "' WHERE nazwa = '" . $decoded[$i]['name'] . "'");
+                }
             }
         }
     }
-}
-curl_close($ch);
+    curl_close($ch);
 
-//sprawdzanie ktore krypto posiadamy
-if ($connection->connect_errno != 0) {
-    throw new Exception(mysqli_connect_error());
-} else {
-    $result = $connection->query("SELECT * FROM portfele WHERE id_użytkownika = '" . $_SESSION['id_użytkownika'] . "'");
-    $_SESSION['portfel'] = $result->fetch_all();
-    $result->free();
+    //sprawdzanie ktore krypto posiadamy
+    if ($connection->connect_errno != 0) {
+        throw new Exception(mysqli_connect_error());
+    } else {
+        $result = $connection->query("SELECT * FROM portfele WHERE id_użytkownika = '" . $_SESSION['id_użytkownika'] . "'");
+        $_SESSION['portfel'] = $result->fetch_all();
+        $result->free();
 
-    $result = $connection->query("SELECT * FROM lista_walut WHERE id_portfela = '" . $_SESSION['portfel'][0][0] . "'");
-    $_SESSION['lista_walut'] = $result->fetch_all();
-    $result->free();
-}
+        $result = $connection->query("SELECT * FROM lista_walut WHERE id_portfela = '" . $_SESSION['portfel'][0][0] . "'");
+        $_SESSION['lista_walut'] = $result->fetch_all();
+        $result->free();
+    }
 
-//pobranie listy krypto dostepnej w bazie
-if ($connection->connect_errno != 0) {
-    throw new Exception(mysqli_connect_error());
-} else {
-    $result = $connection->query("SELECT * FROM kryptowaluty ");
-    $_SESSION['krypto'] = $result->fetch_all();
-    $result->free();
-}
-$connection->close();
+    //pobranie listy krypto dostepnej w bazie
+    if ($connection->connect_errno != 0) {
+        throw new Exception(mysqli_connect_error());
+    } else {
+        $result = $connection->query("SELECT * FROM kryptowaluty ");
+        $_SESSION['krypto'] = $result->fetch_all();
+        $result->free();
+    }
+    $connection->close();
 
-//liczenie zmiany wartosci portfela
+    //liczenie zmiany wartosci portfela
+    $_SESSION['totalWalletValue'] = 0;
+    $_SESSION['yesterdaysTotalValueDifference'] = 0;
+    for ($u = 0; $u < sizeof($_SESSION['lista_walut']); $u++){
+        for ($g = 0; $g < sizeof($_SESSION['krypto']); $g++){
+            if ($_SESSION['lista_walut'][$u][1] == $_SESSION['portfel'][0][0] & $_SESSION['lista_walut'][$u][2] == $_SESSION['krypto'][$g][0]){
+                $_SESSION['totalWalletValue'] = $_SESSION['totalWalletValue'] + $_SESSION['lista_walut'][$u][3] * $_SESSION['krypto'][$g][2];
+
+                for ($next = 0; $next < sizeof($decoded); $next++) {
+                    if ($_SESSION['krypto'][$g][1] == $decoded[$next]['name']) {
+                        $chi = curl_init();
+                        $urli = "https://api.coingecko.com/api/v3/coins/{$decoded[$next]['id']}/market_chart?vs_currency=eur&days=1&interval=daily";
+                        curl_setopt($chi, CURLOPT_URL, $urli);
+                        curl_setopt($chi, CURLOPT_RETURNTRANSFER, true);
+                        $resp = curl_exec($chi);
+                        $priceDayBefore = json_decode($resp, true);
+
+                        //curl_close($chi);
+                        $_SESSION['yesterdaysTotalValueDifference'] = $_SESSION['yesterdaysTotalValueDifference'] + $_SESSION['lista_walut'][$u][3] * $priceDayBefore['prices'][0][1];
+                        break 2;
+                    }
+                }
+            }
+        }
+    }
+
+    $_SESSION['yesterdaysTotalValueDifference'] = $_SESSION['totalWalletValue'] - $_SESSION['yesterdaysTotalValueDifference'];
+
+    if ($_SESSION['yesterdaysTotalValueDifference'] >= 0){
+        $_SESSION['yesterdaysTotalValueDifference'] = '<h5 style="color: green">Yesterdays Value Change: +'.number_format($_SESSION['yesterdaysTotalValueDifference'],2).'€</h5>';
+    }else{
+        $_SESSION['yesterdaysTotalValueDifference'] = '<h5 style="color: red">Yesterdays Value Change:</h5> '.number_format($_SESSION['yesterdaysTotalValueDifference'],2).'€</h5>';
+    }
 
 
 ?>
@@ -494,9 +526,9 @@ $connection->close();
                                             }
                                         }
                                         if ($temp == 0) {
-                                            echo '<tr><th>Looks like there is no assets associated with your wallet. Add some funds and start Your journey</th></tr>' . "\n";
-                                        }
-
+                                            echo '<tr><th width="100%">Looks like there is no assets associated with your wallet. Add some funds and start Your journey</th></tr>' . "\n";
+                                        }  //sprintf("%.2f", round($_SESSION['totalWalletValue'], 3))
+                                        echo '<tr><th></th><th></th><th>'.$_SESSION['yesterdaysTotalValueDifference'].'</th><th><h5>Total value: '.number_format($_SESSION['totalWalletValue'],2).'€</h5></th></tr>'
                                         ?>
                             </div>
                         </div>

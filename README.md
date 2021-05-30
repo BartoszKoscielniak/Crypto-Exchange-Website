@@ -11,8 +11,7 @@
    1. Monitorowanie zmian kursu kryptowalut
    2. Funkcja trade'owania kryptowalutami
    3. Wgląd do portfela 
-   4. Przesyłanie między portfelami 
-   5. Kupowano/sprzedaż walut
+   4. Kupowanie/sprzedaż kryptowalut
 ### Interfejs serwisu
 
    <details>
