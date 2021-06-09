@@ -220,7 +220,7 @@ $connection->close();
                                                 <?php
                                                 for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                     for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                        if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.00001) {
+                                                        if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.0001) {
                                                             echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                             break;
                                                         }
@@ -466,6 +466,7 @@ $connection->close();
         document.getElementById('amountInputBuy').value = '';
         document.getElementById('amountInputSellxd').value = '';
     }
+
 </script>
 </body>
 

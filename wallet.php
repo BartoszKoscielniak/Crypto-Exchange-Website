@@ -342,7 +342,7 @@
                                                     <?php
                                                     for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                         for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.00001) {
+                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.0001) {
                                                                 echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                                 break;
                                                             }
@@ -410,7 +410,7 @@
                                                     $temp = 0;
                                                     for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                         for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.00001) {
+                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.0001) {
                                                                 echo '<option id="'.$_SESSION['lista_walut'][$i][3].'" value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                                 $temp += 1;
                                                                 break;
@@ -491,7 +491,7 @@
 
                                         for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                             for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.00001) {
+                                                if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.0001) {
                                                     for ($b = 0; $b < sizeof($decoded); $b++) {
                                                         if ($_SESSION['krypto'][$a][1] == $decoded[$b]['name']) {
                                                             echo '<tr><th class="rank" style="width:10%; text-align: center">' . ($temp + 1) . '</th><th style="width: 30%; text-align: center"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:30%; text-align: center">' . $_SESSION['krypto'][$a][1] . '</th><th style="width:30%; text-align: center">' . sprintf("%.5f", round($_SESSION['lista_walut'][$i][3], 3)) . '</th></tr>' . "\n";

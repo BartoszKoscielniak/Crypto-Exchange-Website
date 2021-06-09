@@ -1,14 +1,12 @@
 <?php
     session_start();
 
-    //pobranie informacji o krypto
     $ch = curl_init();
     $url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false";
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
 
-    //wpisanie krytpto do bazy/aktualizacja ceny
     if ($e = curl_error($ch)) {
         echo $e;
     } else {
@@ -21,7 +19,7 @@
     $_SESSION['yesterdaysTotalValueDifference'] = 0;
     for ($u = 0; $u < sizeof($_SESSION['lista_walut']); $u++){
         for ($g = 0; $g < sizeof($_SESSION['krypto']); $g++){
-            if ($_SESSION['lista_walut'][$u][1] == $_SESSION['portfel'][0][0] & $_SESSION['lista_walut'][$u][2] == $_SESSION['krypto'][$g][0]){
+            if ($_SESSION['lista_walut'][$u][1] == $_SESSION['portfel'][0][0] && $_SESSION['lista_walut'][$u][2] == $_SESSION['krypto'][$g][0] && $_SESSION['lista_walut'][$u][3] > 0){
                 $_SESSION['totalWalletValue'] = $_SESSION['totalWalletValue'] + $_SESSION['lista_walut'][$u][3] * $_SESSION['krypto'][$g][2];
 
                 for ($next = 0; $next < sizeof($decoded); $next++) {
