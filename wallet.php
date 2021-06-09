@@ -67,42 +67,6 @@
         $result->free();
     }
     $connection->close();
-
-/*    //liczenie zmiany wartosci portfela
-    $_SESSION['totalWalletValue'] = 0;
-    $_SESSION['yesterdaysTotalValueDifference'] = 0;
-    for ($u = 0; $u < sizeof($_SESSION['lista_walut']); $u++){
-        for ($g = 0; $g < sizeof($_SESSION['krypto']); $g++){
-            if ($_SESSION['lista_walut'][$u][1] == $_SESSION['portfel'][0][0] & $_SESSION['lista_walut'][$u][2] == $_SESSION['krypto'][$g][0]){
-                $_SESSION['totalWalletValue'] = $_SESSION['totalWalletValue'] + $_SESSION['lista_walut'][$u][3] * $_SESSION['krypto'][$g][2];
-
-                for ($next = 0; $next < sizeof($decoded); $next++) {
-                    if ($_SESSION['krypto'][$g][1] == $decoded[$next]['name']) {
-                        $chi = curl_init();
-                        $urli = "https://api.coingecko.com/api/v3/coins/{$decoded[$next]['id']}/market_chart?vs_currency=eur&days=1&interval=daily";
-                        curl_setopt($chi, CURLOPT_URL, $urli);
-                        curl_setopt($chi, CURLOPT_RETURNTRANSFER, true);
-                        $resp = curl_exec($chi);
-                        $priceDayBefore = json_decode($resp, true);
-
-                        //curl_close($chi);
-                        $_SESSION['yesterdaysTotalValueDifference'] = $_SESSION['yesterdaysTotalValueDifference'] + $_SESSION['lista_walut'][$u][3] * $priceDayBefore['prices'][0][1];
-                        break 2;
-                    }
-                }
-            }
-        }
-    }
-
-    $_SESSION['yesterdaysTotalValueDifference'] = $_SESSION['totalWalletValue'] - $_SESSION['yesterdaysTotalValueDifference'];
-
-    if ($_SESSION['yesterdaysTotalValueDifference'] >= 0){
-        $_SESSION['yesterdaysTotalValueDifference'] = '<h5 style="color: green">Yesterdays Value Change: +'.number_format($_SESSION['yesterdaysTotalValueDifference'],2).'€</h5>';
-    }else{
-        $_SESSION['yesterdaysTotalValueDifference'] = '<h5 style="color: red">Yesterdays Value Change:</h5> '.number_format($_SESSION['yesterdaysTotalValueDifference'],2).'€</h5>';
-    }*/
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -529,8 +493,8 @@
                                         }
                                         if ($temp == 0) {
                                             echo '<tr><th width="100%">Looks like there is no assets associated with your wallet. Add some funds and start Your journey</th></tr>' . "\n";
-                                        }  //sprintf("%.2f", round($_SESSION['totalWalletValue'], 3))
-                                        echo '<tr><th></th><th></th><th>'.$_SESSION['yesterdaysTotalValueDifference'].'</th><th><h5>Total value: '.number_format($_SESSION['totalWalletValue'],2).'€</h5></th></tr>'
+                                        }
+                                        echo '<tr><th></th><th></th><th id="here"></th><th><h5 id="there"></h5></th></tr>'
                                         ?>
                             </div>
                         </div>
@@ -538,9 +502,7 @@
                 </div>
             </div>
         </div>
-
     </section>
-    <p id="serverResponse"></p>
 
     <!-- bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -557,21 +519,21 @@
 
         function startValue() {
 
-setTimeout(() => {
+        setTimeout(() => {
 
-    document.getElementById('payCard1').checked = false;
-    document.getElementById('payCard2').checked = false;
-    
-    document.getElementsByClassName('payOpt')[0].style.display = 'block';
-    document.getElementsByClassName('payOpt')[1].style.display = 'block';
-    
-    document.getElementById('creditCard').style.display = 'none';
-    document.getElementById('blikk').style.display = 'none';
+            document.getElementById('payCard1').checked = false;
+            document.getElementById('payCard2').checked = false;
 
-}, 500)
-}
+            document.getElementsByClassName('payOpt')[0].style.display = 'block';
+            document.getElementsByClassName('payOpt')[1].style.display = 'block';
 
-//Credit card
+            document.getElementById('creditCard').style.display = 'none';
+            document.getElementById('blikk').style.display = 'none';
+
+        }, 500)
+        }
+
+        //Credit card
         function selectPayMet(id) {
 
 document.getElementById(id).checked = true;
@@ -648,6 +610,32 @@ if(id.localeCompare('payCard1') == 0){
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.send('pay=' + pay.options[pay.selectedIndex].value + '&buy=' + buy.options[buy.selectedIndex].value);
         }
+
+        function walletVal(){
+            const xhr = new XMLHttpRequest();
+
+            xhr.onload = function (){
+                const serverResponse1 = document.getElementById("here");
+                serverResponse1.innerHTML = this.responseText
+            };
+            xhr.open("POST","totalwalletValueChange.php");
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send('pay=1');
+        }
+        walletVal();
+
+        function walletTotalVal(){
+            const xhr = new XMLHttpRequest();
+
+            xhr.onload = function (){
+                const serverResponse1 = document.getElementById("there");
+                serverResponse1.innerHTML = this.responseText
+            };
+            xhr.open("POST","totalwalletValueChange.php");
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send('pay=2');
+        }
+        walletTotalVal();
 
         function clearInput(){
             document.getElementById('amountInputb').value = '';

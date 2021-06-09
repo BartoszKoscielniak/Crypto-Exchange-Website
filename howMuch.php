@@ -34,6 +34,7 @@
         for($i = 0; $i < sizeof($_SESSION['krypto']); $i++){
             if ($_POST['buy'] == $_SESSION['krypto'][$i][1]){
                 $canBuy = $_SESSION['portfel'][0][2] / $_SESSION['krypto'][$i][2];
+                $canBuy = $canBuy * 0.9999;
                 echo number_format((float)$canBuy, 5, '.', '');
             }
         }
