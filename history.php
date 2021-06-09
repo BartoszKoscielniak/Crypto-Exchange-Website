@@ -270,10 +270,6 @@ $connection->close();
                                         <div style="float: right;">
                                             <h6 style="display: inline-block; text-align: center; ">CVV</h6>
 
-                                            <!-- <div class="col-md-6 mb-3">
-                                                <label for="">Data wystawienia</label>
-                                                <input placeholder="Wybierz datę" type="text" id="date" name="data" class="form-control bg-dark text-light">
-                                            </div> -->
 
                                             <input id="cvvNumber" name="cvvamount" type="text" maxlength='3' class="form-control" placeholder='123' onkeypress="return onlyNumberKey(event,'cvvNumber')" autocomplete="off">
 
