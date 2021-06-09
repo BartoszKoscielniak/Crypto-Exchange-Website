@@ -252,7 +252,7 @@ $connection->close();
                                                     <?php
                                                     for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                         for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
+                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.00001) {
                                                                 echo '<option id="' . $_SESSION['lista_walut'][$i][2] . '" value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                                 break;
                                                             }
@@ -283,7 +283,7 @@ $connection->close();
                                         <p>Powered by</p>
 
                                         <img src="img/mastercard.png" width="60px" height="60px">
-                                        <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal" onclick="clearInput()">Close</button>
                                     </div>
                                 </div>
                                 <!--/.Buy tab-->
@@ -320,7 +320,7 @@ $connection->close();
                                                     $temp = 0;
                                                     for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                         for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
+                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.00001) {
                                                                 echo '<option id="' . $_SESSION['lista_walut'][$i][3] . '" value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                                 $temp += 1;
                                                                 break;
@@ -356,7 +356,7 @@ $connection->close();
                                     <div class="modal-footer">
                                         <p>Powered by</p>
                                         <img src="img/mastercard.png" width="60px" height="60px">
-                                        <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal" onclick="clearInput()">Close</button>
                                     </div>
                                 </div>
                                 <!--/.Sell tab-->
@@ -416,8 +416,6 @@ $connection->close();
 
     </section>
 
-
-
     <!-- bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script>
@@ -472,53 +470,26 @@ $connection->close();
         }
 
         function sendMaxBuy(max){
-            var a = document.getElementById('toBuy');
-            var e = document.getElementById('toPay');
-            //pay buy
+            const xhr = new XMLHttpRequest();
 
-            var http = new XMLHttpRequest();
-            var url = 'home.php';
-            var params = 'orem=ipsum&name=binny';
-            http.open('POST', url, true);
+            xhr.onload = function (){
 
-            //Send the proper header information along with the request
-            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-            http.onreadystatechange = function () {//Call a function when the state changes.
-                if (http.readyState == 4 && http.status == 200) {
-                    //alert(http.responseText);
-                    document.getElementById('amountInputBuy').value =<?php
-                    if (isset($_POST["orem"])) {
-                        echo json_encode($_POST['orem']);
-                    }else {
-                        echo json_encode("xd");
-                    }
-                    ?>;
-
-                }
-            }
-            http.send(params);
-
-
-
-
+                const serverResponse = document.getElementById("amountInputBuy").value = this.responseText ;
+                const serverResponse1 = document.getElementById("serverResponse");
+                serverResponse1.innerHTML = this.responseText;
+            };
+            var pay = document.getElementById('toPay');
+            var buy = document.getElementById('toBuy');
+            xhr.open("POST","howMuch.php");
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send('pay=' + pay.options[pay.selectedIndex].value + '&buy=' + buy.options[buy.selectedIndex].value);
         }
 
-        /* function createCookie(name, value, days) {
-             var expires;
+        function clearInput(){
+            document.getElementById('amountInputBuy').value = '';
+            document.getElementById('amountInputSell').value = '';
+        }
 
-             if (days) {
-                 var date = new Date();
-                 date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                 expires = "; expires=" + date.toGMTString();
-             }
-             else {
-                 expires = "";
-             }
-
-             document.cookie = escape(name) + "=" +
-                 escape(value) + expires + "; path=/";
-         }*/
     </script>
 </body>
 

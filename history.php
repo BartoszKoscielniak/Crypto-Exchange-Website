@@ -359,7 +359,7 @@ $connection->close();
                                                 <?php
                                                 for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                     for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                        if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
+                                                        if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.00001) {
                                                             echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                             break;
                                                         }
@@ -371,7 +371,9 @@ $connection->close();
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">How much?</label>
                                             <div class="input-group mb-3">
                                                 <input id="amountInputBuy" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
-
+                                                <div class="input-group-append">
+                                                    <button id="maxButtonBuy" class="btn btn-outline-primary" type="button" onclick="sendMaxBuy()">MAX</button>
+                                                </div>
                                             </div>
                                             <?php if (isset($_SESSION['err_fund'])) {
                                                 echo $_SESSION['err_fund'];
@@ -388,7 +390,7 @@ $connection->close();
                                         <p>Powered by</p>
 
                                         <img src="img/mastercard.png" width="60px" height="60px">
-                                        <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal" onclick="clearInput()">Close</button>
                                     </div>
                                 </div>
                                 <!--/.Buy tab-->
@@ -423,7 +425,7 @@ $connection->close();
                                                 $temp = 0;
                                                 for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                     for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                        if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
+                                                        if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.00001) {
                                                             echo '<option id="'.$_SESSION['lista_walut'][$i][3].'" value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                             $temp += 1;
                                                             break;
@@ -459,7 +461,7 @@ $connection->close();
                                 <div class="modal-footer">
                                     <p>Powered by</p>
                                     <img src="img/mastercard.png" width="60px" height="60px">
-                                    <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal" onclick="clearInput()">Close</button>
                                 </div>
                             </div>
                             <!--/.Sell tab-->
@@ -562,7 +564,6 @@ $connection->close();
             </div>
         </div>
     </div>
-
 </section>
 
 
@@ -666,6 +667,26 @@ $connection->close();
         });
         $('.dataTables_length').addClass('bs-select');
     });
+
+        function sendMaxBuy(max){
+            const xhr = new XMLHttpRequest();
+
+            xhr.onload = function (){
+
+                const serverResponse = document.getElementById("amountInputBuy").value = this.responseText ;
+
+            };
+            var pay = document.getElementById('cryptoPay');
+            var buy = document.getElementById('cryptoBuy');
+            xhr.open("POST","howMuch.php");
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send('pay=' + pay.options[pay.selectedIndex].value + '&buy=' + buy.options[buy.selectedIndex].value);
+        }
+
+        function clearInput(){
+            document.getElementById('amountInputBuy').value = '';
+            document.getElementById('amountInputSell').value = '';
+        }
 
 </script>
 </body>

@@ -27,6 +27,7 @@
         $decoded = json_decode($response, true);
     }
     curl_close($ch);
+
 echo $_POST['sell'];
     if ($_POST['sell'] >= 1000){
         $_POST['sell'] = $_POST['sell']/1000;

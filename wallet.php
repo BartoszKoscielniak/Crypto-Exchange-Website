@@ -68,7 +68,7 @@
     }
     $connection->close();
 
-    //liczenie zmiany wartosci portfela
+/*    //liczenie zmiany wartosci portfela
     $_SESSION['totalWalletValue'] = 0;
     $_SESSION['yesterdaysTotalValueDifference'] = 0;
     for ($u = 0; $u < sizeof($_SESSION['lista_walut']); $u++){
@@ -100,7 +100,7 @@
         $_SESSION['yesterdaysTotalValueDifference'] = '<h5 style="color: green">Yesterdays Value Change: +'.number_format($_SESSION['yesterdaysTotalValueDifference'],2).'€</h5>';
     }else{
         $_SESSION['yesterdaysTotalValueDifference'] = '<h5 style="color: red">Yesterdays Value Change:</h5> '.number_format($_SESSION['yesterdaysTotalValueDifference'],2).'€</h5>';
-    }
+    }*/
 
 
 ?>
@@ -351,7 +351,7 @@
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Buy:</label>
 
                                             <form action="buyCrypto.php" method="post" class="mb-3">
-                                                <select name="buy" id="cryptoBuy" class="form-select" aria-label="Default select example">
+                                                <select name="buy" id="cryptoBuyb" class="form-select" aria-label="Default select example">
 
                                                     <?php
                                                     for ($i = 0; $i < 10; $i++) {
@@ -361,13 +361,13 @@
 
                                                 </select>
                                                 <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Pay:</label>
-                                                <select name="pay" id="cryptoPay" class="form-select" aria-label="Default select example" >
+                                                <select name="pay" id="cryptoPayb" class="form-select" aria-label="Default select example" >
 
                                                     <option value="myWallet">My Wallet</option>
                                                     <?php
                                                     for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                         for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
+                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.00001) {
                                                                 echo '<option value="' . htmlspecialchars($_SESSION['krypto'][$a][1]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                                 break;
                                                             }
@@ -378,15 +378,17 @@
                                                 </select>
                                                 <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">How much?</label>
                                                 <div class="input-group mb-3">
-                                                    <input id="amountInput" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
-
+                                                    <input id="amountInputb" name="amount" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
+                                                    <div class="input-group-append">
+                                                        <button id="maxButtonBuy" class="btn btn-outline-primary" type="button" onclick="sendMaxBuy()">MAX</button>
+                                                    </div>
                                                 </div>
                                                 <?php if (isset($_SESSION['err_fund'])) {
                                                     echo $_SESSION['err_fund'];
                                                     unset($_SESSION['err_fund']);
                                                 } ?>
                                                 <textarea name="area" style="display:none">wallet.php</textarea>
-                                                <button id="submitButton" type="submit" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark">Buy</button>
+                                                <button id="submitButtonb" type="submit" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark">Buy</button>
                                             </form>
 
                                         </div>
@@ -396,7 +398,7 @@
                                         <p>Powered by</p>
 
                                         <img src="img/mastercard.png" width="60px" height="60px">
-                                        <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal" onclick="clearInput()">Close</button>
                                     </div>
                                 </div>
                                 <!--/.Buy tab-->
@@ -433,7 +435,7 @@
                                                     $temp = 0;
                                                     for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                                         for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
+                                                            if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.00001) {
                                                                 echo '<option id="'.$_SESSION['lista_walut'][$i][3].'" value="' . htmlspecialchars($_SESSION['krypto'][$a][0]) . '" >' . $_SESSION['krypto'][$a][1] . '(' . $_SESSION['lista_walut'][$i][3] . ')</option>' . "\n";
                                                                 $temp += 1;
                                                                 break;
@@ -469,7 +471,7 @@
                                     <div class="modal-footer">
                                         <p>Powered by</p>
                                         <img src="img/mastercard.png" width="60px" height="60px">
-                                        <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-outline-primary btn-rounded" data-dismiss="modal" onclick="clearInput()">Close</button>
                                     </div>
                                 </div>
                                 <!--/.Sell tab-->
@@ -514,7 +516,7 @@
 
                                         for ($i = 0; $i < sizeof($_SESSION['lista_walut']); $i++) {
                                             for ($a = 0; $a < sizeof($_SESSION['krypto']); $a++) {
-                                                if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0) {
+                                                if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.00001) {
                                                     for ($b = 0; $b < sizeof($decoded); $b++) {
                                                         if ($_SESSION['krypto'][$a][1] == $decoded[$b]['name']) {
                                                             echo '<tr><th class="rank" style="width:10%; text-align: center">' . ($temp + 1) . '</th><th style="width: 30%; text-align: center"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:30%; text-align: center">' . $_SESSION['krypto'][$a][1] . '</th><th style="width:30%; text-align: center">' . sprintf("%.5f", round($_SESSION['lista_walut'][$i][3], 3)) . '</th></tr>' . "\n";
@@ -538,7 +540,7 @@
         </div>
 
     </section>
-
+    <p id="serverResponse"></p>
 
     <!-- bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -570,7 +572,7 @@ setTimeout(() => {
 }
 
 //Credit card
-function selectPayMet(id) {
+        function selectPayMet(id) {
 
 document.getElementById(id).checked = true;
 
@@ -605,10 +607,10 @@ if(id.localeCompare('payCard1') == 0){
         }
 
         function validateBuy(){
-            var input = document.getElementById('amountInput').value;
-            const button = document.getElementById('submitButton');
+            var input = document.getElementById('amountInputb').value;
+            const button = document.getElementById('submitButtonb');
 
-            if(input > 0 & document.getElementById('cryptoBuy').value != document.getElementById('cryptoPay').value){
+            if(input > 0 & document.getElementById('cryptoBuyb').value != document.getElementById('cryptoPayb').value){
                 button.disabled = false;
             }else {
                 button.disabled = true;
@@ -626,12 +628,32 @@ if(id.localeCompare('payCard1') == 0){
                 button.disabled = true;
             }
         }
+        setInterval(validateSell, 250);
 
         function sendMax(max){
             var e =document.getElementById('toSell');
             document.getElementById('amountInputSell').value = e.options[e.selectedIndex].id;
         }
-        setInterval(validateSell,250);
+
+        function sendMaxBuy(max){
+            const xhr = new XMLHttpRequest();
+
+            xhr.onload = function (){
+
+                const serverResponse = document.getElementById("amountInputb").value = this.responseText ;
+            };
+            var pay = document.getElementById('cryptoPayb');
+            var buy = document.getElementById('cryptoBuyb');
+            xhr.open("POST","howMuch.php");
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send('pay=' + pay.options[pay.selectedIndex].value + '&buy=' + buy.options[buy.selectedIndex].value);
+        }
+
+        function clearInput(){
+            document.getElementById('amountInputb').value = '';
+            document.getElementById('amountInputSell').value = '';
+        }
+
     </script>
 </body>
 
