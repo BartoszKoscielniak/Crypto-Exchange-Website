@@ -191,25 +191,35 @@
 
                     <div class="input-group mb-3">
 
-                        <input id="amountInput" style=" margin-left: 5%; margin-right: 2%" name="amountttt" type="text" class="form-control" onkeypress="return onlyNumberKey(event)" autocomplete="off">
-                        <a style="font-size: 20px;">€</a>
+                        <input id="amountInput" style=" margin-left: 5%; margin-right: 2%" name="amountttt" type="text" class="form-control" onkeypress="return onlyNumberKey(event,'amountInput')" autocomplete="off">
+                        <h6 style="font-size: 20px;">€</h6><br>
+
                     </div>
+                    <?php if (isset($_SESSION['euroAmount'])) {
+                        echo '<div class="alert alert-danger" role="alert">' . $_SESSION['euroAmount'] . '</div>';
+                        unset($_SESSION['euroAmount']);
+                    } ?>
+
+                    <?php if (isset($_SESSION['euroAmount2'])) {
+                        echo '<div class="alert alert-danger" role="alert">' . $_SESSION['euroAmount2'] . '</div>';
+                        unset($_SESSION['euroAmount2']);
+                    } ?>
 
 
                     <label style=" margin-top: 5%;" data-success="right" for="modalLRInput12" class="wallet-val">Payment method</label>
 
 
-                    <div class="payOpt " onclick="selectPayMet('payCard1')" style="cursor:pointer; margin: 5%; margin-left: 5%; margin-right:5%; border: 1px solid #ccc!important; text-align: left; border-radius: 5px;" >
+                    <div class="payOpt " onclick="selectPayMet('payCard1')" style="cursor:pointer; margin: 5%; margin-left: 5%; margin-right:5%; border: 1px solid #ccc!important; text-align: left; border-radius: 5px;">
                         <div style="display: inline-block; vertical-align: baseline; ">
 
-                            <input id="payCard1" style="float: left; margin: 5%;" type="checkbox">
+                            <input id="payCard1"  style="float: left; margin: 5%;" type="checkbox">
                             <h6 style="float: left; margin-left: 10px;"><strong>BLIK</strong></h6><br>
                             <img style="float: left; margin-left: 10px; margin-bottom: 5px;" src="img/blik.png" width="30px" height="18px">
 
                         </div>
                     </div>
 
-                    <div class="payOpt" onclick="selectPayMet('payCard2')" style=" display: block;cursor:pointer; margin: 5%; margin-left: 5%; margin-right:5%; border: 1px solid #ccc!important; text-align: left; border-radius: 5px;" >
+                    <div class="payOpt" onclick="selectPayMet('payCard2')" style=" display: block;cursor:pointer; margin: 5%; margin-left: 5%; margin-right:5%; border: 1px solid #ccc!important; text-align: left; border-radius: 5px;">
                         <div class="cos" style="display: inline-block; vertical-align: baseline;">
 
                             <input id="payCard2" style="float: left; margin: 5%;" type="checkbox">
@@ -223,20 +233,21 @@
                     <div id="creditCard" class="input-group mb-3" style="display:none;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
                         <h6 style="margin-left:5%;float:left">Card number:</h6>
-                        <input id="cardNumber" name="amount" type="text" class="form-control" style="width: 90%; margin-left: 5%; margin-right:5%; text-align: center;" placeholder='xxxx-xxxx-xxxx-xxxx' onkeypress="return onlyNumberKey(event)" autocomplete="off">
+                        <input id="cardNumber" name="cardamount" type="text" maxlength="19" class="form-control" style="width: 90%; margin-left: 5%; margin-right:5%; text-align: center;" placeholder='xxxx-xxxx-xxxx-xxxx' onkeypress="return onlyNumberKey(event,'cardNumber')" autocomplete="off">
 
                         <label style="float:left; margin: 1%" data-success="right" for="modalLRInput12" class="wallet-val"></label>
 
                         <div style="margin-top: 5%;">
                             <div style="float: left;">
                                 <h6 style="display: inline-block;">Expiration Date</h6>
-                                <input style="text-align: center;" id="cardNumber" name="amount" type="text" class="form-control" placeholder='mm/yyyy' onkeypress="return onlyNumberKey(event)" autocomplete="off">
+                                <input style="text-align: center;" id="cardDate" maxlength="7" name="dateamount" type="text" class="form-control" placeholder='mm/yyyy' onkeypress="return onlyNumberKey(event,'cardDate')" autocomplete="off">
 
                             </div>
                             <div style="float: right;">
                                 <h6 style="display: inline-block; text-align: center; ">CVV</h6>
 
-                                <input id="cardNumber" name="amount" type="text" class="form-control" placeholder='123' onkeypress="return onlyNumberKey(event)" autocomplete="off">
+
+                                <input id="cvvNumber" name="cvvamount" type="text" maxlength='3' class="form-control" placeholder='123' onkeypress="return onlyNumberKey(event,'cvvNumber')" autocomplete="off">
 
                             </div>
                             <div><a>Powered by: </a> <img src="img/mastercard.png" width="40px" height="35px"></div>
@@ -249,7 +260,7 @@
 
                         <img src="img/blik.png"><br>
                         <h6 style="display: inline-block;">Enter the 6-character code</h6>
-                        <input id="cardNumber" name="amount" type="text" class="form-control" style="width:200px; margin-left:28% ;text-align: center;" placeholder='x-x-x-x-x-x' onkeypress="return onlyNumberKey(event)" autocomplete="off"><br>
+                        <input id="blikNumber" name="blikamount" type="text" class="form-control" maxlength="11" style="width:200px; margin-left:28% ;text-align: center;" placeholder='x-x-x-x-x-x' onkeypress="return onlyNumberKey(event,'blikNumber')" autocomplete="off"><br>
 
                     </div>
 
@@ -557,16 +568,76 @@ if(id.localeCompare('payCard1') == 0){
 
 }
 
-        function onlyNumberKey(evt) {
-            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
-            if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode != 46) {
-                validateBuy();
-                return false;
-            }else{
-                validateBuy();
-                return true;
-            }
+function onlyNumberKey(evt, id) {
+
+var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+if (ASCIICode > 32 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode != 46) {
+
+    validateBuy();
+    return false;
+} else {
+
+    if (id.localeCompare('cardNumber') == 0) {
+        if (document.getElementById(id).value.length < 19) {
+            document.getElementById(id).style.borderColor = 'red';
+        } else {
+            document.getElementById(id).style.borderColor = 'blue';
         }
+
+        if (document.getElementById(id).value.length == 4 || document.getElementById(id).value.length == 9 || document.getElementById(id).value.length == 14) {
+
+            document.getElementById(id).value += "-";
+
+        }
+    }
+    if (id.localeCompare('cardDate') == 0) {
+        if (document.getElementById(id).value.length < 7) {
+            document.getElementById(id).style.borderColor = 'red';
+        } else {
+            document.getElementById(id).style.borderColor = 'blue';
+        }
+        if (document.getElementById(id).value.length == 2) {
+
+            document.getElementById(id).value += "/";
+
+        }
+
+    }
+    if (id.localeCompare('cvvNumber') == 0) {
+
+        if (document.getElementById(id).value.length < 3) {
+            document.getElementById(id).style.borderColor = 'red';
+        } else {
+            document.getElementById(id).style.borderColor = 'blue';
+        }
+
+    }
+    if (id.localeCompare('blikNumber') == 0) {
+
+        if (document.getElementById(id).value.length < 11) {
+            document.getElementById(id).style.borderColor = 'red';
+        } else {
+            document.getElementById(id).style.borderColor = 'blue';
+        }
+        if (document.getElementById(id).value.length == 1 ||
+            document.getElementById(id).value.length == 3 ||
+            document.getElementById(id).value.length == 5 ||
+            document.getElementById(id).value.length == 7 ||
+            document.getElementById(id).value.length == 9) {
+
+            document.getElementById(id).value += "-";
+
+        }
+
+    }
+
+    blikNumber
+    validateBuy();
+    return true;
+
+}
+
+}
 
         function validateBuy(){
             var input = document.getElementById('amountInputb').value;
