@@ -41,7 +41,7 @@
          
 ### Baza danych
 ####	Diagram ERD
-![alt text](baza.png)
+![alt text](img/baza.png)
 
 
 ####	Skrypt do utworzenia struktury bazy danych
