@@ -83,4 +83,5 @@ PRIMARY KEY (id_transakcji), FOREIGN KEY (id_krypto) REFERENCES Kryptowaluty(id_
 2. Nowe konto bez historii oraz kryptowalut
 * Adres e-mail: **tes1t@gmail.com**
 * Hasło: **testtest**
+3. Baza danych: [baza_danych.sql](https://github.com/UR-INF/20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l/blob/main/baza_danych.sql)
 
