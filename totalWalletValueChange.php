@@ -43,7 +43,7 @@
         }
     }
 
-    $_SESSION['yesterdaysTotalValueDifference'] = 678;
+    $_SESSION['yesterdaysTotalValueDifference'] = $_SESSION['totalWalletValue'] - $_SESSION['yesterdaysTotalValueDifference'];
 
     if ($_SESSION['yesterdaysTotalValueDifference'] >= 0){
         $_SESSION['yesterdaysTotalValueDifference'] = '<h5 style="color: green">Yesterdays Value Change: +'.number_format($_SESSION['yesterdaysTotalValueDifference'],2).'€</h5>';

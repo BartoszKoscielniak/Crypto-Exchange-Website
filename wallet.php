@@ -476,10 +476,17 @@
                                 <table class="table align-items-center table-flush">
                                     <thead class="thead-light">
                                         <tr>
-                                            <th scope="col" style="text-align: center">Rank</th>
+                                            <?php
+                                            if (sizeof($_SESSION['lista_walut']) == 0){
+                                                echo '<th scope="col" style="text-align: center">Your wallet is empty</th>';
+                                            }else{
+                                                echo '<th scope="col" style="text-align: center">Rank</th>
                                             <th scope="col" style="text-align: center">Logo</th>
                                             <th scope="col" style="text-align: center">Crypto</th>
-                                            <th scope="col" style="text-align: center">Balance</th>
+                                            <th scope="col" style="text-align: center">Balance</th> ' ;
+                                            }
+                                            ?>
+
 
                                         </tr>
                                     </thead>
@@ -494,7 +501,7 @@
                                                 if ($_SESSION['lista_walut'][$i][2] == $_SESSION['krypto'][$a][0] && $_SESSION['lista_walut'][$i][3] > 0.0001) {
                                                     for ($b = 0; $b < sizeof($decoded); $b++) {
                                                         if ($_SESSION['krypto'][$a][1] == $decoded[$b]['name']) {
-                                                            echo '<tr><th class="rank" style="width:10%; text-align: center">' . ($temp + 1) . '</th><th style="width: 30%; text-align: center"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:30%; text-align: center">' . $_SESSION['krypto'][$a][1] . '</th><th style="width:30%; text-align: center">' . sprintf("%.5f", round($_SESSION['lista_walut'][$i][3], 3)) . '</th></tr>' . "\n";
+                                                            echo '<tr><th class="rank" style="width:10%; text-align: center">' . ($temp + 1) . '</th><th style="width: 30%; text-align: center"><img src="' . $decoded[$b]['image'] . '" width="30px" height="30px"></th><th style="width:30%; text-align: center">' . $_SESSION['krypto'][$a][1] . '</th><th style="width:30%; text-align: center">' . sprintf("%.5f", round($_SESSION['lista_walut'][$i][3], 3)) . '</th></tr>';
                                                             $temp += 1;
                                                             break 2;
                                                         }
@@ -503,9 +510,9 @@
                                             }
                                         }
                                         if ($temp == 0) {
-                                            echo '<tr><th width="100%">Looks like there is no assets associated with your wallet. Add some funds and start Your journey</th></tr>' . "\n";
-                                        }
-                                        echo '<tr><th></th><th></th><th id="here"></th><th><h5 id="there"></h5></th></tr>'
+                                            echo '<tr><th width="100%" style="text-align: center">Looks like there is no assets associated with your wallet. Add some funds and start Your journey</th></tr>' . "\n";
+                                        }else{echo '<tr><th></th><th></th><th id="here"></th><th><h5 id="there"></h5></th></tr>';}
+
                                         ?>
                             </div>
                         </div>

@@ -124,7 +124,7 @@
                                             throw new Exception(mysqli_connect_error());
                                         }else {
                                             $connection->query("INSERT INTO  lista_walut (id_portfela, id_krypto, ilość_krypto) VALUES('".$_SESSION['portfel'][0][0]."','".$_SESSION['krypto'][$a][0]."','".$_POST['amount']."')");
-                                            $connection->query("INSERT INTO transakcje (id_krypto,id_portfela,data_transakcji,czas_zawarcia,ilosc,status,kurs_transakcji) VALUES ('".$_SESSION['krypto'][$a][0]."','".$_SESSION['portfel'][0][0]."','".date("Y-m-d")."','".date("H:i")."','".$_POST['amount']."','"."SWAPPED OF ".$toPay." ".$_SESSION['krypto'][$i][1].""."','".$_SESSION['krypto'][$a][2]."')");
+                                            $connection->query("INSERT INTO transakcje (id_krypto,id_portfela,data_transakcji,czas_zawarcia,ilosc,status,kurs_transakcji) VALUES ('".$_SESSION['krypto'][$a][0]."','".$_SESSION['portfel'][0][0]."','".date("Y-m-d")."','".date("H:i")."','".$_POST['amount']."','"."SWAPPED OF ".$_SESSION['krypto'][$i][1].""."','".$_SESSION['krypto'][$a][2]."')");
 
                                         }
                                     }

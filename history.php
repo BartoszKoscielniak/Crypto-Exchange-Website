@@ -501,13 +501,21 @@ $connection->close();
                                 <table id="historyTable" class="table align-items-center table-flush">
                                     <thead class="thead-light">
                                         <tr>
-                                            <th scope="col" style="text-align: center">Logo</th>
+
+                                            <?php
+                                            if (sizeof($_SESSION['lista_walut']) == 0){
+                                                echo '<th scope="col" style="text-align: center">There is no history</th>';
+                                            }else{
+                                                echo '<th scope="col" style="text-align: center">Logo</th>
                                             <th scope="col" style="text-align: center">Name</th>
                                             <th scope="col" style="text-align: center">Date</th>
                                             <th scope="col" style="text-align: center">Time</th>
                                             <th scope="col" style="text-align: center">Amount</th>
                                             <th scope="col" style="text-align: center">Status</th>
-                                            <th scope="col" style="text-align: center">Course</th>
+                                            <th scope="col" style="text-align: center">Course</th>' ;
+                                            }
+                                            ?>
+
 
                                         </tr>
                                     </thead>
@@ -563,7 +571,7 @@ $connection->close();
                                         }
 
                                         if ($temp == 0) {
-                                            echo '<tr><th>Looks like there is no assets associated with your wallet. Add some funds and start Your journey</th></tr>' . "\n";
+                                            echo '<tr><th style="text-align: center">Looks like there is no assets associated with your wallet. Add some funds and start Your journey</th></tr>';
                                         }
 
                                         ?>

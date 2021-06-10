@@ -34,7 +34,7 @@
         for($i = 0; $i < sizeof($_SESSION['krypto']); $i++){
             if ($_POST['buy'] == $_SESSION['krypto'][$i][1]){
                 $canBuy = $_SESSION['portfel'][0][2] / $_SESSION['krypto'][$i][2];
-                $canBuy = $canBuy * 0.9999;
+                $canBuy = $canBuy * 0.9998;
                 echo number_format((float)$canBuy, 5, '.', '');
             }
         }
@@ -47,7 +47,7 @@
                         $idPayCrypto = $_SESSION['krypto'][$i][0];
                         for ($k = 0; $k < sizeof($_SESSION['lista_walut']); $k++){
                             if ($idPayCrypto == $_SESSION['lista_walut'][$k][2]){
-                                $canBuy = ($_SESSION['lista_walut'][$k][3] * $exRatio)*0.9999;
+                                $canBuy = ($_SESSION['lista_walut'][$k][3] * $exRatio)*0.9998;
                                 //echo $_SESSION['lista_walut'][$k][3];
                                 echo number_format((float)$canBuy, 5, '.', '');
                                 break 3;
