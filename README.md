@@ -17,7 +17,7 @@
    <details>
        <summary>Strona głowna</summary>
     <ul>
-     <img src="img/strona_glowna.png.png"> 
+     <img src="img/strona_glowna.png"> 
     </ul>
    </details>
 	<details>
