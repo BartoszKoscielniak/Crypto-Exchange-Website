@@ -147,7 +147,7 @@ $connection->close();
                 </button>
                 <h1 style=" float:right; margin-right:20px">
                     <?php
-                    echo '<a>' . $_SESSION['portfel'][0][2] . '</a>'
+                    echo '<a>' . number_format($_SESSION['portfel'][0][2],2) . '</a>'
                     ?>
                     <a style="font-size: 20px;">€</a>
                 </h1>
@@ -343,7 +343,7 @@ $connection->close();
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Your wallet</label>
                                             <h1 id="euro-amount">
                                                 <?php
-                                                echo '<a>' . $_SESSION['portfel'][0][2] . '</a>'
+                                                echo '<a>' . number_format($_SESSION['portfel'][0][2],2) . '</a>'
                                                 ?>
                                                 <a style="font-size: 20px;">€</a>
                                             </h1>
@@ -416,7 +416,7 @@ $connection->close();
                                             <h1 id="euro-amount">
                                                 <?php
                                                 echo "<script>console.log('Debug Objects:');</script>";
-                                                echo '<a>' . $_SESSION['portfel'][0][2] . '</a>'
+                                                echo '<a>' . number_format($_SESSION['portfel'][0][2],2) . '</a>'
                                                 ?>
                                                 <a style="font-size: 20px;">€</a>
                                             </h1>

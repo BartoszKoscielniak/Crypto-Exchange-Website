@@ -125,7 +125,7 @@
                 </button>
                 <h1 style=" float:right; margin-right:20px">
                     <?php
-                    echo '<a>' . $_SESSION['portfel'][0][2] . '</a>'
+                    echo '<a>' . number_format($_SESSION['portfel'][0][2],2) . '</a>'
                     ?>
                     <a style="font-size: 20px;">€</a>
                 </h1>
@@ -268,7 +268,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-primary btn-rounded" onclick="startValue()" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-outline-success" onclick="startValue()">Pay</button>
-                        <textarea name="area" style="display:none">history.php</textarea>
+                        <textarea name="area" style="display:none">wallet.php</textarea>
                     </div>
                 </form>
             </div>
@@ -316,7 +316,7 @@
                                             <label data-error="wrong" data-success="right" for="modalLRInput12" class="wallet-val">Your wallet</label>
                                             <h1 id="euro-amount">
                                                 <?php
-                                                echo '<a>' . $_SESSION['portfel'][0][2] . '</a>'
+                                                echo '<a>' . number_format($_SESSION['portfel'][0][2],2) . '</a>'
                                                 ?>
                                                 <a style="font-size: 20px;">€</a>
                                             </h1>
@@ -389,7 +389,7 @@
                                             <h1 id="euro-amount">
                                                 <?php
                                                 echo "<script>console.log('Debug Objects:');</script>";
-                                                echo '<a>' . $_SESSION['portfel'][0][2] . '</a>'
+                                                echo '<a>' . number_format($_SESSION['portfel'][0][2],2) . '</a>'
                                                 ?>
                                                 <a style="font-size: 20px;">€</a>
                                             </h1>

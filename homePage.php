@@ -179,7 +179,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
                     <button style="width:80px" type="button" class="btn btn-outline-success" data-target="#myModal" data-toggle="modal">Join</button>
                 </li>
                 <li class="nav-item" style="margin-left:5%">
-                    <button style="width:80px" type="button" class="btn btn-outline-danger" data-target="#myMod" data-toggle="modal">Log</button>
+                    <button style="width:80px" type="button" class="btn btn-outline-danger" data-target="#myMod" data-toggle="modal">Log In</button>
                 </li>
 
 
