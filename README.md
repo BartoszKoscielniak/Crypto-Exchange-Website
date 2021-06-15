@@ -1,87 +1,134 @@
-# Projekt zaliczeniowy z przedmiotu: _**Aplikacje internetowe**_
+# Cryptocurrency Exchange
+> Website created to initiate crypto exchanges, that make us familiarized with basic crypto market functions .
 
-# Temat projektu: Strona do tradowania kryptowalut
-## Skład grupy: Łukasz Matusik, Bartosz Kościelniak
-## Specyfikacja projektu
-### Cel projektu :
-#### Cele szczegółowe:
-   1. Stworzenie aplikacji tradeingowej kryptowalut
-   2. Nauka podstawowych działan na giełdach    
-### Funkcjonalności:
-   1. Monitorowanie zmian kursu kryptowalut
-   2. Funkcja trade'owania kryptowalutami
-   3. Wgląd do portfela 
-   4. Kupowanie/sprzedaż kryptowalut
-### Interfejs serwisu
+## Table of contents
+* [General info](#general-info)
+* [Screenshots](#screenshots)
+* [Setup](#setup)
+* [Code Examples](#code-examples)
+* [Tech/framework used](#techframework-used)
+* [Status](#status)
+* [Contact](#contact)
+* [License](#license)
+
+## General info
+>The project was created by myself and [@Lukasz Matusik](https://github.com/lukas1299) as a final paper of Internet Application.
+>All crypto informations and  data(price,market cap, rank etc) is fetched from CoinGecko API.
+
+## Screenshots
 
    <details>
-       <summary>Strona głowna</summary>
+       <summary>Main page</summary>
     <ul>
      <img src="img/strona_glowna.png"> 
     </ul>
    </details>
 	<details>
-       <summary>Portfel</summary>
+       <summary>Wallet</summary>
     <ul>
      <img src="img/portfel.png"> 
     </ul>
    </details>
 	<details>
-       <summary>Wykres cen kryptowaluty</summary>
+       <summary>Coin price chart</summary>
     <ul>
      <img src="img/wykres_ceny.png"> 
     </ul>
    </details>
 	<details>
-       <summary>Zakup kryptowaluty</summary>
+       <summary>Buy/Sell panel</summary>
     <ul>
      <img src="img/zakuKrypto.png"> 
     </ul>
    </details>
-         
-### Baza danych
-####	Diagram ERD
-![alt text](img/baza.png)
+
+## Setup
+
+>1. Place project folder in **\xampp\htdocs**
+>2. In phpMyAdmin create database and import out file **baza_danych.sql**
+>3. In **xampp\htdocs\20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l\dataBaseConnector.php** adjust connection properties
+>4. In websites URL field type localhost
+>5. On main page you can **Log In** with accounts provided below or create new one
+>
+> Account with coins and transactions history
+>* Adres e-mail: **g@gmail.com**
+>* Hasło: **adminadmin**
+> 
+>Wiped account without any coins in wallet nor trade history
+>* Adres e-mail: **tes1t@gmail.com**
+>* Hasło: **testtest**
+> 
+>Data base: [baza_danych.sql](https://github.com/BartoszKoscielniak/CryptoExch/blob/main/baza_danych.sql)
+## Code Examples
+Show examples of usage:
 
 
-####	Skrypt do utworzenia struktury bazy danych
-```
-CREATE TABLE Kryptowaluty ( id_krypto INT NOT NULL, nazwa VARCHAR(255) NOT NULL, kurs FLOAT NOT NULL, 
-PRIMARY KEY (id_krypto) );
+    $ch = curl_init();
+    $url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
 
-CREATE TABLE Użytkownicy ( id_użytkownika INT NOT NULL, imię VARCHAR(255) NOT NULL, nazwisko VARCHAR(255) NOT NULL, nr_telefonu INT NOT NULL, adres_email VARCHAR(255) NOT NULL, haslo VARCHAR(255) NOT NULL, 
-PRIMARY KEY (id_użytkownika) );
+    mysqli_report(MYSQLI_REPORT_STRICT);
+    $connection = new mysqli($host, $db_user, $db_password, $db_name);
 
-CREATE TABLE Portfele ( id_portfela INT NOT NULL, id_użytkownika INT NOT NULL, ilość_euro FLOAT NOT NULL, 
-PRIMARY KEY (id_portfela), FOREIGN KEY (id_użytkownika) REFERENCES Użytkownicy(id_użytkownika) );
+    if ($e = curl_error($ch)) {
+        echo $e;
+    } else {
+        $decoded = json_decode($response, true);
+    }
+    curl_close($ch);
 
-CREATE TABLE Lista_walut ( id_listy INT NOT NULL AUTO_INCREMENT, id_portfela INT NOT NULL ,id_krypto INT, ilość_krypto FLOAT NOT NULL, 
-PRIMARY KEY (id_listy), FOREIGN KEY (id_krypto) REFERENCES Kryptowaluty(id_krypto), FOREIGN KEY (id_portfela) REFERENCES Portfele(id_portfela) );
+    ////
 
-CREATE TABLE Transakcje ( id_transakcji INT NOT NULL AUTO_INCREMENT, id_krypto INT NOT NULL, id_portfela INT NOT NULL, data_transakcji DATE NOT NULL, czas_zawarcia TIME NOT NULL, ilosc FLOAT NOT NULL, status VARCHAR(255) NOT NULL, kurs_transakcji FLOAT NOT NULL, 
-PRIMARY KEY (id_transakcji), FOREIGN KEY (id_krypto) REFERENCES Kryptowaluty(id_krypto), FOREIGN KEY (id_portfela) REFERENCES Portfele (id_portfela) );
+    $_SESSION['totalWalletValue'] = 0;
+    $_SESSION['yesterdaysTotalValueDifference'] = 0;
+    for ($u = 0; $u < sizeof($_SESSION['lista_walut']); $u++){
+        for ($g = 0; $g < sizeof($_SESSION['krypto']); $g++){
+            if ($_SESSION['lista_walut'][$u][1] == $_SESSION['portfel'][0][0] && $_SESSION['lista_walut'][$u][2] == $_SESSION['krypto'][$g][0] && $_SESSION['lista_walut'][$u][3] > 0){
+                $_SESSION['totalWalletValue'] = $_SESSION['totalWalletValue'] + $_SESSION['lista_walut'][$u][3] * $_SESSION['krypto'][$g][2];
 
-```
-## Wykorzystane technologie
+                for ($next = 0; $next < sizeof($decoded); $next++) {
+                    if ($_SESSION['krypto'][$g][1] == $decoded[$next]['name']) {
+                        $chi = curl_init();
+                        $urli = "https://api.coingecko.com/api/v3/coins/{$decoded[$next]['id']}/market_chart?vs_currency=eur&days=1&interval=daily";
+                        curl_setopt($chi, CURLOPT_URL, $urli);
+                        curl_setopt($chi, CURLOPT_RETURNTRANSFER, true);
+                        $resp = curl_exec($chi);
+                        $priceDayBefore = json_decode($resp, true);
+
+                        curl_close($chi);
+                        if (curl_errno($chi) != 0){
+                            echo curl_errno($chi);
+                        }
+                        $_SESSION['yesterdaysTotalValueDifference'] = $_SESSION['yesterdaysTotalValueDifference'] + $_SESSION['lista_walut'][$u][3] * $priceDayBefore['prices'][0][1];
+                        break 2;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+## Tech/framework used
 
 * HTML
-* JavaScript
+* JavaScript 
 * PHP
-* Bootstrap
 * CSS
+* Bootstrap
+* MySQL
 
-## Proces uruchomienia aplikacji (krok po kroku)
-1. Należy umieścić projekt w folderze **\xampp\htdocs** 
-2. W phpMyAdmin należy stworzyć baze danych i zaimportować plik **baza_danych.sql**
-3. W pliku **xampp\htdocs\20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l\dataBaseConnector.php** można dostosować połączenie pod swoja baze
-4. W przeglądarce wpisujemy adres localhost i wybieramy folder z projektem
-5. Na stronie startowej pod przyciskiem **Log In** można się zalogować i zacząć korzystać z strony
-### Potrzebne nazwy użytkowników do uruchomienia aplikacji
-1. Konto z historią oraz listami kryptowalut
-* Adres e-mail: **g@gmail.com**
-* Hasło: **adminadmin**
-2. Nowe konto bez historii oraz kryptowalut
-* Adres e-mail: **tes1t@gmail.com**
-* Hasło: **testtest**
-3. Baza danych: [baza_danych.sql](https://github.com/UR-INF/20-21-ai-projekt-lab3-projekt-ai-koscielniak-b-matusik-l/blob/main/baza_danych.sql)
+## Status
+Project is: _finished_ :monocle_face:
+
+
+## Contact
+[@Bartosz Koscielniak](https://github.com/BartoszKoscielniak)
+
+[@Lukasz Matusik](https://github.com/lukas1299)
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/) ©
 
