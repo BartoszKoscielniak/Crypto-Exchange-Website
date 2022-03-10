@@ -1,0 +1,15 @@
+{
+    "name": "barto/crypto_exchange",
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "Bartosz Koscielniak",
+            "email": "bartoszkoscielniak3@gmail.com"
+        }
+    ],
+    "require": {}
+}
