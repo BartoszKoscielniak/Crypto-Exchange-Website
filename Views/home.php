@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
     header('Location:home.php');
     exit();
@@ -196,7 +194,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
         <div class="modal-content">
             <div class="modal-body mb-1">
 
-                <form method="post">
+                <form action="/register" method="post">
                     <h2>Register</h2>
 
                     <label class="napis" style="user-select: none">Name</label><br>
@@ -261,7 +259,7 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
                         <input type="checkbox" name="regulations" value="<?php if (isset($_SESSION['RF_regulations'])) {
                             echo "checked";
                             unset($_SESSION['RF_regulations']);
-                        } ?>" /> I have read and agree to the Terms of Service.<br>
+                        } ?>" required/> I have read and agree to the Terms of Service.<br>
                     </label>
                     <?php if (isset($_SESSION['err_regulations'])) {
                         echo '<div class="alert alert-danger" role="alert">' . $_SESSION['err_regulations'] . '</div>';
@@ -293,14 +291,14 @@ if ((isset($_SESSION['isLoggedIn'])) && ($_SESSION['isLoggedIn'] == true)) {
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="logIn.php" method="post">
+                <form action="/login" method="post">
 
                     <input class="form-control" class="text" type="text" placeholder="Enter Email" name="email" required><br>
 
                     <input class="form-control" class="text" type="password" placeholder="Enter Password" name="password" required><br>
 
 
-                    <?php if (isset($_SESSION['error'])) echo '<div class="alert alert-danger" role="alert">' . $_SESSION['error'] . '</div>'; ?>
+                    <?php if (isset($error)) echo '<div class="alert alert-danger" role="alert">' . $error . '</div>'; ?>
 
 
                     <!--Footer-->
