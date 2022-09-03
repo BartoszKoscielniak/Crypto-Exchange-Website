@@ -51,12 +51,12 @@
 >5. On main page you can **Log In** with accounts provided below or create new one
 >
 > Account with coins and transactions history
->* Adres e-mail: **g@gmail.com**
->* Hasło: **adminadmin**
+>* E-mail: **g@gmail.com**
+>* Password: **adminadmin**
 > 
 >Wiped account without any coins in wallet nor trade history
->* Adres e-mail: **tes1t@gmail.com**
->* Hasło: **testtest**
+>* E-mail: **tes1t@gmail.com**
+>* Password: **testtest**
 > 
 >Data base: [baza_danych.sql](https://github.com/BartoszKoscielniak/CryptoExch/blob/main/baza_danych.sql)
 ## Code Examples
